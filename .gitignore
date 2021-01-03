@@ -1,0 +1,24 @@
+# eclipse files
+.classpath
+.project
+ 
+# Java class files
+*.class
+ 
+# ignore folder
+/logs/
+/target/
+/.settings/
+ 
+# Log Files
+*.log
+*.error
+ 
+# Intellij
+**/.idea
+**/*.iws
+**/*.iml
+**/*.ipr
+**/rebel.xml
+**/.rebel.xml.bak
+/bin/
