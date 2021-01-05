@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * @Version 1.0
  */
 @Component
-public class MemoryReceiver extends AbstractMemoryReceiver {
+public class MemoryTodoReceiver extends AbstractMemoryTodoReceiver {
 
     @Override
     public List<TodoItem> list() {

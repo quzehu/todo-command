@@ -1,7 +1,9 @@
 package com.quzehu.learn.command;
 
+import com.quzehu.learn.api.Command;
+import com.quzehu.learn.api.Print;
 import com.quzehu.learn.constant.StringFormatTemplate;
-import com.quzehu.learn.receiver.Receiver;
+import com.quzehu.learn.api.TodoReceiver;
 
 /**
  * 完成待办事项
@@ -14,10 +16,10 @@ import com.quzehu.learn.receiver.Receiver;
  */
 public class DoneCommand implements Command, Print {
 
-    private final Receiver receiver;
+    private final TodoReceiver todoReceiver;
 
-    public DoneCommand(Receiver receiver) {
-        this.receiver = receiver;
+    public DoneCommand(TodoReceiver todoReceiver) {
+        this.todoReceiver = todoReceiver;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class DoneCommand implements Command, Print {
         }
         // Todo 参数校验是否为数字
         int index = Integer.parseInt(args[0]);
-        if (receiver.done(index)) {
+        if (todoReceiver.done(index)) {
             println(StringFormatTemplate.DONE_AFTER_FORMAT_CONSOLE, index);
         }
 

@@ -27,4 +27,8 @@ public class StringFormatTemplate {
 
     public static final String LIST_ALL_AFTER_FORMAT_CONSOLE = "Total: %d items, %d item done.";
 
+    public static final String USER_NO_EXIST_FORMAT_CONSOLE = "User %s does not exist.";
+
+    public static final String LOGOUT_AFTER_FORMAT_CONSOLE = "Logout success!";
+
 }

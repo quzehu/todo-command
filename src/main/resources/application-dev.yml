@@ -35,3 +35,6 @@ todo:
    persistence: localFile
    basePath: D:/localFile/todolist
    fileName: todoList.txt
+user:
+   fileName: todo-config.txt
+   pwCheckNum: 5

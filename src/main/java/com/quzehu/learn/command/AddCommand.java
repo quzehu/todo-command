@@ -1,8 +1,10 @@
 package com.quzehu.learn.command;
 
+import com.quzehu.learn.api.Command;
+import com.quzehu.learn.api.Print;
 import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.TodoItem;
-import com.quzehu.learn.receiver.Receiver;
+import com.quzehu.learn.api.TodoReceiver;
 
 /**
  * 待办事项添加命令
@@ -15,10 +17,10 @@ import com.quzehu.learn.receiver.Receiver;
  */
 public class AddCommand implements Command, Print {
 
-    private final Receiver receiver;
+    private final TodoReceiver todoReceiver;
 
-    public AddCommand(Receiver receiver) {
-        this.receiver = receiver;
+    public AddCommand(TodoReceiver todoReceiver) {
+        this.todoReceiver = todoReceiver;
     }
 
 
@@ -32,8 +34,8 @@ public class AddCommand implements Command, Print {
         if (args.length != 1) {
             throw new IllegalArgumentException("The args length must be one!");
         }
-        int index = receiver.add(args[0]);
-        TodoItem todoItem = receiver.valueOf(index);
+        int index = todoReceiver.add(args[0]);
+        TodoItem todoItem = todoReceiver.valueOf(index);
         println(todoItem.toString());
         println(StringFormatTemplate.ADD_AFTER_FORMAT_CONSOLE, index);
     }

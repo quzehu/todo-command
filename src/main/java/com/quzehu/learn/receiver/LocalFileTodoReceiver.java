@@ -1,17 +1,16 @@
 package com.quzehu.learn.receiver;
 
+import com.quzehu.learn.api.TodoReceiver;
 import com.quzehu.learn.config.TodoConfig;
 import com.quzehu.learn.constant.ItemStatusEnum;
 import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.TodoItem;
 import com.quzehu.learn.utils.FileUtils;
-import com.quzehu.learn.utils.SpringContextHolder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -24,17 +23,19 @@ import java.util.stream.Collectors;
  * @Version 1.0
  */
 @Component
-public class LocalFileReceiver implements Receiver {
+public class LocalFileTodoReceiver implements TodoReceiver {
 
 
-    private final AbstractMemoryReceiver receiver;
+    private final AbstractMemoryTodoReceiver receiver;
 
 
     private final TodoConfig config;
 
     private File file;
 
-    public LocalFileReceiver(AbstractMemoryReceiver receiver, TodoConfig config) {
+    private Map<Integer, File> fileMap;
+
+    public LocalFileTodoReceiver(AbstractMemoryTodoReceiver receiver, TodoConfig config) {
         this.receiver = receiver;
         this.config = config;
         cacheList();
@@ -86,12 +87,12 @@ public class LocalFileReceiver implements Receiver {
     }
 
     private String getAddNewRowText(String index, String text) {
-        String[] args = new String[]{index, text, ItemStatusEnum.NOT_DONE.getStatus().toString(), "admin"};
+        String[] args = new String[]{index, text, ItemStatusEnum.NOT_DONE.getStatus().toString(), "0"};
         return getNewRowText(args);
     }
 
     private String getNewRowText(String ...args) {
-        return String.format(StringFormatTemplate.FORMAT_FILE, args);
+        return String.format(StringFormatTemplate.FORMAT_FILE, (Object) args);
     }
 
     private File getFile() {
@@ -111,7 +112,7 @@ public class LocalFileReceiver implements Receiver {
                 todoItem.setIndex(Integer.valueOf(arrays[0]));
                 todoItem.setText(arrays[1]);
                 todoItem.setStatus(Integer.valueOf(arrays[2]));
-                todoItem.setUserId(arrays[3]);
+                todoItem.setUserId(Integer.valueOf(arrays[3]));
             }
             return todoItem;
         }).collect(Collectors.toList());

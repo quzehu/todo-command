@@ -1,11 +1,11 @@
-package com.quzehu.learn.receiver;
+package com.quzehu.learn.api;
 
 import com.quzehu.learn.model.TodoItem;
 
 import java.util.List;
 
 /**
- * 接受命令的 执行者
+ * 接受待办事项命令的执行者
  *
  * @ProjectName 项目名称
  * @ClassName com.quzehu.learn.receiver.Receiver
@@ -13,7 +13,7 @@ import java.util.List;
  * @Date 2021/1/3 15:40
  * @Version 1.0
  */
-public interface Receiver {
+public interface TodoReceiver {
 
     /**
      * 没有参数的列表

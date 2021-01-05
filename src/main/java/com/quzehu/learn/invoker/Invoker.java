@@ -1,8 +1,10 @@
 package com.quzehu.learn.invoker;
 
-import com.quzehu.learn.command.Command;
+import com.quzehu.learn.api.Command;
+import com.quzehu.learn.api.LoginStatus;
 import com.quzehu.learn.command.CommandFactory;
-import com.quzehu.learn.command.Print;
+import com.quzehu.learn.api.Print;
+import com.quzehu.learn.model.UserStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import java.util.Scanner;
@@ -18,7 +20,7 @@ import java.util.Scanner;
  */
 @Component
 @Slf4j
-public class Invoker implements Print {
+public class Invoker implements Print, LoginStatus {
 
     public void call(String commandStr) {
         boolean startsWith = commandStr.startsWith("todo");
@@ -46,18 +48,33 @@ public class Invoker implements Print {
         }
     }
 
+    public void callPassword(String password) {
+        try {
+            Command command = CommandFactory.getInstance().createCommand("password");
+            command.execute(password);
+        }catch (IllegalArgumentException e) {
+            println(e.getMessage());
+        }
+    }
+
     public void callLoop() {
         println("Please input command:");
         Scanner scanner = new Scanner(System.in);
         print(">:");
-        while (scanner.hasNext()) {
+        UserStatus userStatus = getLoginStatus();
+        while (scanner.hasNext() && userStatus.getStatus()) {
             String nextLine = scanner.nextLine().trim().toLowerCase();
+
             if ("exit".startsWith(nextLine)) {
                 println("exit success!");
                 break;
             }
-            call(nextLine);
-            print(">:");
+            if (userStatus.getInputPsCommand()) {
+                callPassword(nextLine);
+            }else {
+                call(nextLine);
+                print(">:");
+            }
         }
 
     }

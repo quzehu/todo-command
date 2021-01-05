@@ -1,9 +1,11 @@
 package com.quzehu.learn.command;
 
+import com.quzehu.learn.api.Command;
+import com.quzehu.learn.api.Print;
 import com.quzehu.learn.constant.ItemStatusEnum;
 import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.TodoItem;
-import com.quzehu.learn.receiver.Receiver;
+import com.quzehu.learn.api.TodoReceiver;
 
 import java.util.List;
 
@@ -18,15 +20,15 @@ import java.util.List;
  */
 public class ListCommand implements Command, Print {
 
-    private final Receiver receiver;
+    private final TodoReceiver todoReceiver;
 
-    public ListCommand(Receiver receiver) {
-        this.receiver = receiver;
+    public ListCommand(TodoReceiver todoReceiver) {
+        this.todoReceiver = todoReceiver;
     }
 
     @Override
     public void execute() {
-        List<TodoItem> todoItems = receiver.list();
+        List<TodoItem> todoItems = todoReceiver.list();
         todoItems.forEach(item -> println(item.toString()));
         println(StringFormatTemplate.LIST_AFTER_FORMAT_CONSOLE, todoItems.size());
     }
@@ -37,7 +39,7 @@ public class ListCommand implements Command, Print {
         if (args.length != 1) {
             throw new IllegalArgumentException("The args length must be one!");
         }
-        List<TodoItem> todoItems = receiver.list(args);
+        List<TodoItem> todoItems = todoReceiver.list(args);
         todoItems.forEach(todoItem -> println(todoItem.toString()));
         long doneSize = todoItems.stream().filter(item -> ItemStatusEnum.DONE.getStatus()
                         .equals(item.getStatus())).count();

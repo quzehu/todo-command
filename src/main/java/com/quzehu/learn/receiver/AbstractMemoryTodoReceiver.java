@@ -1,8 +1,11 @@
 package com.quzehu.learn.receiver;
 
+import com.quzehu.learn.api.TodoReceiver;
 import com.quzehu.learn.model.TodoItem;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 抽象的内存接收者
@@ -14,9 +17,11 @@ import java.util.List;
  * @Version 1.0
  */
 
-public abstract class AbstractMemoryReceiver implements Receiver {
+public abstract class AbstractMemoryTodoReceiver implements TodoReceiver {
 
     protected final List<TodoItem> items = new ArrayList<>();
+
+    protected final Map<Integer, List<TodoItem>> userItemMap = new HashMap<>();
 
     public void addAll(List<TodoItem> todoItems) {
         items.addAll(todoItems);

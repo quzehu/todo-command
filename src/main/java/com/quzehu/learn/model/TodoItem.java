@@ -20,6 +20,10 @@ import java.util.Date;
 public class TodoItem implements Serializable {
 
     /**
+     * 主键
+     */
+    private Integer id;
+    /**
      * 索引
      */
     private Integer index;
@@ -36,7 +40,7 @@ public class TodoItem implements Serializable {
     /**
      * 用户
      */
-    private String userId;
+    private Integer userId;
 
     /**
      * 创建时间
@@ -48,13 +52,20 @@ public class TodoItem implements Serializable {
      */
     private Date updateTime;
 
+    public TodoItem() {}
+
     public TodoItem(Integer index, String text) {
         this.index = index;
         this.text = text;
         this.status = ItemStatusEnum.NOT_DONE.getStatus();
         this.createTime = new Date();
     }
-    public TodoItem() {}
+
+    public TodoItem(Integer id ,Integer index, String text) {
+        this(index, text);
+        this.id = id;
+    }
+
 
     @Override
     public String toString() {
