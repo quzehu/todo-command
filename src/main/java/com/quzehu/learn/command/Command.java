@@ -21,21 +21,5 @@ public interface Command {
      */
     void execute(String... args) throws IllegalArgumentException;
 
-    /**
-     * 打印带有格式化的信息
-     * @param format 模版
-     * @param args 参数
-     */
-    default void println(String format, Object... args) {
-        System.out.println(String.format(format, args));
-    }
-
-    /**
-     * 打印文本内容
-     * @param text 文本内容
-     */
-    default void println(String text) {
-        System.out.println(text);
-    }
 
 }

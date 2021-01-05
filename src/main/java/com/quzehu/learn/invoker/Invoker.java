@@ -2,10 +2,9 @@ package com.quzehu.learn.invoker;
 
 import com.quzehu.learn.command.Command;
 import com.quzehu.learn.command.CommandFactory;
+import com.quzehu.learn.command.Print;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 import java.util.Scanner;
 
 /**
@@ -19,18 +18,18 @@ import java.util.Scanner;
  */
 @Component
 @Slf4j
-public class Invoker {
+public class Invoker implements Print {
 
     public void call(String commandStr) {
         boolean startsWith = commandStr.startsWith("todo");
         // 如果不是todo开头
         if (!startsWith) {
-            System.out.println("command is wrong.");
+            println("command is wrong.");
             return;
         }
         String[] arrays = commandStr.split(" ");
         if (arrays.length == 1) {
-            System.out.println("command is wrong.");
+            println("command is wrong.");
             return;
         }
         try {
@@ -43,20 +42,22 @@ public class Invoker {
                 command.execute(newArray);
             }
         }catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            println(e.getMessage());
         }
     }
 
     public void callLoop() {
-        System.out.println("Please input command:");
+        println("Please input command:");
         Scanner scanner = new Scanner(System.in);
+        print(">:");
         while (scanner.hasNext()) {
             String nextLine = scanner.nextLine().trim().toLowerCase();
             if ("exit".startsWith(nextLine)) {
-                System.out.println("exit success!");
+                println("exit success!");
                 break;
             }
             call(nextLine);
+            print(">:");
         }
 
     }

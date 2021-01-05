@@ -16,7 +16,7 @@ import java.util.List;
  * @Date 2021/1/3 15:38
  * @Version 1.0
  */
-public class ListCommand implements Command {
+public class ListCommand implements Command, Print {
 
     private final Receiver receiver;
 
@@ -33,13 +33,14 @@ public class ListCommand implements Command {
 
     @Override
     public void execute(String... args) {
+        // TODO 参数目前只支持一个，以后优化多个
         if (args.length != 1) {
             throw new IllegalArgumentException("The args length must be one!");
         }
         List<TodoItem> todoItems = receiver.list(args);
-        todoItems.forEach(System.out::println);
-        long doneSize = todoItems
-                .stream().filter(item -> ItemStatusEnum.DONE.getStatus().equals(item.getStatus())).count();
+        todoItems.forEach(todoItem -> println(todoItem.toString()));
+        long doneSize = todoItems.stream().filter(item -> ItemStatusEnum.DONE.getStatus()
+                        .equals(item.getStatus())).count();
         println(StringFormatTemplate.LIST_ALL_AFTER_FORMAT_CONSOLE, todoItems.size(), doneSize);
     }
 }

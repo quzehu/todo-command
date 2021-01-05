@@ -12,7 +12,7 @@ import com.quzehu.learn.receiver.Receiver;
  * @Date 2021/1/3 17:20
  * @Version 1.0
  */
-public class DoneCommand implements Command {
+public class DoneCommand implements Command, Print {
 
     private final Receiver receiver;
 
