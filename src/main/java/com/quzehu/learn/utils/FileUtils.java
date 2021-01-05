@@ -129,9 +129,9 @@ public class FileUtils {
         StringBuilder bufAll = new StringBuilder();
         try (FileInputStream fis = new FileInputStream(file);
              InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
-             BufferedReader br = new BufferedReader(isr)) {
+             BufferedReader bufferedReader = new BufferedReader(isr)) {
             int startLine = 0;
-            while ((str = br.readLine()) != null) {
+            while ((str = bufferedReader.readLine()) != null) {
                 startLine++;
                 if (startLine == lineNum) {
                     bufAll.append(rowContent).append(br);

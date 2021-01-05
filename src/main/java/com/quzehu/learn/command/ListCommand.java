@@ -1,6 +1,7 @@
 package com.quzehu.learn.command;
 
 import com.quzehu.learn.constant.ItemStatusEnum;
+import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.TodoItem;
 import com.quzehu.learn.receiver.Receiver;
 
@@ -26,8 +27,8 @@ public class ListCommand implements Command {
     @Override
     public void execute() {
         List<TodoItem> todoItems = receiver.list();
-        todoItems.forEach(System.out::println);
-        System.out.println("Total: " + todoItems.size() + " items.");
+        todoItems.forEach(item -> println(item.toString()));
+        println(StringFormatTemplate.LIST_AFTER_FORMAT_CONSOLE, todoItems.size());
     }
 
     @Override
@@ -39,6 +40,6 @@ public class ListCommand implements Command {
         todoItems.forEach(System.out::println);
         long doneSize = todoItems
                 .stream().filter(item -> ItemStatusEnum.DONE.getStatus().equals(item.getStatus())).count();
-        System.out.println("Total: " + todoItems.size() + " items, " + doneSize + " item done.");
+        println(StringFormatTemplate.LIST_ALL_AFTER_FORMAT_CONSOLE, todoItems.size(), doneSize);
     }
 }

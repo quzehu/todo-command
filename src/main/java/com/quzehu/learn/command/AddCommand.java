@@ -1,5 +1,6 @@
 package com.quzehu.learn.command;
 
+import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.TodoItem;
 import com.quzehu.learn.receiver.Receiver;
 
@@ -24,7 +25,7 @@ public class AddCommand implements Command {
 
     @Override
     public void execute() {
-        System.out.println("Please input 'todo add <item>' item is a nothing String!");
+        println("Please input 'todo add <item>' item is a nothing String!");
     }
 
     @Override
@@ -34,7 +35,7 @@ public class AddCommand implements Command {
         }
         int index = receiver.add(args[0]);
         TodoItem todoItem = receiver.valueOf(index);
-        System.out.println(todoItem.toString());
-        System.out.println("Item <" + index + "> added");
+        println(todoItem.toString());
+        println(StringFormatTemplate.ADD_AFTER_FORMAT_CONSOLE, index);
     }
 }

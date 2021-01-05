@@ -11,9 +11,9 @@ import org.springframework.context.ConfigurableApplicationContext;
  * @author quzehu
  */
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-public class Application {
+public class TodoApplication {
 	public static void main(String[] args) {
-		ConfigurableApplicationContext applicationContext = SpringApplication.run(Application.class, args);
+		ConfigurableApplicationContext applicationContext = SpringApplication.run(TodoApplication.class, args);
 		Invoker invoker = applicationContext.getBean(Invoker.class);
 		invoker.callLoop();
 	}

@@ -1,9 +1,12 @@
 package com.quzehu.learn.receiver;
 
+import com.quzehu.learn.config.TodoConfig;
 import com.quzehu.learn.constant.ItemStatusEnum;
 import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.TodoItem;
 import com.quzehu.learn.utils.FileUtils;
+import com.quzehu.learn.utils.SpringContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,16 +29,14 @@ public class LocalFileReceiver implements Receiver {
 
     private final AbstractMemoryReceiver receiver;
 
-    @Value("${todo.basePath}")
-    private String basePath;
 
-    @Value("${todo.fileName}")
-    private String fileName;
+    private final TodoConfig config;
 
     private File file;
 
-    public LocalFileReceiver(AbstractMemoryReceiver receiver) {
+    public LocalFileReceiver(AbstractMemoryReceiver receiver, TodoConfig config) {
         this.receiver = receiver;
+        this.config = config;
         cacheList();
     }
 
@@ -65,7 +66,7 @@ public class LocalFileReceiver implements Receiver {
         boolean done = receiver.done(index);
         // 同步更新文件
         if (done) {
-            String rowText = FileUtils.readFileLine(basePath, fileName, index);
+            String rowText = FileUtils.readFileLine(config.getBasePath(), config.getFileName(), index);
             String[] arrays = rowText.split(" ");
             arrays[2] = String.valueOf(ItemStatusEnum.DONE.getStatus());
             String newRowText = getNewRowText(arrays);
@@ -95,14 +96,14 @@ public class LocalFileReceiver implements Receiver {
 
     private File getFile() {
         if (file == null) {
-            file = FileUtils.createFile(basePath, fileName);
+            file = FileUtils.createFile(config.getBasePath(), config.getFileName());
         }
         return file;
     }
 
     private List<TodoItem> listAllOfFile() {
         getFile();
-        List<String> textList = FileUtils.readFile(basePath, fileName);
+        List<String> textList = FileUtils.readFile(config.getBasePath(), config.getFileName());
         return textList.stream().map(item -> {
             String[] arrays = item.split(" ");
             TodoItem todoItem = new TodoItem();

@@ -12,13 +12,19 @@ package com.quzehu.learn.constant;
  */
 public class StringFormatTemplate {
 
-    public static final String HEADER_FILE = "索引 文本 状态 用户";
-
+    // "索引 文本 状态 用户";
     public static final String FORMAT_FILE = "%s %s %s %s";
 
     public static final String ADD_FORMAT_CONSOLE = "%d. <%s>";
 
     public static final String DONE_FORMAT_CONSOLE = "%d. [done] <%s>";
 
+    public static final String ADD_AFTER_FORMAT_CONSOLE = "Item <%d> added.";
+
+    public static final String DONE_AFTER_FORMAT_CONSOLE = "Item <%d> done.";
+
+    public static final String LIST_AFTER_FORMAT_CONSOLE = "Total: %d items.";
+
+    public static final String LIST_ALL_AFTER_FORMAT_CONSOLE = "Total: %d items, %d item done.";
 
 }
