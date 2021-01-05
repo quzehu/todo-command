@@ -17,7 +17,7 @@ public interface Command {
 
     /**
      * 带参数的执行命令
-     * @param args
+     * @param args 参数
      */
     void execute(String... args) throws IllegalArgumentException;
 }

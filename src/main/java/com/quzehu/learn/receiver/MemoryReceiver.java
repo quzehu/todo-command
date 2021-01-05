@@ -1,9 +1,8 @@
 package com.quzehu.learn.receiver;
 
 import com.quzehu.learn.constant.ItemStatusEnum;
-import com.quzehu.learn.item.TodoItem;
-
-import java.util.ArrayList;
+import com.quzehu.learn.model.TodoItem;
+import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,9 +15,8 @@ import java.util.stream.Collectors;
  * @Date 2021/1/3 18:07
  * @Version 1.0
  */
-public class MemoryReceiver implements Receiver {
-
-    private final List<TodoItem> items = new ArrayList<>();
+@Component
+public class MemoryReceiver extends AbstractMemoryReceiver {
 
     @Override
     public List<TodoItem> list() {
@@ -26,7 +24,7 @@ public class MemoryReceiver implements Receiver {
             return items;
         }
         return items.stream()
-                .filter(item -> ItemStatusEnum.NOT_DONE.equals(item.getStatusEnum()))
+                .filter(item -> ItemStatusEnum.NOT_DONE.getStatus().equals(item.getStatus()))
                 .collect(Collectors.toList());
     }
 
@@ -38,7 +36,7 @@ public class MemoryReceiver implements Receiver {
                     return items;
                 case "--done":
                     return items.stream()
-                            .filter(item -> ItemStatusEnum.DONE.equals(item.getStatusEnum()))
+                            .filter(item -> ItemStatusEnum.DONE.getStatus().equals(item.getStatus()))
                             .collect(Collectors.toList());
                 default:
                     throw new IllegalArgumentException("The args is a invalid parameter.");
@@ -61,7 +59,7 @@ public class MemoryReceiver implements Receiver {
         // 校验
         check(index - 1);
         TodoItem todoItem = items.get(index - 1);
-        todoItem.setStatusEnum(ItemStatusEnum.DONE);
+        todoItem.setStatus(ItemStatusEnum.DONE.getStatus());
         return true;
     }
 
@@ -72,12 +70,6 @@ public class MemoryReceiver implements Receiver {
         return newIndex;
     }
 
-    private void check(int index) {
-        if (items.isEmpty()) {
-            throw new IllegalArgumentException("Currently container no elements.");
-        }
-        if (index < 0 || index >= items.size()) {
-            throw new IllegalArgumentException("The index is a invalid parameter.");
-        }
-    }
+
+
 }

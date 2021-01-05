@@ -28,11 +28,36 @@ public enum ItemStatusEnum {
 
     private String chineseText;
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getEnglishText() {
+        return englishText;
+    }
+
+    public void setEnglishText(String englishText) {
+        this.englishText = englishText;
+    }
+
+    public String getChineseText() {
+        return chineseText;
+    }
+
+    public void setChineseText(String chineseText) {
+        this.chineseText = chineseText;
+    }
+
     ItemStatusEnum(Integer status, String englishText, String chineseText) {
         this.status = status;
         this.englishText = englishText;
         this.chineseText = chineseText;
     }
+
 
 
 }

@@ -1,9 +1,7 @@
 package com.quzehu.learn.command;
 
-import com.quzehu.learn.item.TodoItem;
+import com.quzehu.learn.model.TodoItem;
 import com.quzehu.learn.receiver.Receiver;
-
-import java.util.Arrays;
 
 /**
  * 待办事项添加命令

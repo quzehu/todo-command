@@ -4,8 +4,10 @@ import com.quzehu.learn.command.AddCommand;
 import com.quzehu.learn.command.Command;
 import com.quzehu.learn.command.DoneCommand;
 import com.quzehu.learn.command.ListCommand;
+import com.quzehu.learn.receiver.LocalFileReceiver;
 import com.quzehu.learn.receiver.MemoryReceiver;
 import com.quzehu.learn.receiver.Receiver;
+import com.quzehu.learn.utils.SpringContextHolder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,27 +23,34 @@ import java.util.Map;
  */
 public class CommandFactory {
 
-    private static final Map<String, Command> commands = new HashMap<>();
+    private static final Map<String, Command> COMMAND_MAP = new HashMap<>();
 
-    static {
-        Receiver receiver = new MemoryReceiver();
-        commands.put("add", new AddCommand(receiver));
-        commands.put("done", new DoneCommand(receiver));
-        commands.put("list", new ListCommand(receiver));
+    public CommandFactory() {
+        // Receiver receiver = new LocalFileReceiver(new MemoryReceiver());
+        Receiver receiver = SpringContextHolder.getBean(LocalFileReceiver.class);
+        COMMAND_MAP.put("add", new AddCommand(receiver));
+        COMMAND_MAP.put("done", new DoneCommand(receiver));
+        COMMAND_MAP.put("list", new ListCommand(receiver));
     }
 
-    public static Command createCommand(String commandStr) {
+    public Command createCommand(String commandStr) {
         if (commandStr == null || commandStr.isEmpty()) {
             throw new IllegalArgumentException("command is wrong");
         }
-        Command command = commands.get(commandStr.toLowerCase());
+        Command command = COMMAND_MAP.get(commandStr.toLowerCase());
         if (command == null) {
             throw new IllegalArgumentException("command is wrong");
         }
         return command;
     }
 
+    public static CommandFactory getInstance() {
+        return Holder.instance;
+    }
 
+    private static class Holder {
+        public static CommandFactory instance = new CommandFactory();
+    }
 
 
 

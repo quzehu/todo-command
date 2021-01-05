@@ -33,7 +33,7 @@ public class Invoker {
             return;
         }
         try {
-            Command command = CommandFactory.createCommand(arrays[1]);
+            Command command = CommandFactory.getInstance().createCommand(arrays[1]);
             if (arrays.length == 2) {
                 command.execute();
             } else {

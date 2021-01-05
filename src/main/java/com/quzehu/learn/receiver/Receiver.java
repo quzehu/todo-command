@@ -1,6 +1,6 @@
 package com.quzehu.learn.receiver;
 
-import com.quzehu.learn.item.TodoItem;
+import com.quzehu.learn.model.TodoItem;
 
 import java.util.List;
 
@@ -44,6 +44,7 @@ public interface Receiver {
 
     /**
      * 添加一个待办事项
+     * @param text 文本
      * @return 索引
      */
     int add(String text);
