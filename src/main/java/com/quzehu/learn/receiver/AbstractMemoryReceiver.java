@@ -21,7 +21,11 @@ public abstract class AbstractMemoryReceiver implements Receiver {
     public void addAll(List<TodoItem> todoItems) {
         items.addAll(todoItems);
     }
-    
+
+    public List<TodoItem> getItems() {
+        return items;
+    }
+
     protected void check(int index) {
         if (items.isEmpty()) {
             throw new IllegalArgumentException("Currently container no elements.");

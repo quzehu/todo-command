@@ -1,11 +1,6 @@
 package com.quzehu.learn.command;
 
-import com.quzehu.learn.command.AddCommand;
-import com.quzehu.learn.command.Command;
-import com.quzehu.learn.command.DoneCommand;
-import com.quzehu.learn.command.ListCommand;
 import com.quzehu.learn.receiver.LocalFileReceiver;
-import com.quzehu.learn.receiver.MemoryReceiver;
 import com.quzehu.learn.receiver.Receiver;
 import com.quzehu.learn.utils.SpringContextHolder;
 

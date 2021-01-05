@@ -6,7 +6,7 @@
 
   <groupId>com.quzehu.learn</groupId>
   <artifactId>todo-command</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>todo-command</name>
 
   <properties>
@@ -143,8 +143,10 @@
             <skipTests>true</skipTests>
           </configuration>
         </plugin>
-
-
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
        </plugins>
     </pluginManagement>
   </build>

@@ -3,6 +3,7 @@ package com.quzehu.learn.invoker;
 import com.quzehu.learn.command.Command;
 import com.quzehu.learn.command.CommandFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Scanner;
@@ -16,7 +17,7 @@ import java.util.Scanner;
  * @Date 2021/1/3 18:44
  * @Version 1.0
  */
-@Service
+@Component
 @Slf4j
 public class Invoker {
 

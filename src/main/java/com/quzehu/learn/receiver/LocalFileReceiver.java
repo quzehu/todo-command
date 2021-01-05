@@ -36,39 +36,22 @@ public class LocalFileReceiver implements Receiver {
 
     public LocalFileReceiver(AbstractMemoryReceiver receiver) {
         this.receiver = receiver;
+        cacheList();
     }
 
 
     @Override
     public List<TodoItem> list() {
-        // TODO 目前针对的是待办事项不多的情况，直接读内存缓存
-        //  这里可以加一个策略，数据量多的时候，可以从其他地方读取，只是有个想法以后再说
-        // 先从内存中读取，是空的再从文件中读取
-        List<TodoItem> todoItems;
-        todoItems = receiver.list();
-        if (todoItems.isEmpty()) {
-            todoItems = listAllOfFile();
-            // 放入内存中
-            receiver.addAll(todoItems);
-        }
-        return todoItems;
+       // cacheList();
+        return receiver.list();
     }
+
+
 
     @Override
     public List<TodoItem> list(String... args) {
-        // 先从内存中读取，是空的再从文件中读取
-        List<TodoItem> todoItems;
-        todoItems = receiver.list(args);
-        if (todoItems.isEmpty()) {
-            todoItems = listAllOfFile();
-            // 放入内存中
-            receiver.addAll(todoItems);
-            // 过滤出已完成的
-            todoItems = todoItems.stream()
-                    .filter(item -> ItemStatusEnum.DONE.getStatus().equals(item.getStatus()))
-                    .collect(Collectors.toList());
-        }
-        return todoItems;
+       // cacheList();
+        return receiver.list(args);
     }
 
     @Override
@@ -78,13 +61,15 @@ public class LocalFileReceiver implements Receiver {
 
     @Override
     public boolean done(int index) {
+       // cacheList();
         boolean done = receiver.done(index);
+        // 同步更新文件
         if (done) {
             String rowText = FileUtils.readFileLine(basePath, fileName, index);
             String[] arrays = rowText.split(" ");
             arrays[2] = String.valueOf(ItemStatusEnum.DONE.getStatus());
             String newRowText = getNewRowText(arrays);
-            FileUtils.writeFile(getFile(), index, newRowText);
+            FileUtils.writeFileLine(getFile(), index, newRowText);
         }
         return done;
     }
@@ -92,7 +77,9 @@ public class LocalFileReceiver implements Receiver {
 
     @Override
     public int add(String text) {
+       // cacheList();
         int index = receiver.add(text);
+        // 同步更新文件
         FileUtils.writeFileEnd(getFile(), getAddNewRowText(String.valueOf(index), text));
         return index;
     }
@@ -112,6 +99,7 @@ public class LocalFileReceiver implements Receiver {
         }
         return file;
     }
+
     private List<TodoItem> listAllOfFile() {
         getFile();
         List<String> textList = FileUtils.readFile(basePath, fileName);
@@ -126,5 +114,15 @@ public class LocalFileReceiver implements Receiver {
             }
             return todoItem;
         }).collect(Collectors.toList());
+    }
+
+    private void cacheList() {
+        List<TodoItem> todoItems;
+        todoItems = receiver.getItems();
+        if (todoItems.isEmpty()) {
+            todoItems = listAllOfFile();
+            // 放入内存中
+            receiver.addAll(todoItems);
+        }
     }
 }
