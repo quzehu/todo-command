@@ -98,7 +98,9 @@ public class StringConstant {
     public static final String LOGOUT_ERROR_PROMPT_CONSOLE =
             "Please input 'todo logout', no parameters required.";
 
+    public static final String LOAD_INIT = "init";
 
+    public static final String LOAD_LAZY = "lazy";
 
 
 }

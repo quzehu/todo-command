@@ -35,6 +35,8 @@ todo:
    persistence: localFile
    basePath: D:/localFile/todolist
    fileName: todoList.txt
+   # 加载本地待办事项文件的时机(init 在项目初始化的时候, lazy 在用到的时候加载)
+   initFile: init
 user:
    fileName: todo-config.txt
    pwCheckNum: 5

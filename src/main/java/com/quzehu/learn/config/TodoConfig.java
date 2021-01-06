@@ -25,4 +25,6 @@ public class TodoConfig {
 
     private String fileName;
 
+    private String initFile;
+
 }

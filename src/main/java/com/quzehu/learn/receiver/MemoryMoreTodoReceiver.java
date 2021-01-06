@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @Version 1.0
  */
 @Component
-public class UserMemoryTodoReceiver extends AbstractMemoryTodoReceiver {
+public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
 
     @Override
     public List<TodoItem> list() {
