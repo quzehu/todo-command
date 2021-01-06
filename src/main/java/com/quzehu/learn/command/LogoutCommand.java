@@ -2,9 +2,7 @@ package com.quzehu.learn.command;
 
 import com.quzehu.learn.api.Command;
 import com.quzehu.learn.api.Print;
-import com.quzehu.learn.api.UserReceiver;
 import com.quzehu.learn.constant.StringConstant;
-import com.quzehu.learn.model.User;
 import com.quzehu.learn.model.UserSession;
 
 /**

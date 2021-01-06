@@ -14,8 +14,16 @@ import java.util.List;
  * @Version 1.0
  */
 public interface UserReceiver {
-
+    /**
+     * 查找用户根据用户名称
+     * @param userName 用户名称
+     * @return 用户
+     */
     User findUserByName(String userName);
 
+    /**
+     * 查找所有用户
+     * @return 用户列表
+     */
     List<User> findAllUsers();
 }

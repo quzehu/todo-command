@@ -7,6 +7,7 @@ import com.quzehu.learn.receiver.LocalFileTodoReceiver;
 import com.quzehu.learn.receiver.LocalUserReceiver;
 import com.quzehu.learn.api.TodoReceiver;
 import com.quzehu.learn.api.UserReceiver;
+import com.quzehu.learn.receiver.UserMemoryTodoReceiver;
 import com.quzehu.learn.utils.SpringContextHolder;
 
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class CommandFactory {
     private static final Map<String, Command> COMMAND_MAP = new HashMap<>();
 
     public CommandFactory() {
-        TodoReceiver todoReceiver = SpringContextHolder.getBean(LocalFileTodoReceiver.class);
+        TodoReceiver todoReceiver = SpringContextHolder.getBean(UserMemoryTodoReceiver.class);
         UserReceiver userReceiver = SpringContextHolder.getBean(LocalUserReceiver.class);
         CommandInterceptor proxy = new CommandInterceptor();
         COMMAND_MAP.put(StringConstant.ADD_COMMAND, proxy.createProxy(new AddCommand(todoReceiver)));

@@ -60,11 +60,17 @@ public class TodoItem implements Serializable {
         this.status = ItemStatusEnum.NOT_DONE.getStatus();
         this.createTime = new Date();
     }
+    public TodoItem(Integer index, String text, Integer userId) {
+        this(index, text);
+        this.userId = userId;
+    }
 
-    public TodoItem(Integer id ,Integer index, String text) {
+    public TodoItem(Integer id ,Integer index, String text, Integer userId) {
         this(index, text);
         this.id = id;
+        this.userId = userId;
     }
+
 
 
     @Override

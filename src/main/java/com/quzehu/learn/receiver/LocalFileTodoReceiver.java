@@ -6,6 +6,7 @@ import com.quzehu.learn.constant.ItemStatusEnum;
 import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.TodoItem;
 import com.quzehu.learn.utils.FileUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -33,9 +34,8 @@ public class LocalFileTodoReceiver implements TodoReceiver {
 
     private File file;
 
-    private Map<Integer, File> fileMap;
-
-    public LocalFileTodoReceiver(AbstractMemoryTodoReceiver receiver, TodoConfig config) {
+    public LocalFileTodoReceiver(@Qualifier("memoryTodoReceiver") AbstractMemoryTodoReceiver receiver,
+                                 TodoConfig config) {
         this.receiver = receiver;
         this.config = config;
         cacheList();
