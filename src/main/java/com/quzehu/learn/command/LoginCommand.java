@@ -1,12 +1,19 @@
 package com.quzehu.learn.command;
 
 import com.quzehu.learn.api.Command;
-import com.quzehu.learn.api.LoginStatus;
 import com.quzehu.learn.api.Print;
+import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.constant.StringFormatTemplate;
+import com.quzehu.learn.model.Parameter;
 import com.quzehu.learn.model.User;
-import com.quzehu.learn.model.UserStatus;
+import com.quzehu.learn.model.UserSession;
 import com.quzehu.learn.api.UserReceiver;
+import org.omg.CORBA.PUBLIC_MEMBER;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 登录命令
@@ -17,18 +24,25 @@ import com.quzehu.learn.api.UserReceiver;
  * @Date 2021/1/5 21:11
  * @Version 1.0
  */
-public class LoginCommand implements Command, Print, LoginStatus {
+public class LoginCommand implements Command, Print {
 
     private final UserReceiver userReceiver;
 
     public LoginCommand(UserReceiver userReceiver) {
         this.userReceiver = userReceiver;
+        this.parameters = new ArrayList<>();
+        parameters.add(new Parameter(StringConstant.LOGIN_COMMAND, "-u", ""));
     }
+
+    /**
+     * 所有登录命令的参数集合
+     */
+    private List<Parameter> parameters;
 
 
     @Override
     public void execute() {
-        print("Please input 'todo login -u user' user must be a system user!");
+        print(StringConstant.LOGIN_ERROR_PROMPT_CONSOLE);
     }
 
     @Override
@@ -39,16 +53,16 @@ public class LoginCommand implements Command, Print, LoginStatus {
                 if (userByName == null) {
                     println(StringFormatTemplate.USER_NO_EXIST_FORMAT_CONSOLE, args[1]);
                 } else {
-                    UserStatus userStatus = getLoginStatus();
-                    userStatus.setCacheUser(userByName);
-                    userStatus.setInputPsCommand(true);
-                    print("Password:");
+                    UserSession userSession = UserSession.getInstance();
+                    userSession.setCacheUser(userByName);
+                    userSession.setInPasswordStatus(true);
+                    print(StringConstant.LOGIN_PASSWORD_PROMPT_CONSOLE);
                 }
             } else {
-                print("Please input 'todo login -u user' user must be a system user!");
+                print(StringConstant.LOGIN_ERROR_PROMPT_CONSOLE);
             }
         } else {
-            print("Please input 'todo login -u user' user must be a system user!");
+            print(StringConstant.LOGIN_ERROR_PROMPT_CONSOLE);
         }
     }
 }

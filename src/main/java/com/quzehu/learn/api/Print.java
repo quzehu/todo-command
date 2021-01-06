@@ -19,6 +19,9 @@ public interface Print {
         System.out.println(String.format(format, args));
     }
 
+    default void print(String format, Object ...args) {
+        System.out.print(String.format(format, args));
+    }
     /**
      * 打印文本内容
      * @param text 文本内容

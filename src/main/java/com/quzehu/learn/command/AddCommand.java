@@ -2,6 +2,7 @@ package com.quzehu.learn.command;
 
 import com.quzehu.learn.api.Command;
 import com.quzehu.learn.api.Print;
+import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.TodoItem;
 import com.quzehu.learn.api.TodoReceiver;
@@ -26,7 +27,7 @@ public class AddCommand implements Command, Print {
 
     @Override
     public void execute() {
-        println("Please input 'todo add <item>' item is a nothing String!");
+        println(StringConstant.ADD_ERROR_PROMPT_CONSOLE);
     }
 
     @Override

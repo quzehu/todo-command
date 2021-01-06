@@ -2,6 +2,7 @@ package com.quzehu.learn.command;
 
 import com.quzehu.learn.api.Command;
 import com.quzehu.learn.api.Print;
+import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.api.TodoReceiver;
 
@@ -24,7 +25,7 @@ public class DoneCommand implements Command, Print {
 
     @Override
     public void execute() {
-        println("Please input 'todo done <itemIndex>', itemIndex must be of integer type.");
+        println(StringConstant.DONE_ERROR_PROMPT_CONSOLE);
     }
 
     @Override

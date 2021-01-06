@@ -1,10 +1,12 @@
 package com.quzehu.learn.invoker;
 
 import com.quzehu.learn.api.Command;
-import com.quzehu.learn.api.LoginStatus;
 import com.quzehu.learn.command.CommandFactory;
 import com.quzehu.learn.api.Print;
-import com.quzehu.learn.model.UserStatus;
+import com.quzehu.learn.constant.StringConstant;
+import com.quzehu.learn.constant.StringFormatTemplate;
+import com.quzehu.learn.model.User;
+import com.quzehu.learn.model.UserSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import java.util.Scanner;
@@ -20,7 +22,7 @@ import java.util.Scanner;
  */
 @Component
 @Slf4j
-public class Invoker implements Print, LoginStatus {
+public class Invoker implements Print {
 
     public void call(String commandStr) {
         boolean startsWith = commandStr.startsWith("todo");
@@ -60,21 +62,31 @@ public class Invoker implements Print, LoginStatus {
     public void callLoop() {
         println("Please input command:");
         Scanner scanner = new Scanner(System.in);
-        print(">:");
-        UserStatus userStatus = getLoginStatus();
-        while (scanner.hasNext() && userStatus.getStatus()) {
+        print(StringConstant.PREFIX_CONSTANT_CONSOLE);
+        UserSession userSession = UserSession.getInstance();
+        while (scanner.hasNext() && userSession.getNormalStatus()) {
             String nextLine = scanner.nextLine().trim().toLowerCase();
 
             if ("exit".startsWith(nextLine)) {
                 println("exit success!");
                 break;
             }
-            if (userStatus.getInputPsCommand()) {
+            if (userSession.getInPasswordStatus()) {
                 callPassword(nextLine);
             }else {
                 call(nextLine);
-                print(">:");
             }
+            User cacheUser = userSession.getCacheUser();
+            if (cacheUser == null) {
+             print(StringConstant.PREFIX_CONSTANT_CONSOLE);
+            } else {
+                if (userSession.getInPasswordStatus()) {
+                    print(StringConstant.PREFIX_CONSTANT_CONSOLE);
+                } else {
+                    print(StringFormatTemplate.PREFIX_FORMAT_CONSOLE, cacheUser.getUserName());
+                }
+            }
+
         }
 
     }

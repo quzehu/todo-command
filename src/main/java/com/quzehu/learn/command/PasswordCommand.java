@@ -1,11 +1,11 @@
 package com.quzehu.learn.command;
 
 import com.quzehu.learn.api.Command;
-import com.quzehu.learn.api.LoginStatus;
 import com.quzehu.learn.api.Print;
 import com.quzehu.learn.config.UserConfig;
+import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.model.User;
-import com.quzehu.learn.model.UserStatus;
+import com.quzehu.learn.model.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,42 +20,44 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class PasswordCommand implements Command, Print, LoginStatus {
+public class PasswordCommand implements Command, Print {
 
     @Autowired
     private  UserConfig config;
 
     @Override
     public void execute() {
-        println("Please input a password!");
+        println(StringConstant.PASSWORD_PROMPT_CONSOLE);
     }
 
     @Override
     public void execute(String ...args) throws IllegalArgumentException {
-        UserStatus userStatus = getLoginStatus();
-        User cacheUser = userStatus.getCacheUser();
-        Integer passwordNum = userStatus.getPasswordNum();
+        UserSession userSession = UserSession.getInstance();
+        User cacheUser = userSession.getCacheUser();
+        Integer passwordCount = userSession.getInPasswordCount();
         if (cacheUser != null) {
             String password = cacheUser.getPassword();
             // Todo md5加密
             if (password.equals(args[0])) {
-                println("Login success!");
-                // 清除缓存用户
-                userStatus.setCacheUser(null);
+                println(StringConstant.PASSWORD_SUCCESS_CONSOLE);
+                // 设置为已经登录状态
+                userSession.setLoginStatus(true);
+                // 清空是密码登录的状态
+                userSession.setInPasswordStatus(false);
             } else {
-                if (config.getPwCheckNum().equals(passwordNum)) {
-                    println("Password error, exit!");
+                if (config.getPwCheckNum().equals(passwordCount)) {
+                    println(StringConstant.PASSWORD_ERROR_EXIT_CONSOLE);
                     // 清空缓存数据
-                    userStatus.setCacheUser(null);
-                    userStatus.setPasswordNum(0);
-                    userStatus.setStatus(false);
+                    userSession.setCacheUser(null);
+                    userSession.setInPasswordCount(0);
+                    userSession.setNormalStatus(false);
                 } else {
-                    println("Password error, Please input again!");
+                    println(StringConstant.PASSWORD_ERROR_AGAIN_CONSOLE);
                 }
-                userStatus.setPasswordNum(++passwordNum);
+                userSession.setInPasswordCount(++passwordCount);
             }
         } else {
-         println("Please input 'todo login -u user' in first, user must be a system user!");
+            println(StringConstant.PASSWORD_ERROR_PROMPT_CONSOLE);
         }
     }
 }

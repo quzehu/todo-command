@@ -1,7 +1,5 @@
 package com.quzehu.learn.receiver;
 
-import com.quzehu.learn.api.Command;
-import com.quzehu.learn.api.LoginStatus;
 import com.quzehu.learn.api.UserReceiver;
 import com.quzehu.learn.config.UserConfig;
 import com.quzehu.learn.model.User;

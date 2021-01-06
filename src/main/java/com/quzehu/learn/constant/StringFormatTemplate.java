@@ -31,4 +31,6 @@ public class StringFormatTemplate {
 
     public static final String LOGOUT_AFTER_FORMAT_CONSOLE = "Logout success!";
 
+    public static final String PREFIX_FORMAT_CONSOLE = "%s #>:";
+
 }

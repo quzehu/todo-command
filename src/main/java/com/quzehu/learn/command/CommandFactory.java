@@ -1,6 +1,7 @@
 package com.quzehu.learn.command;
 
 import com.quzehu.learn.api.Command;
+import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.receiver.LocalFileTodoReceiver;
 import com.quzehu.learn.receiver.LocalUserReceiver;
 import com.quzehu.learn.api.TodoReceiver;
@@ -26,11 +27,11 @@ public class CommandFactory {
     public CommandFactory() {
         TodoReceiver todoReceiver = SpringContextHolder.getBean(LocalFileTodoReceiver.class);
         UserReceiver userReceiver = SpringContextHolder.getBean(LocalUserReceiver.class);
-        COMMAND_MAP.put("add", new AddCommand(todoReceiver));
-        COMMAND_MAP.put("done", new DoneCommand(todoReceiver));
-        COMMAND_MAP.put("list", new ListCommand(todoReceiver));
-        COMMAND_MAP.put("login", new LoginCommand(userReceiver));
-        COMMAND_MAP.put("password", SpringContextHolder.getBean(PasswordCommand.class));
+        COMMAND_MAP.put(StringConstant.ADD_COMMAND, new AddCommand(todoReceiver));
+        COMMAND_MAP.put(StringConstant.DONE_COMMAND, new DoneCommand(todoReceiver));
+        COMMAND_MAP.put(StringConstant.LIST_COMMAND, new ListCommand(todoReceiver));
+        COMMAND_MAP.put(StringConstant.LOGIN_COMMAND, new LoginCommand(userReceiver));
+        COMMAND_MAP.put(StringConstant.PASSWORD_COMMAND, SpringContextHolder.getBean(PasswordCommand.class));
     }
 
     public Command createCommand(String commandStr) {
