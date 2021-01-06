@@ -16,7 +16,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 多用户本地文件存储接收者
@@ -152,7 +151,9 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         String fileName = String.format(StringFormatTemplate.USER_FILE_NAME_FORMAT,
                 user.getUserName(), config.getFileName());
         // 创建文件 并且向 map中put
-        fileMap.put(user.getId(), FileUtils.createFile(config.getBasePath(), fileName));
+        if (fileMap.get(user.getId()) == null) {
+            fileMap.put(user.getId(), FileUtils.createFile(config.getBasePath(), fileName));
+        }
         return fileName;
     }
 }
