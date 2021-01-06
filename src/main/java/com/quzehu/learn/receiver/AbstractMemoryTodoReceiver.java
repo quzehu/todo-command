@@ -40,6 +40,22 @@ public abstract class AbstractMemoryTodoReceiver implements TodoReceiver {
         return items;
     }
 
+
+    protected List<TodoItem> convertTodoList(List<String> sourceList) {
+        return sourceList.stream().map(item -> {
+            String[] arrays = item.split(" ");
+            TodoItem todoItem = new TodoItem();
+            if (arrays.length == 4) {
+                todoItem.setIndex(Integer.valueOf(arrays[0]));
+                todoItem.setText(arrays[1]);
+                todoItem.setStatus(Integer.valueOf(arrays[2]));
+                todoItem.setUserId(Integer.valueOf(arrays[3]));
+            }
+            return todoItem;
+        }).collect(Collectors.toList());
+    }
+
+
     /**
      * 添加待办事项到Map中根据键
      * @Date 2021/1/6 15:36
@@ -108,8 +124,15 @@ public abstract class AbstractMemoryTodoReceiver implements TodoReceiver {
      * @return 用户ID
      */
     protected Integer getUserIdBySession() {
+        return getUserBySession().getId();
+    }
+
+    protected String getUserNameBySession() {
+        return getUserBySession().getUserName();
+    }
+
+    private User getUserBySession() {
         UserSession userSession = UserSession.getInstance();
-        User cacheUser = userSession.getCacheUser();
-        return cacheUser.getId();
+        return userSession.getCacheUser();
     }
 }

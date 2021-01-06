@@ -7,12 +7,11 @@ import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.TodoItem;
 import com.quzehu.learn.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 用本地文件作为待办事项的存储容器
@@ -24,19 +23,20 @@ import java.util.stream.Collectors;
  * @Version 1.0
  */
 @Component
+@Lazy
 public class LocalFileTodoReceiver implements TodoReceiver {
 
 
-    private final AbstractMemoryTodoReceiver receiver;
+    private final AbstractMemoryTodoReceiver todoReceiver;
 
 
     private final TodoConfig config;
 
     private File file;
 
-    public LocalFileTodoReceiver(@Qualifier("memoryTodoReceiver") AbstractMemoryTodoReceiver receiver,
+    public LocalFileTodoReceiver(@Qualifier("memoryTodoReceiver") AbstractMemoryTodoReceiver todoReceiver,
                                  TodoConfig config) {
-        this.receiver = receiver;
+        this.todoReceiver = todoReceiver;
         this.config = config;
         cacheList();
     }
@@ -44,34 +44,31 @@ public class LocalFileTodoReceiver implements TodoReceiver {
 
     @Override
     public List<TodoItem> list() {
-       // cacheList();
-        return receiver.list();
+        return todoReceiver.list();
     }
 
 
 
     @Override
     public List<TodoItem> list(String... args) {
-       // cacheList();
-        return receiver.list(args);
+        return todoReceiver.list(args);
     }
 
     @Override
     public TodoItem valueOf(int index) {
-        return receiver.valueOf(index);
+        return todoReceiver.valueOf(index);
     }
 
     @Override
     public boolean done(int index) {
-       // cacheList();
-        boolean done = receiver.done(index);
+        boolean done = todoReceiver.done(index);
         // 同步更新文件
         if (done) {
             String rowText = FileUtils.readFileLine(config.getBasePath(), config.getFileName(), index);
             String[] arrays = rowText.split(" ");
             arrays[2] = String.valueOf(ItemStatusEnum.DONE.getStatus());
             String newRowText = getNewRowText(arrays);
-            FileUtils.writeFileLine(getFile(), index, newRowText);
+            FileUtils.writeFileToLine(getFile(), index, newRowText);
         }
         return done;
     }
@@ -79,8 +76,7 @@ public class LocalFileTodoReceiver implements TodoReceiver {
 
     @Override
     public int add(String text) {
-       // cacheList();
-        int index = receiver.add(text);
+        int index = todoReceiver.add(text);
         // 同步更新文件
         FileUtils.writeFileEnd(getFile(), getAddNewRowText(String.valueOf(index), text));
         return index;
@@ -106,26 +102,16 @@ public class LocalFileTodoReceiver implements TodoReceiver {
     private List<TodoItem> listAllOfFile() {
         getFile();
         List<String> textList = FileUtils.readFile(config.getBasePath(), config.getFileName());
-        return textList.stream().map(item -> {
-            String[] arrays = item.split(" ");
-            TodoItem todoItem = new TodoItem();
-            if (arrays.length == 4) {
-                todoItem.setIndex(Integer.valueOf(arrays[0]));
-                todoItem.setText(arrays[1]);
-                todoItem.setStatus(Integer.valueOf(arrays[2]));
-                todoItem.setUserId(Integer.valueOf(arrays[3]));
-            }
-            return todoItem;
-        }).collect(Collectors.toList());
+        return todoReceiver.convertTodoList(textList);
     }
 
     private void cacheList() {
         List<TodoItem> todoItems;
-        todoItems = receiver.getItems();
+        todoItems = todoReceiver.getItems();
         if (todoItems.isEmpty()) {
             todoItems = listAllOfFile();
             // 放入内存中
-            receiver.addAll(todoItems);
+            todoReceiver.addAll(todoItems);
         }
     }
 }

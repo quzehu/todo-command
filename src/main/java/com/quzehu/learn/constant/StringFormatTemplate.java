@@ -31,5 +31,7 @@ public class StringFormatTemplate {
 
     public static final String PREFIX_FORMAT_CONSOLE = "%s #>:";
 
+    public static final String USER_FILE_NAME_FORMAT = "%s-%s";
+
 
 }

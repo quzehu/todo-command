@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,8 +35,8 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
     private final UserReceiver userReceiver;
 
     private final TodoConfig config;
-    private File file;
-    private Map<Integer, File> fileMap;
+
+    private final Map<Integer, File> fileMap;
 
     public LocalFileMoreTodoReceiver(@Qualifier("memoryMoreTodoReceiver")
                                              AbstractMemoryTodoReceiver todoReceiver,
@@ -44,16 +45,18 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         this.todoReceiver = todoReceiver;
         this.userReceiver = userReceiver;
         this.config = config;
-
+        this.fileMap = new HashMap<>();
         if (StringConstant.LOAD_INIT.equals(config.getInitFile())) {
-            cacheAllList();
+            cacheAllFile();
         }
     }
 
 
     @Override
     public List<TodoItem> list() {
-        // cacheList();
+        if (StringConstant.LOAD_LAZY.equals(config.getInitFile())) {
+            cacheSingleFile();
+        }
         return todoReceiver.list();
     }
 
@@ -61,7 +64,9 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
 
     @Override
     public List<TodoItem> list(String... args) {
-        // cacheList();
+        if (StringConstant.LOAD_LAZY.equals(config.getInitFile())) {
+            cacheSingleFile();
+        }
         return todoReceiver.list(args);
     }
 
@@ -72,32 +77,46 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
 
     @Override
     public boolean done(int index) {
-        // cacheList();
+        if (StringConstant.LOAD_LAZY.equals(config.getInitFile())) {
+            cacheSingleFile();
+        }
         boolean done = todoReceiver.done(index);
         // 同步更新文件
         if (done) {
-            String rowText = FileUtils.readFileLine(config.getBasePath(), config.getFileName(), index);
+            String rowText = readRowTextFromFile(index);
             String[] arrays = rowText.split(" ");
             arrays[2] = String.valueOf(ItemStatusEnum.DONE.getStatus());
             String newRowText = getNewRowText(arrays);
-            FileUtils.writeFileLine(createFile(), index, newRowText);
+            FileUtils.writeFileToLine(fileMap.get(todoReceiver.getUserIdBySession()), index, newRowText);
         }
         return done;
     }
 
 
+
     @Override
     public int add(String text) {
-        // cacheList();
+        if (StringConstant.LOAD_LAZY.equals(config.getInitFile())) {
+            cacheSingleFile();
+        }
         int index = todoReceiver.add(text);
         // 同步更新文件
-        FileUtils.writeFileEnd(createFile(), getAddNewRowText(String.valueOf(index), text));
+        FileUtils.writeFileEnd(fileMap.get(todoReceiver.getUserIdBySession()),
+                getAddNewRowText(String.valueOf(index), text));
         return index;
     }
 
+
+    private String readRowTextFromFile(int index) {
+        String userName = todoReceiver.getUserNameBySession();
+        return FileUtils.readFileLine(config.getBasePath(),
+                String.format(StringFormatTemplate.USER_FILE_NAME_FORMAT, userName, config.getFileName()), index);
+    }
+
+
     private String getAddNewRowText(String index, String text) {
-        // Todo 增加用户
-        String[] args = new String[]{index, text, ItemStatusEnum.NOT_DONE.getStatus().toString(), "0"};
+        Integer userId = todoReceiver.getUserIdBySession();
+        String[] args = new String[]{index, text, ItemStatusEnum.NOT_DONE.getStatus().toString(), String.valueOf(userId)};
         return getNewRowText(args);
     }
 
@@ -105,60 +124,35 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         return String.format(StringFormatTemplate.FORMAT_FILE, args);
     }
 
-    private File createFile() {
-        if (file == null) {
-            file = FileUtils.createFile(config.getBasePath(), config.getFileName());
-        }
-        return file;
-    }
-
-    private Map<Integer, File> createFileMap() {
-        List<User> allUsers = userReceiver.findAllUsers();
-
-        allUsers.forEach(user -> {
-            fileMap.put(user.getId(), FileUtils.createFile(config.getBasePath(),
-                    user.getUserName() + config.getFileName()));
-        });
-        return null;
-    }
-
-
-    private List<TodoItem> listAllOfFile() {
-        createFile();
-        List<String> textList = FileUtils.readFile(config.getBasePath(), config.getFileName());
-        return textList.stream().map(item -> {
-            String[] arrays = item.split(" ");
-            TodoItem todoItem = new TodoItem();
-            if (arrays.length == 4) {
-                todoItem.setIndex(Integer.valueOf(arrays[0]));
-                todoItem.setText(arrays[1]);
-                todoItem.setStatus(Integer.valueOf(arrays[2]));
-                todoItem.setUserId(Integer.valueOf(arrays[3]));
-            }
-            return todoItem;
-        }).collect(Collectors.toList());
+    private List<TodoItem> listAllFromFile(String fileName) {
+        List<String> textList = FileUtils.readFile(config.getBasePath(), fileName);
+        return todoReceiver.convertTodoList(textList);
     }
 
 
 
-    private void cacheList() {
-
+    private void cacheSingleFile() {
+        User userByFile = userReceiver.findUserByName(todoReceiver.getUserNameBySession());
+        putFileToMap(userByFile);
     }
 
-    private void cacheAllList() {
+
+    private void cacheAllFile() {
         // 读用户配置文件
         List<User> allUsers = userReceiver.findAllUsers();
         allUsers.forEach(user -> {
-            List<TodoItem> todoListByKey = todoReceiver.getTodoListByKey(user.getId());
+            String fileName = putFileToMap(user);
+            // 初始化内存
+            todoReceiver.addAllByKey(user.getId(), listAllFromFile(fileName));
 
         });
+    }
 
-        List<TodoItem> todoItems;
-        todoItems = todoReceiver.getItems();
-        if (todoItems.isEmpty()) {
-            todoItems = listAllOfFile();
-            // 放入内存中
-            todoReceiver.addAll(todoItems);
-        }
+    private String putFileToMap(User user) {
+        String fileName = String.format(StringFormatTemplate.USER_FILE_NAME_FORMAT,
+                user.getUserName(), config.getFileName());
+        // 创建文件 并且向 map中put
+        fileMap.put(user.getId(), FileUtils.createFile(config.getBasePath(), fileName));
+        return fileName;
     }
 }

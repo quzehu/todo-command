@@ -137,7 +137,7 @@ public class FileUtils {
      * @Author Qu.ZeHu
      * @return void
      **/
-    public static void writeFileLine(File file, int lineNum, String rowContent) {
+    public static void writeFileToLine(File file, int lineNum, String rowContent) {
         String str;
         StringBuilder bufAll = new StringBuilder();
         try (FileInputStream fis = new FileInputStream(file);
@@ -181,10 +181,11 @@ public class FileUtils {
      * @return void
      **/
     public static void writeFile(File file, String rowContent, boolean endFlag) {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, endFlag))) {
-            bufferedWriter.write(rowContent);
-            bufferedWriter.write(br);
-            bufferedWriter.flush();
+        try (FileOutputStream fos = new FileOutputStream(file,endFlag);
+             OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8)) {
+            osw.write(rowContent);
+            osw.write(br);
+            osw.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }
