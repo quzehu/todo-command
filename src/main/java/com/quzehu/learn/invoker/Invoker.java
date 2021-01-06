@@ -64,7 +64,7 @@ public class Invoker implements Print {
         Scanner scanner = new Scanner(System.in);
         print(StringConstant.PREFIX_CONSTANT_CONSOLE);
         UserSession userSession = UserSession.getInstance();
-        while (scanner.hasNext() && userSession.getNormalStatus()) {
+        while (userSession.getNormalStatus() && scanner.hasNext()) {
             String nextLine = scanner.nextLine().trim().toLowerCase();
 
             if ("exit".startsWith(nextLine)) {

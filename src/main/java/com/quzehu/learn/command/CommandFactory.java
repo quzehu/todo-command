@@ -2,6 +2,7 @@ package com.quzehu.learn.command;
 
 import com.quzehu.learn.api.Command;
 import com.quzehu.learn.constant.StringConstant;
+import com.quzehu.learn.interceptor.CommandInterceptor;
 import com.quzehu.learn.receiver.LocalFileTodoReceiver;
 import com.quzehu.learn.receiver.LocalUserReceiver;
 import com.quzehu.learn.api.TodoReceiver;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 调用者工厂 用于生产各种命令
+ * 命令工厂，用于生产各种命令
  *
  * @ProjectName 项目名称
  * @ClassName com.quzehu.learn.invoker.InvokerFactory
@@ -27,9 +28,10 @@ public class CommandFactory {
     public CommandFactory() {
         TodoReceiver todoReceiver = SpringContextHolder.getBean(LocalFileTodoReceiver.class);
         UserReceiver userReceiver = SpringContextHolder.getBean(LocalUserReceiver.class);
-        COMMAND_MAP.put(StringConstant.ADD_COMMAND, new AddCommand(todoReceiver));
-        COMMAND_MAP.put(StringConstant.DONE_COMMAND, new DoneCommand(todoReceiver));
-        COMMAND_MAP.put(StringConstant.LIST_COMMAND, new ListCommand(todoReceiver));
+        CommandInterceptor proxy = new CommandInterceptor();
+        COMMAND_MAP.put(StringConstant.ADD_COMMAND, proxy.createProxy(new AddCommand(todoReceiver)));
+        COMMAND_MAP.put(StringConstant.DONE_COMMAND, proxy.createProxy(new DoneCommand(todoReceiver)));
+        COMMAND_MAP.put(StringConstant.LIST_COMMAND, proxy.createProxy(new ListCommand(todoReceiver)));
         COMMAND_MAP.put(StringConstant.LOGIN_COMMAND, new LoginCommand(userReceiver));
         COMMAND_MAP.put(StringConstant.PASSWORD_COMMAND, SpringContextHolder.getBean(PasswordCommand.class));
     }
