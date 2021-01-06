@@ -29,8 +29,7 @@ public class StringFormatTemplate {
 
     public static final String USER_NO_EXIST_FORMAT_CONSOLE = "User %s does not exist.";
 
-    public static final String LOGOUT_AFTER_FORMAT_CONSOLE = "Logout success!";
-
     public static final String PREFIX_FORMAT_CONSOLE = "%s #>:";
+
 
 }

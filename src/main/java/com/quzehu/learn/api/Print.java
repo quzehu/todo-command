@@ -18,10 +18,6 @@ public interface Print {
     default void println(String format, Object... args) {
         System.out.println(String.format(format, args));
     }
-
-    default void print(String format, Object ...args) {
-        System.out.print(String.format(format, args));
-    }
     /**
      * 打印文本内容
      * @param text 文本内容
@@ -32,9 +28,18 @@ public interface Print {
 
     /**
      * 不换行打印
-     * @param text
+     * @param text 文本内容
      */
     default void print(String text) {
         System.out.print(text);
+    }
+
+    /**
+     * 不换行打印带有格式化的信息
+     * @param format 模版
+     * @param args 参数
+     */
+    default void print(String format, Object ...args) {
+        System.out.print(String.format(format, args));
     }
 }

@@ -34,6 +34,7 @@ public class CommandFactory {
         COMMAND_MAP.put(StringConstant.LIST_COMMAND, proxy.createProxy(new ListCommand(todoReceiver)));
         COMMAND_MAP.put(StringConstant.LOGIN_COMMAND, new LoginCommand(userReceiver));
         COMMAND_MAP.put(StringConstant.PASSWORD_COMMAND, SpringContextHolder.getBean(PasswordCommand.class));
+        COMMAND_MAP.put(StringConstant.LOGOUT_COMMAND, proxy.createProxy(new LogoutCommand()));
     }
 
     public Command createCommand(String commandStr) {
