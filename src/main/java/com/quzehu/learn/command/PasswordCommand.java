@@ -32,6 +32,7 @@ public class PasswordCommand implements Command, Print {
 
     @Override
     public void execute(String ...args) throws IllegalArgumentException {
+        // Todo 需要重构
         UserSession userSession = UserSession.getInstance();
         User cacheUser = userSession.getCacheUser();
         Integer passwordCount = userSession.getInPasswordCount();

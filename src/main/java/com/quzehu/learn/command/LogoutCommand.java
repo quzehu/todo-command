@@ -23,6 +23,7 @@ public class LogoutCommand implements Command, Print {
 
     @Override
     public void execute() {
+        // Todo 需要重构
         UserSession userSession = UserSession.getInstance();
         // 清空数据
         userSession.setCacheUser(null);

@@ -111,7 +111,7 @@ public class FileUtils {
      * @Author Qu.ZeHu
      * @return java.lang.String
      **/
-    public static String readFileLine(String filePath, String fileName, int lineNum){
+    public static String readFileFromLine(String filePath, String fileName, int lineNum){
         String str = "";
         try (FileInputStream fis = new FileInputStream(getFilePath(filePath, fileName));
              InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
@@ -167,7 +167,7 @@ public class FileUtils {
      * @Author Qu.ZeHu
      * @return void
      **/
-    public static void writeFileEnd(File file, String rowContent) {
+    public static void writeFileEndAppend(File file, String rowContent) {
         writeFile(file, rowContent, true);
     }
 

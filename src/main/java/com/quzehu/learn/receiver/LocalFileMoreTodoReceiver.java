@@ -100,7 +100,7 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         }
         int index = todoReceiver.add(text);
         // 同步更新文件
-        FileUtils.writeFileEnd(fileMap.get(todoReceiver.getUserIdBySession()),
+        FileUtils.writeFileEndAppend(fileMap.get(todoReceiver.getUserIdBySession()),
                 getAddNewRowText(String.valueOf(index), text));
         return index;
     }
@@ -108,7 +108,7 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
 
     private String readRowTextFromFile(int index) {
         String userName = todoReceiver.getUserNameBySession();
-        return FileUtils.readFileLine(config.getBasePath(),
+        return FileUtils.readFileFromLine(config.getBasePath(),
                 String.format(StringFormatTemplate.USER_FILE_NAME_FORMAT, userName, config.getFileName()), index);
     }
 

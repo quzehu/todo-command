@@ -64,7 +64,7 @@ public class LocalFileTodoReceiver implements TodoReceiver {
         boolean done = todoReceiver.done(index);
         // 同步更新文件
         if (done) {
-            String rowText = FileUtils.readFileLine(config.getBasePath(), config.getFileName(), index);
+            String rowText = FileUtils.readFileFromLine(config.getBasePath(), config.getFileName(), index);
             String[] arrays = rowText.split(" ");
             arrays[2] = String.valueOf(ItemStatusEnum.DONE.getStatus());
             String newRowText = getNewRowText(arrays);
@@ -78,7 +78,7 @@ public class LocalFileTodoReceiver implements TodoReceiver {
     public int add(String text) {
         int index = todoReceiver.add(text);
         // 同步更新文件
-        FileUtils.writeFileEnd(getFile(), getAddNewRowText(String.valueOf(index), text));
+        FileUtils.writeFileEndAppend(getFile(), getAddNewRowText(String.valueOf(index), text));
         return index;
     }
 

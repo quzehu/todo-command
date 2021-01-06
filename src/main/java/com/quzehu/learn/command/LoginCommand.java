@@ -47,6 +47,7 @@ public class LoginCommand implements Command, Print {
 
     @Override
     public void execute(String... args) throws IllegalArgumentException {
+        // Todo 需要重构
         if (args.length == 2) {
             if ("-u".equals(args[0])) {
                 User userByName = userReceiver.findUserByName(args[1]);

@@ -98,8 +98,14 @@ public class StringConstant {
     public static final String LOGOUT_ERROR_PROMPT_CONSOLE =
             "Please input 'todo logout', no parameters required.";
 
+    /**
+     * 本地文件加载时机 初始化加载
+     */
     public static final String LOAD_INIT = "init";
 
+    /**
+     * 本地文件加载时机 懒加载
+     */
     public static final String LOAD_LAZY = "lazy";
 
 
