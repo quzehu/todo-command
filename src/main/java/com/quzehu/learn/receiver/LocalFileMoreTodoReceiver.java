@@ -133,7 +133,12 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
 
     private void cacheSingleFile() {
         User userByFile = userReceiver.findUserByName(UserSessionUtils.getUserNameBySession());
-        putFileToMap(userByFile);
+        String fileName = putFileToMap(userByFile);
+        List<TodoItem> todoListByKey = todoReceiver.getTodoListByKey(userByFile.getId());
+        if (todoListByKey.isEmpty()) {
+            // 初始化内存
+            todoReceiver.addAllByKey(userByFile.getId(), listAllFromFile(fileName));
+        }
     }
 
 

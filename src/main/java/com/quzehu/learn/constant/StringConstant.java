@@ -15,6 +15,18 @@ public class StringConstant {
      */
     public static final String PREFIX_CONSTANT_CONSOLE = "#>:";
 
+    public static final String FIRST_CONSTANT_CONSOLE = "Please input command:";
+
+    public static final String TODO_COMMAND = "todo";
+
+    public static final String TODO_ERROR_PROMPT_CONSOLE = "Please input 'todo' first.";
+
+    public static final String TODO_ERROR_NO_PARAM_PROMPT_CONSOLE = "Parameters are required after todo.";
+
+    public static final String TODO_ERROR_CONSOLE = "Command error.";
+
+    public static final String TODO_ERROR_NOT_EXIST_CONSOLE = "Command not exist";
+
     /**
      * **************************登录命令相关****************************
      */

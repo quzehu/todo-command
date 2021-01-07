@@ -11,6 +11,7 @@ import com.quzehu.learn.utils.SpringContextHolder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * 命令工厂，用于生产各种命令
@@ -38,13 +39,11 @@ public class CommandFactory {
     }
 
     public Command createCommand(String commandStr) {
-        if (commandStr == null || commandStr.isEmpty()) {
-            throw new IllegalArgumentException("command is wrong");
-        }
+        Optional.ofNullable(commandStr)
+                .orElseThrow(() -> new IllegalArgumentException(StringConstant.TODO_ERROR_CONSOLE));
         Command command = COMMAND_MAP.get(commandStr.toLowerCase());
-        if (command == null) {
-            throw new IllegalArgumentException("command is wrong");
-        }
+        Optional.ofNullable(command)
+                .orElseThrow(() -> new IllegalArgumentException(StringConstant.TODO_ERROR_NOT_EXIST_CONSOLE));
         return command;
     }
 
