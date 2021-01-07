@@ -9,10 +9,7 @@ import com.quzehu.learn.model.User;
 import com.quzehu.learn.utils.UserSessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.security.RunAs;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 /**
  * 密码命令

@@ -7,7 +7,7 @@ import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.api.TodoReceiver;
 
 /**
- * 完成待办事项
+ * 完成待办事项命令
  *
  * @ProjectName 项目名称
  * @ClassName com.quzehu.learn.command.DoneCommand

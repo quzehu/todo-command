@@ -50,9 +50,9 @@ public class LocalUserReceiver implements UserReceiver {
         return userStrings.stream().map(userStr -> {
             User user = new User();
             String[] element = userStr.split(" ");
-            user.setId(Integer.valueOf(element[0]));
-            user.setUserName(element[1]);
-            user.setPassword(element[2]);
+            user.setId(Integer.valueOf(element[0]))
+            .setUserName(element[1])
+            .setPassword(element[2]);
             return user;
         }).collect(Collectors.toList());
     }

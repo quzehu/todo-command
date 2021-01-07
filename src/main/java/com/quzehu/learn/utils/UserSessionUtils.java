@@ -52,11 +52,21 @@ public class UserSessionUtils {
     public static String getUserNameBySession() {
         return getUserBySession().getUserName();
     }
-
+    /**
+     * 从用户会话中得到用户名称
+     * @Date 2021/1/7 10:05
+     * @Author Qu.ZeHu
+     * @return java.lang.String
+     **/
     public static String getPasswordBySession() {
         return getUserBySession().getPassword();
     }
-
+    /**
+     * 从用户会话中得到用户名称
+     * @Date 2021/1/7 10:05
+     * @Author Qu.ZeHu
+     * @return java.lang.String
+     **/
     public static Integer getPasswordCountBySession() {
         return getUserSession().getInPasswordCount();
     }
@@ -73,6 +83,7 @@ public class UserSessionUtils {
         userSession.setCacheUser(user)
         .setInPasswordStatus(true);
     }
+
     /**
      * 清除登录用户从会话中
      * @Date 2021/1/7 10:06
@@ -89,6 +100,12 @@ public class UserSessionUtils {
         .setNormalStatus(true);
     }
 
+    /**
+     * 登录
+     * @Date 2021/1/7 10:05
+     * @Author Qu.ZeHu
+     * @return java.lang.String
+     **/
     public static void login() {
         UserSession userSession = getUserSession();
         // 设置为已经登录状态
@@ -97,6 +114,12 @@ public class UserSessionUtils {
         .setInPasswordStatus(false);
     }
 
+    /**
+     * 退出命令行
+     * @Date 2021/1/7 10:05
+     * @Author Qu.ZeHu
+     * @return java.lang.String
+     **/
     public static void exit() {
         UserSession userSession = getUserSession();
         // 清空缓存数据
@@ -105,6 +128,12 @@ public class UserSessionUtils {
         .setNormalStatus(false);
     }
 
+    /**
+     * 密码计数器自增
+     * @Date 2021/1/7 10:05
+     * @Author Qu.ZeHu
+     * @return java.lang.String
+     **/
     public static void passwordCountAddOne() {
         UserSession userSession = getUserSession();
         userSession.setInPasswordCount(userSession.getInPasswordCount() + 1);

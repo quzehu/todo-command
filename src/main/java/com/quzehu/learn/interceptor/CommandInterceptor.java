@@ -4,6 +4,7 @@ import com.quzehu.learn.api.Command;
 import com.quzehu.learn.api.Print;
 import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.model.UserSession;
+import com.quzehu.learn.utils.UserSessionUtils;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -40,8 +41,7 @@ public class CommandInterceptor {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            UserSession userSession = UserSession.getInstance();
-            if (userSession.getCacheUser() == null) {
+            if (UserSessionUtils.getUserBySession() == null) {
                 println(StringConstant.PASSWORD_ERROR_PROMPT_CONSOLE);
                 return null;
             }

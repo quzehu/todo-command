@@ -37,6 +37,7 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
 
     @Override
     public List<TodoItem> list(String... args) {
+        // Todo 重构
         Integer userId = UserSessionUtils.getUserIdBySession();
         List<TodoItem> todoItems = getTodoListByKey(userId);
         for (String arg : args) {

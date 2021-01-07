@@ -32,6 +32,7 @@ public class MemoryTodoReceiver extends AbstractMemoryTodoReceiver {
 
     @Override
     public List<TodoItem> list(String... args) {
+        // Todo 重构
         for (String arg : args) {
             switch (arg) {
                 case "--all":

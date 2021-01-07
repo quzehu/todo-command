@@ -140,6 +140,7 @@ public abstract class AbstractMemoryTodoReceiver implements TodoReceiver {
      * @Version V2.0
      */
     private void check(List<TodoItem> items, int index) {
+        // Todo 字符串常量
         if (items.isEmpty()) {
             throw new IllegalArgumentException("Currently container no elements.");
         }

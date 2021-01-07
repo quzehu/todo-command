@@ -97,7 +97,7 @@ public class Invoker implements Print, IfOrElse {
 
         while (userSession.getNormalStatus() && scanner.hasNext()) {
             String nextLine = scanner.nextLine().trim().toLowerCase();
-
+            // Todo 重构
             // 退出
             if ("exit".startsWith(nextLine)) {
                 println("exit success!");

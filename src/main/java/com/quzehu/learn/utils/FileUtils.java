@@ -74,19 +74,16 @@ public class FileUtils {
      * @return java.util.List<java.lang.String>
      **/
     public static List<String> readFile(String filePath, String fileName) {
-        String str;
-        List<String> results = new ArrayList<>();
-        try (FileInputStream fis = new FileInputStream(getFilePath(filePath, fileName));
-             InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
-             BufferedReader br = new BufferedReader(isr)) {
-            while ((str = br.readLine()) != null) {
-                results.add(str);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return results;
+        return readFile(getFilePath(filePath, fileName));
     }
+
+    /**
+     * 读文件
+     * @Date 2021/1/5 16:33
+     * @param filePathAndName 文件路径和名称
+     * @Author Qu.ZeHu
+     * @return java.util.List<java.lang.String>
+     **/
     public static List<String> readFile(String filePathAndName) {
         String str;
         List<String> results = new ArrayList<>();
