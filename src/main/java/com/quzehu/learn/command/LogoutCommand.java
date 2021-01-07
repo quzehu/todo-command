@@ -3,7 +3,7 @@ package com.quzehu.learn.command;
 import com.quzehu.learn.api.Command;
 import com.quzehu.learn.api.Print;
 import com.quzehu.learn.constant.StringConstant;
-import com.quzehu.learn.model.UserSession;
+import com.quzehu.learn.utils.UserSessionUtils;
 
 /**
  * 退出命令
@@ -23,12 +23,8 @@ public class LogoutCommand implements Command, Print {
 
     @Override
     public void execute() {
-        // Todo 需要重构
-        UserSession userSession = UserSession.getInstance();
-        // 清空数据
-        userSession.setCacheUser(null);
-        userSession.setInPasswordCount(0);
-        userSession.setLoginStatus(false);
+        // 清除登录缓存
+        UserSessionUtils.clearLoginUserOfSession();
         println(StringConstant.LOGOUT_SUCCESS_FORMAT_CONSOLE);
     }
 }

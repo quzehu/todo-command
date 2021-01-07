@@ -83,7 +83,6 @@ public class LocalFileTodoReceiver implements TodoReceiver {
     }
 
     private String getAddNewRowText(String index, String text) {
-        // Todo 增加用户
         String[] args = new String[]{index, text, ItemStatusEnum.NOT_DONE.getStatus().toString(), "0"};
         return getNewRowText(args);
     }

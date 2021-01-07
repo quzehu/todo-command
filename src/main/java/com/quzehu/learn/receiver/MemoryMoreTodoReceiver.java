@@ -4,6 +4,7 @@ import com.quzehu.learn.constant.ItemStatusEnum;
 import com.quzehu.learn.model.TodoItem;
 import com.quzehu.learn.model.User;
 import com.quzehu.learn.model.UserSession;
+import com.quzehu.learn.utils.UserSessionUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
 
     @Override
     public List<TodoItem> list() {
-        Integer userId = getUserIdBySession();
+        Integer userId = UserSessionUtils.getUserIdBySession();
         List<TodoItem> todoItems = getTodoListByKey(userId);
         if (todoItems.isEmpty()) {
             return todoItems;
@@ -36,7 +37,7 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
 
     @Override
     public List<TodoItem> list(String... args) {
-        Integer userId = getUserIdBySession();
+        Integer userId = UserSessionUtils.getUserIdBySession();
         List<TodoItem> todoItems = getTodoListByKey(userId);
         for (String arg : args) {
             switch (arg) {
@@ -57,7 +58,7 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
     @Override
     public TodoItem valueOf(int index) {
         // 校验
-        Integer userId = getUserIdBySession();
+        Integer userId = UserSessionUtils.getUserIdBySession();
         check(userId, index -1);
         return getTodoListByKey(userId).get(index - 1);
     }
@@ -65,7 +66,7 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
     @Override
     public boolean done(int index) {
         // 校验
-        Integer userId = getUserIdBySession();
+        Integer userId = UserSessionUtils.getUserIdBySession();
         check(userId, index -1);
 
         TodoItem todoItem = getTodoListByKey(userId).get(index - 1);
@@ -75,7 +76,7 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
 
     @Override
     public int add(String text) {
-        Integer userId = getUserIdBySession();
+        Integer userId = UserSessionUtils.getUserIdBySession();
         int newIndex = getTodoListByKey(userId).size() + 1;
         addMapByKey(userId, new TodoItem(newIndex, text, userId));
         return newIndex;

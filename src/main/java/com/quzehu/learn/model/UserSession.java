@@ -1,6 +1,7 @@
 package com.quzehu.learn.model;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -14,6 +15,7 @@ import java.io.Serializable;
  * @Version 1.0
  */
 @Data
+@Accessors(chain = true)
 public class UserSession implements Serializable {
 
     /**
@@ -21,6 +23,9 @@ public class UserSession implements Serializable {
      */
     private User cacheUser;
 
+    /**
+     * 登录状态(true 已登录 false 退出登录)
+     */
     private Boolean loginStatus = false;
     /**
      * 是否是正常的状态（true 正常 false 退出）

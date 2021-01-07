@@ -9,6 +9,7 @@ import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.TodoItem;
 import com.quzehu.learn.model.User;
 import com.quzehu.learn.utils.FileUtils;
+import com.quzehu.learn.utils.UserSessionUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -86,7 +87,7 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
             String[] arrays = rowText.split(" ");
             arrays[2] = String.valueOf(ItemStatusEnum.DONE.getStatus());
             String newRowText = getNewRowText(arrays);
-            FileUtils.writeFileToLine(fileMap.get(todoReceiver.getUserIdBySession()), index, newRowText);
+            FileUtils.writeFileToLine(fileMap.get(UserSessionUtils.getUserIdBySession()), index, newRowText);
         }
         return done;
     }
@@ -100,21 +101,21 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         }
         int index = todoReceiver.add(text);
         // 同步更新文件
-        FileUtils.writeFileEndAppend(fileMap.get(todoReceiver.getUserIdBySession()),
+        FileUtils.writeFileEndAppend(fileMap.get(UserSessionUtils.getUserIdBySession()),
                 getAddNewRowText(String.valueOf(index), text));
         return index;
     }
 
 
     private String readRowTextFromFile(int index) {
-        String userName = todoReceiver.getUserNameBySession();
+        String userName = UserSessionUtils.getUserNameBySession();
         return FileUtils.readFileFromLine(config.getBasePath(),
                 String.format(StringFormatTemplate.USER_FILE_NAME_FORMAT, userName, config.getFileName()), index);
     }
 
 
     private String getAddNewRowText(String index, String text) {
-        Integer userId = todoReceiver.getUserIdBySession();
+        Integer userId = UserSessionUtils.getUserIdBySession();
         String[] args = new String[]{index, text, ItemStatusEnum.NOT_DONE.getStatus().toString(), String.valueOf(userId)};
         return getNewRowText(args);
     }
@@ -131,7 +132,7 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
 
 
     private void cacheSingleFile() {
-        User userByFile = userReceiver.findUserByName(todoReceiver.getUserNameBySession());
+        User userByFile = userReceiver.findUserByName(UserSessionUtils.getUserNameBySession());
         putFileToMap(userByFile);
     }
 

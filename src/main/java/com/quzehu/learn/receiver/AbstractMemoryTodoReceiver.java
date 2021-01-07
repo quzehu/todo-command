@@ -25,22 +25,43 @@ public abstract class AbstractMemoryTodoReceiver implements TodoReceiver {
 
     protected final Map<Integer, List<TodoItem>> itemsMap = new HashMap<>();
 
-
-    protected void addAllByKey(Integer key, List<TodoItem> todoItems) {
-        List<TodoItem> memoryItems = getTodoListByKey(key);
-        memoryItems.addAll(todoItems);
-    }
-
-
+    /**
+     * @param todoItems 待办事项列表
+     * @Version 1.0
+     */
     protected void addAll(List<TodoItem> todoItems) {
         items.addAll(todoItems);
     }
 
+    /**
+     * 获取内存中待办事项列表
+     * @Date 2021/1/7 9:21
+     * @Author Qu.ZeHu
+     * @return java.util.List<com.quzehu.learn.model.TodoItem>
+     * @Version 1.0
+     **/
     protected List<TodoItem> getItems() {
         return items;
     }
+    /**
+     * 校验索引
+     * @param index 索引
+     * @Version V1.0
+     */
+    protected void check(int index) {
+        check(items, index);
+    }
 
 
+
+    /**
+     * 转化待办事项列表
+     * @Date 2021/1/7 9:22
+     * @param sourceList 源列表
+     * @Author Qu.ZeHu
+     * @return java.util.List<com.quzehu.learn.model.TodoItem>
+     * @Version 2.0
+     **/
     protected List<TodoItem> convertTodoList(List<String> sourceList) {
         return sourceList.stream().map(item -> {
             String[] arrays = item.split(" ");
@@ -75,6 +96,7 @@ public abstract class AbstractMemoryTodoReceiver implements TodoReceiver {
      * @param key 键
      * @Author Qu.ZeHu
      * @return java.util.List<com.quzehu.learn.model.TodoItem>
+     * @Version 2.0
      **/
     protected List<TodoItem> getTodoListByKey(Integer key) {
         List<TodoItem> memoryItems = itemsMap.get(key);
@@ -86,29 +108,36 @@ public abstract class AbstractMemoryTodoReceiver implements TodoReceiver {
     }
 
     /**
+     * 添加待办事项根据键
+     * @Date 2021/1/7 9:23
+     * @param key 键
+     * @param todoItems 值
+     * @Author Qu.ZeHu
+     * @return void
+     * @Version 2.0
+     **/
+    protected void addAllByKey(Integer key, List<TodoItem> todoItems) {
+        List<TodoItem> memoryItems = getTodoListByKey(key);
+        memoryItems.addAll(todoItems);
+    }
+
+    /**
      * 校验索引
      * @param key 键
      * @param index 索引
-     * @version V2.0
+     * @Version V2.0
      */
     protected void check(Integer key, int index) {
         List<TodoItem> todoItems = getTodoListByKey(key);
         check(todoItems, index);
     }
 
-    /**
-     * 校验索引
-     * @param index 索引
-     * @version V1.0
-     */
-    protected void check(int index) {
-        check(items, index);
-    }
+
     /**
      * 校验索引
      * @param items 待办列表
      * @param index 索引
-     * @version V2.0
+     * @Version V2.0
      */
     private void check(List<TodoItem> items, int index) {
         if (items.isEmpty()) {
@@ -119,20 +148,4 @@ public abstract class AbstractMemoryTodoReceiver implements TodoReceiver {
         }
     }
 
-    /**
-     * 从会话中得到用户ID
-     * @return 用户ID
-     */
-    protected Integer getUserIdBySession() {
-        return getUserBySession().getId();
-    }
-
-    protected String getUserNameBySession() {
-        return getUserBySession().getUserName();
-    }
-
-    private User getUserBySession() {
-        UserSession userSession = UserSession.getInstance();
-        return userSession.getCacheUser();
-    }
 }

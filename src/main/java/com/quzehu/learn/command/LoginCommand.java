@@ -8,6 +8,7 @@ import com.quzehu.learn.model.Parameter;
 import com.quzehu.learn.model.User;
 import com.quzehu.learn.model.UserSession;
 import com.quzehu.learn.api.UserReceiver;
+import com.quzehu.learn.utils.UserSessionUtils;
 import org.omg.CORBA.PUBLIC_MEMBER;
 
 import java.util.ArrayList;
@@ -52,11 +53,12 @@ public class LoginCommand implements Command, Print {
             if ("-u".equals(args[0])) {
                 User userByName = userReceiver.findUserByName(args[1]);
                 if (userByName == null) {
+                    // 用户不是系统用户
                     println(StringFormatTemplate.USER_NO_EXIST_FORMAT_CONSOLE, args[1]);
                 } else {
-                    UserSession userSession = UserSession.getInstance();
-                    userSession.setCacheUser(userByName);
-                    userSession.setInPasswordStatus(true);
+                    // 缓存登录用户
+                    UserSessionUtils.cacheLoginUserToSession(userByName);
+
                     print(StringConstant.LOGIN_PASSWORD_PROMPT_CONSOLE);
                 }
             } else {

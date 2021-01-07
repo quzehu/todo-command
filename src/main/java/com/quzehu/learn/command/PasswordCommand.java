@@ -1,13 +1,18 @@
 package com.quzehu.learn.command;
 
 import com.quzehu.learn.api.Command;
+import com.quzehu.learn.api.IfOrElse;
 import com.quzehu.learn.api.Print;
 import com.quzehu.learn.config.UserConfig;
 import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.model.User;
-import com.quzehu.learn.model.UserSession;
+import com.quzehu.learn.utils.UserSessionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.security.RunAs;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * 密码命令
@@ -20,7 +25,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class PasswordCommand implements Command, Print {
+public class PasswordCommand implements Command, Print, IfOrElse {
 
     @Autowired
     private  UserConfig config;
@@ -32,33 +37,39 @@ public class PasswordCommand implements Command, Print {
 
     @Override
     public void execute(String ...args) throws IllegalArgumentException {
-        // Todo 需要重构
-        UserSession userSession = UserSession.getInstance();
-        User cacheUser = userSession.getCacheUser();
-        Integer passwordCount = userSession.getInPasswordCount();
-        if (cacheUser != null) {
-            String password = cacheUser.getPassword();
-            // Todo md5加密
-            if (password.equals(args[0])) {
-                println(StringConstant.PASSWORD_SUCCESS_CONSOLE);
-                // 设置为已经登录状态
-                userSession.setLoginStatus(true);
-                // 清空是密码登录的状态
-                userSession.setInPasswordStatus(false);
-            } else {
-                if (config.getPwCheckNum().equals(passwordCount)) {
-                    println(StringConstant.PASSWORD_ERROR_EXIT_CONSOLE);
-                    // 清空缓存数据
-                    userSession.setCacheUser(null);
-                    userSession.setInPasswordCount(0);
-                    userSession.setNormalStatus(false);
-                } else {
-                    println(StringConstant.PASSWORD_ERROR_AGAIN_CONSOLE);
-                }
-                userSession.setInPasswordCount(++passwordCount);
-            }
-        } else {
+        // 得到缓存用户
+        Optional<User> userOptional = Optional.ofNullable(UserSessionUtils.getUserBySession());
+        userOptional.ifPresent(user -> {
+            String v2 = UserSessionUtils.getPasswordBySession();
+            ifPresentOrElse(args[0], v2, loginAction, errorAction);
+        });
+        if (!userOptional.isPresent()) {
             println(StringConstant.PASSWORD_ERROR_PROMPT_CONSOLE);
         }
+
     }
+    private final Runnable exitAction = () -> {
+        // 退出
+        println(StringConstant.PASSWORD_ERROR_EXIT_CONSOLE);
+        UserSessionUtils.exit();
+        // 密码计数器加一
+        UserSessionUtils.passwordCountAddOne();
+    };
+
+    private final Runnable againAction = () -> {
+        println(StringConstant.PASSWORD_ERROR_AGAIN_CONSOLE);
+        // 密码计数器加一
+        UserSessionUtils.passwordCountAddOne();
+    };
+    private final Runnable loginAction = () -> {
+        // 登录
+        UserSessionUtils.login();
+        println(StringConstant.PASSWORD_SUCCESS_CONSOLE);
+    };
+
+    private final Runnable errorAction = () -> {
+        Integer passwordCount = UserSessionUtils.getPasswordCountBySession();
+        ifPresentOrElse(config.getPwCheckNum(), passwordCount, exitAction, againAction);
+    };
+
 }
