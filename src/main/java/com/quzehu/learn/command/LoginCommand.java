@@ -1,20 +1,18 @@
 package com.quzehu.learn.command;
 
 import com.quzehu.learn.api.Command;
+import com.quzehu.learn.api.IfOrElse;
 import com.quzehu.learn.api.Print;
+import com.quzehu.learn.api.UserReceiver;
 import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.Parameter;
 import com.quzehu.learn.model.User;
-import com.quzehu.learn.model.UserSession;
-import com.quzehu.learn.api.UserReceiver;
 import com.quzehu.learn.utils.UserSessionUtils;
-import org.omg.CORBA.PUBLIC_MEMBER;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * 登录命令
@@ -25,9 +23,9 @@ import java.util.Map;
  * @Date 2021/1/5 21:11
  * @Version 1.0
  */
-public class LoginCommand implements Command, Print {
+public class LoginCommand implements Command, Print, IfOrElse {
 
-    private final UserReceiver userReceiver;
+    private UserReceiver userReceiver;
 
     public LoginCommand(UserReceiver userReceiver) {
         this.userReceiver = userReceiver;
@@ -48,24 +46,43 @@ public class LoginCommand implements Command, Print {
 
     @Override
     public void execute(String... args) throws IllegalArgumentException {
-        // Todo 需要重构
-        if (args.length == 2) {
-            if ("-u".equals(args[0])) {
-                User userByName = userReceiver.findUserByName(args[1]);
-                if (userByName == null) {
-                    // 用户不是系统用户
-                    println(StringFormatTemplate.USER_NO_EXIST_FORMAT_CONSOLE, args[1]);
-                } else {
-                    // 缓存登录用户
-                    UserSessionUtils.cacheLoginUserToSession(userByName);
-
-                    print(StringConstant.LOGIN_PASSWORD_PROMPT_CONSOLE);
-                }
-            } else {
-                print(StringConstant.LOGIN_ERROR_PROMPT_CONSOLE);
-            }
-        } else {
-            print(StringConstant.LOGIN_ERROR_PROMPT_CONSOLE);
-        }
+        ifPresentOrElse(args.length, 2, args, normalAction, errorAction);
     }
+
+    /**
+     * 登录的执行动作
+     * @Date 2021/1/7 21:48
+     * @Author Qu.ZeHu
+     * @return
+     **/
+    private final Consumer<String> loginAction = (v) -> {
+        User userByName = userReceiver.findUserByName(v);
+        Optional<User> optional = Optional.ofNullable(userByName);
+        optional.ifPresent((user) -> {
+            // 缓存登录用户
+            UserSessionUtils.cacheLoginUserToSession(user);
+            print(StringConstant.LOGIN_PASSWORD_PROMPT_CONSOLE);
+        });
+        if (!optional.isPresent()) {
+            // 用户不是系统用户
+            println(StringFormatTemplate.USER_NO_EXIST_FORMAT_CONSOLE, v);
+        }
+    };
+    /**
+     * 错误的执行动作
+     * @Date 2021/1/7 21:48
+     * @Author Qu.ZeHu
+     * @return
+     **/
+    private final Runnable errorAction = () -> println(StringConstant.LOGIN_ERROR_PROMPT_CONSOLE);
+
+    /**
+     * 正常的执行动作
+     * @Date 2021/1/7 21:48
+     * @Author Qu.ZeHu
+     * @return
+     **/
+    private final Consumer<String[]> normalAction
+            = (String... v) -> ifPresentOrElse("-u", v[0], v[1], loginAction, errorAction);
+
 }

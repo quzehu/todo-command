@@ -48,6 +48,12 @@ public class PasswordCommand implements Command, Print, IfOrElse {
         }
 
     }
+    /**
+     * 退出执行的动作
+     * @Date 2021/1/7 21:44
+     * @Author Qu.ZeHu
+     * @return
+     **/
     private final Runnable exitAction = () -> {
         // 退出
         println(StringConstant.PASSWORD_ERROR_EXIT_CONSOLE);
@@ -55,18 +61,34 @@ public class PasswordCommand implements Command, Print, IfOrElse {
         // 密码计数器加一
         UserSessionUtils.passwordCountAddOne();
     };
-
+    /**
+     * 再来一次的执行动作
+     * @Date 2021/1/7 21:44
+     * @Author Qu.ZeHu
+     * @return
+     **/
     private final Runnable againAction = () -> {
         println(StringConstant.PASSWORD_ERROR_AGAIN_CONSOLE);
         // 密码计数器加一
         UserSessionUtils.passwordCountAddOne();
     };
+    /**
+     * 登录的的执行动作
+     * @Date 2021/1/7 21:44
+     * @Author Qu.ZeHu
+     * @return
+     **/
     private final Runnable loginAction = () -> {
         // 登录
         UserSessionUtils.login();
         println(StringConstant.PASSWORD_SUCCESS_CONSOLE);
     };
-
+    /**
+     * 错误的执行动作
+     * @Date 2021/1/7 21:44
+     * @Author Qu.ZeHu
+     * @return
+     **/
     private final Runnable errorAction = () -> {
         Integer passwordCount = UserSessionUtils.getPasswordCountBySession();
         ifPresentOrElse(config.getPwCheckNum(), passwordCount, exitAction, againAction);
