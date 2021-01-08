@@ -1,13 +1,12 @@
 package com.quzehu.learn.receiver;
 
-import com.quzehu.learn.api.IfOrElse;
 import com.quzehu.learn.constant.ItemStatusEnum;
 import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.model.TodoItem;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 用内存作为待办事项的存储容器

@@ -1,6 +1,5 @@
 package com.quzehu.learn.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

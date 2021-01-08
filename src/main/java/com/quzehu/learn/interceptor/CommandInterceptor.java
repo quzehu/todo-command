@@ -3,9 +3,7 @@ package com.quzehu.learn.interceptor;
 import com.quzehu.learn.api.Command;
 import com.quzehu.learn.api.Print;
 import com.quzehu.learn.constant.StringConstant;
-import com.quzehu.learn.model.UserSession;
 import com.quzehu.learn.utils.UserSessionUtils;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

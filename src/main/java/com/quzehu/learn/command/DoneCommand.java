@@ -3,13 +3,10 @@ package com.quzehu.learn.command;
 import com.quzehu.learn.api.Command;
 import com.quzehu.learn.api.IfOrElse;
 import com.quzehu.learn.api.Print;
+import com.quzehu.learn.api.TodoReceiver;
 import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.constant.StringFormatTemplate;
-import com.quzehu.learn.api.TodoReceiver;
 import com.quzehu.learn.utils.PatternUtils;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 完成待办事项命令
