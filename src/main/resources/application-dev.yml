@@ -35,7 +35,7 @@ todo:
    # 持久化策略(localFile 本地文件, datasource 数据库, memory 仅内存这个不能持久化)
    persistence: localFile
    # 待办事项基础路径
-   basePath: D:/localFile/todolist
+   basePath: ./localFile/todolist
    # 待办事项基础文件名
    fileName: todoList.txt
    # 加载用户本地待办事项文件的时机

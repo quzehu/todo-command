@@ -1,5 +1,5 @@
 spring:
-   main:
-      banner-mode: 'OFF'
+#   main:
+#      banner-mode: 'OFF'
    profiles:
       active: dev
