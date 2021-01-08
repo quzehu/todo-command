@@ -113,7 +113,7 @@ public class StringConstant {
     /**
      * 待办事项列表是空的提示
      */
-    public static final String LIST_ERROR_EMPETY_PROMPT_CONSOLE = "Currently todoList have not elements.";
+    public static final String LIST_ERROR_EMPTY_PROMPT_CONSOLE = "Currently todoList have not elements.";
 
     /**
      * **********************登出命令相关***************************************
@@ -138,6 +138,15 @@ public class StringConstant {
      * 本地文件加载时机 懒加载
      */
     public static final String LOAD_LAZY = "lazy";
+
+    /**
+     * *******************退出程序命令相关******************************************
+     */
+    public static final String EXIT_COMMAND = "exit";
+
+    public static final String EXIT_SUCCESS_CONSOLE = "exit success!";
+
+
 
 
 }

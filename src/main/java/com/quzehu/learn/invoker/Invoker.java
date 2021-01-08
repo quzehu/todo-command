@@ -35,7 +35,7 @@ public class Invoker implements Print, IfOrElse {
      * @Author Qu.ZeHu
      * @return void
      **/
-    public void call(String inputCommand) {
+    public void callTodo(String inputCommand) {
         // 如果不是todo开头
         if (!inputCommand.startsWith(StringConstant.TODO_COMMAND)) {
             println(StringConstant.TODO_ERROR_PROMPT_CONSOLE);
@@ -94,20 +94,16 @@ public class Invoker implements Print, IfOrElse {
         print(StringConstant.PREFIX_CONSTANT_CONSOLE);
         UserSession userSession = UserSessionUtils.getUserSession();
 
-
         while (userSession.getNormalStatus() && scanner.hasNext()) {
             String nextLine = scanner.nextLine().trim().toLowerCase();
-            // Todo 重构
-            // 退出
-            if ("exit".startsWith(nextLine)) {
-                println("exit success!");
-                break;
-            }
+            // 退出命令
+            ifPresent(StringConstant.EXIT_COMMAND.equals(nextLine),
+                    () -> { println(StringConstant.EXIT_SUCCESS_CONSOLE); System.exit(0);});
 
             // 判断是否是密码输入，调用不同的命令
             ifPresentOrElse(UserSessionUtils.getUserSession()
-                            .getInPasswordStatus(), () -> callPassword(nextLine), () -> call(nextLine));
-
+                            .getInPasswordStatus(), () -> callPassword(nextLine), () -> callTodo(nextLine));
+            // 得到登录用户
             User cacheUser = UserSessionUtils.getUserBySession();
             Optional<User> optional = Optional.ofNullable(cacheUser);
 

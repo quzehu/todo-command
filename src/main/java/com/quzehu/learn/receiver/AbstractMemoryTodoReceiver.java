@@ -5,8 +5,6 @@ import com.quzehu.learn.api.TodoReceiver;
 import com.quzehu.learn.constant.ItemStatusEnum;
 import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.model.TodoItem;
-import com.quzehu.learn.model.User;
-import com.quzehu.learn.model.UserSession;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -144,7 +142,7 @@ public abstract class AbstractMemoryTodoReceiver implements TodoReceiver, IfOrEl
      */
     private void check(List<TodoItem> items, int index) {
         ifPresent(items.isEmpty(),
-        () -> { throw new IllegalArgumentException(StringConstant.LIST_ERROR_EMPETY_PROMPT_CONSOLE); });
+        () -> { throw new IllegalArgumentException(StringConstant.LIST_ERROR_EMPTY_PROMPT_CONSOLE); });
         ifPresent(index < 0 || index >= items.size(),
         () -> { throw new IllegalArgumentException(StringConstant.LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE); });
     }
