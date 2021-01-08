@@ -76,15 +76,17 @@ todo init
 2. 在有数据库的情况下，使用数据库
 3. 在本地文件已经存在的情况，将本地信息导入到数据库中
 
-## 构建
-```
-mvn clean install
-```
-## 运行
+
+## 运行项目
 ```
 mvn spring-boot:run
 ```
+## 构建打包 部署
+```
+mvn clean package
 
+java -jar target/todo-command.jar
+```
 
 
 

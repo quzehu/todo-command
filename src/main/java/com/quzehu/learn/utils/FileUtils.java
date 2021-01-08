@@ -1,5 +1,7 @@
 package com.quzehu.learn.utils;
 
+import org.springframework.core.io.ClassPathResource;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -98,6 +100,32 @@ public class FileUtils {
         }
         return results;
     }
+
+    /**
+     * 读取classpath下的文件
+     * @Date 2021/1/8 23:31
+     * @param relativePath 在classpath下文件的相对地址
+     * @Author Qu.ZeHu
+     * @return java.util.List<java.lang.String>
+     **/
+    public static List<String> readClassPathFile(String relativePath) {
+        String str;
+        List<String> results = new ArrayList<>();
+        ClassPathResource classPathResource = new ClassPathResource(relativePath);
+        try (
+             InputStream inputStream = classPathResource.getInputStream();
+             InputStreamReader isr = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+             BufferedReader br = new BufferedReader(isr)) {
+            while ((str = br.readLine()) != null) {
+                results.add(str);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return results;
+    }
+
+
 
     /**
      * 读文件中某一行内容

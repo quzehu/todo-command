@@ -5,8 +5,6 @@ import com.quzehu.learn.config.UserConfig;
 import com.quzehu.learn.model.User;
 import com.quzehu.learn.utils.FileUtils;
 import org.springframework.stereotype.Component;
-
-import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,10 +40,7 @@ public class LocalUserReceiver implements UserReceiver {
 
     @Override
     public List<User> findAllUsers() {
-        URL url = getClass().getClassLoader().getResource(config.getFileName());
-        String filePath = url.getFile();
-        filePath  = filePath.replaceAll("%20", " ");
-        List<String> userStrings = FileUtils.readFile(filePath);
+        List<String> userStrings = FileUtils.readClassPathFile(config.getFileName());
         // 查找输入的用户 在不在系统用户列表中
         return userStrings.stream().map(userStr -> {
             User user = new User();
