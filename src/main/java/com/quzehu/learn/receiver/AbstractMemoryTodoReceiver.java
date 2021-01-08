@@ -1,6 +1,9 @@
 package com.quzehu.learn.receiver;
 
+import com.quzehu.learn.api.IfOrElse;
 import com.quzehu.learn.api.TodoReceiver;
+import com.quzehu.learn.constant.ItemStatusEnum;
+import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.model.TodoItem;
 import com.quzehu.learn.model.User;
 import com.quzehu.learn.model.UserSession;
@@ -19,7 +22,7 @@ import java.util.stream.Collectors;
  * @Version 1.0
  */
 
-public abstract class AbstractMemoryTodoReceiver implements TodoReceiver {
+public abstract class AbstractMemoryTodoReceiver implements TodoReceiver, IfOrElse {
 
     protected final List<TodoItem> items = new ArrayList<>();
 
@@ -140,13 +143,34 @@ public abstract class AbstractMemoryTodoReceiver implements TodoReceiver {
      * @Version V2.0
      */
     private void check(List<TodoItem> items, int index) {
-        // Todo 字符串常量
-        if (items.isEmpty()) {
-            throw new IllegalArgumentException("Currently container no elements.");
-        }
-        if (index < 0 || index >= items.size()) {
-            throw new IllegalArgumentException("The index is a invalid parameter.");
-        }
+        ifPresent(items.isEmpty(),
+        () -> { throw new IllegalArgumentException(StringConstant.LIST_ERROR_EMPETY_PROMPT_CONSOLE); });
+        ifPresent(index < 0 || index >= items.size(),
+        () -> { throw new IllegalArgumentException(StringConstant.LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE); });
+    }
+    /**
+     * 过滤已经完成的待办事项
+     * @Date 2021/1/8 14:35
+     * @param todoItems 待办事项
+     * @Author Qu.ZeHu
+     * @return java.util.List<com.quzehu.learn.model.TodoItem>
+     **/
+    protected List<TodoItem> filterDoneTodoList(List<TodoItem> todoItems) {
+        return todoItems.stream()
+                .filter(item -> ItemStatusEnum.DONE.getStatus().equals(item.getStatus()))
+                .collect(Collectors.toList());
+    }
+    /**
+     * 过滤待完成的待办事项
+     * @Date 2021/1/8 14:35
+     * @param todoItems 待办事项
+     * @Author Qu.ZeHu
+     * @return java.util.List<com.quzehu.learn.model.TodoItem>
+     **/
+    protected List<TodoItem> filterNotDoneTodoList(List<TodoItem> todoItems) {
+        return todoItems.stream()
+                .filter(item -> ItemStatusEnum.NOT_DONE.getStatus().equals(item.getStatus()))
+                .collect(Collectors.toList());
     }
 
 }

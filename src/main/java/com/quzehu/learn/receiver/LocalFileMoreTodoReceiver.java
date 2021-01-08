@@ -63,7 +63,7 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
 
 
     @Override
-    public List<TodoItem> list(String... args) {
+    public List<TodoItem> list(String ...args) {
         if (StringConstant.LOAD_LAZY.equals(config.getInitFile())) {
             cacheSingleFile();
         }

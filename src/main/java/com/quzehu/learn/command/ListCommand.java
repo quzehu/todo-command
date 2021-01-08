@@ -1,8 +1,10 @@
 package com.quzehu.learn.command;
 
 import com.quzehu.learn.api.Command;
+import com.quzehu.learn.api.IfOrElse;
 import com.quzehu.learn.api.Print;
 import com.quzehu.learn.constant.ItemStatusEnum;
+import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.TodoItem;
 import com.quzehu.learn.api.TodoReceiver;
@@ -18,7 +20,7 @@ import java.util.List;
  * @Date 2021/1/3 15:38
  * @Version 1.0
  */
-public class ListCommand implements Command, Print {
+public class ListCommand implements Command, Print, IfOrElse {
 
     private final TodoReceiver todoReceiver;
 
@@ -35,14 +37,17 @@ public class ListCommand implements Command, Print {
 
     @Override
     public void execute(String... args) {
-        // TODO 参数目前只支持一个，以后优化多个
-        if (args.length != 1) {
-            throw new IllegalArgumentException("The args length must be one!");
-        }
+        // 参数错误
+        orElse(args.length, 1,
+        () -> {throw new IllegalArgumentException(StringConstant.LIST_ERROR_PARAM_LENGTH_PROMPT_CONSOLE);});
+
         List<TodoItem> todoItems = todoReceiver.list(args);
+
         todoItems.forEach(todoItem -> println(todoItem.toString()));
+
         long doneSize = todoItems.stream().filter(item -> ItemStatusEnum.DONE.getStatus()
                         .equals(item.getStatus())).count();
+
         println(StringFormatTemplate.LIST_ALL_AFTER_FORMAT_CONSOLE, todoItems.size(), doneSize);
     }
 }

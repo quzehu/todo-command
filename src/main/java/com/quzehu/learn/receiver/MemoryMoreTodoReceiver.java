@@ -1,9 +1,8 @@
 package com.quzehu.learn.receiver;
 
 import com.quzehu.learn.constant.ItemStatusEnum;
+import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.model.TodoItem;
-import com.quzehu.learn.model.User;
-import com.quzehu.learn.model.UserSession;
 import com.quzehu.learn.utils.UserSessionUtils;
 import org.springframework.stereotype.Component;
 
@@ -30,29 +29,21 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
         if (todoItems.isEmpty()) {
             return todoItems;
         }
-        return todoItems.stream()
-                .filter(item -> ItemStatusEnum.NOT_DONE.getStatus().equals(item.getStatus()))
-                .collect(Collectors.toList());
+        return filterNotDoneTodoList(todoItems);
     }
 
     @Override
-    public List<TodoItem> list(String... args) {
-        // Todo 重构
+    public List<TodoItem> list(String ...args) {
         Integer userId = UserSessionUtils.getUserIdBySession();
         List<TodoItem> todoItems = getTodoListByKey(userId);
-        for (String arg : args) {
-            switch (arg) {
-                case "--all":
-                    return todoItems;
-                case "--done":
-                    return todoItems.stream()
-                            .filter(item -> ItemStatusEnum.DONE.getStatus().equals(item.getStatus()))
-                            .collect(Collectors.toList());
-                default:
-                    throw new IllegalArgumentException("The args is a invalid parameter.");
-            }
+        switch (args[0]) {
+            case "--all":
+                return todoItems;
+            case "--done":
+                return filterDoneTodoList(todoItems);
+            default:
+                throw new IllegalArgumentException(StringConstant.LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE);
         }
-        return null;
     }
 
 

@@ -24,6 +24,7 @@ import java.util.List;
  */
 @Component
 @Lazy
+@Deprecated
 public class LocalFileTodoReceiver implements TodoReceiver {
 
 
@@ -50,7 +51,7 @@ public class LocalFileTodoReceiver implements TodoReceiver {
 
 
     @Override
-    public List<TodoItem> list(String... args) {
+    public List<TodoItem> list(String ...args) {
         return todoReceiver.list(args);
     }
 

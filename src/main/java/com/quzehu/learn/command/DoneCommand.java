@@ -1,10 +1,15 @@
 package com.quzehu.learn.command;
 
 import com.quzehu.learn.api.Command;
+import com.quzehu.learn.api.IfOrElse;
 import com.quzehu.learn.api.Print;
 import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.api.TodoReceiver;
+import com.quzehu.learn.utils.PatternUtils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 完成待办事项命令
@@ -15,7 +20,7 @@ import com.quzehu.learn.api.TodoReceiver;
  * @Date 2021/1/3 17:20
  * @Version 1.0
  */
-public class DoneCommand implements Command, Print {
+public class DoneCommand implements Command, Print, IfOrElse {
 
     private final TodoReceiver todoReceiver;
 
@@ -30,15 +35,18 @@ public class DoneCommand implements Command, Print {
 
     @Override
     public void execute(String... args) {
-        // Todo 需要重构
-        if (args.length != 1) {
-            throw new IllegalArgumentException("The args length must be one!");
+        // 支持多参数
+        for (String arg : args) {
+            boolean isNumber = PatternUtils.isNumeric(arg);
+            ifPresentOrElse(isNumber, () -> {
+                int index = Integer.parseInt(arg);
+                if (todoReceiver.done(index)) {
+                    println(StringFormatTemplate.DONE_AFTER_FORMAT_CONSOLE, index);
+                }
+            }, () -> println(StringConstant.DONE_ERROR_PARAM_PROMPT_CONSOLE));
         }
-        // Todo 参数校验是否为数字
-        int index = Integer.parseInt(args[0]);
-        if (todoReceiver.done(index)) {
-            println(StringFormatTemplate.DONE_AFTER_FORMAT_CONSOLE, index);
-        }
-
     }
+
+
+
 }

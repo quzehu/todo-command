@@ -32,13 +32,12 @@ public class AddCommand implements Command, Print {
 
     @Override
     public void execute(String... args) {
-        // Todo 需要重构
-        if (args.length != 1) {
-            throw new IllegalArgumentException("The args length must be one!");
+        // 支持多文本添加
+        for (String arg : args) {
+            int index = todoReceiver.add(arg);
+            TodoItem todoItem = todoReceiver.valueOf(index);
+            println(todoItem.toString());
+            println(StringFormatTemplate.ADD_AFTER_FORMAT_CONSOLE, index);
         }
-        int index = todoReceiver.add(args[0]);
-        TodoItem todoItem = todoReceiver.valueOf(index);
-        println(todoItem.toString());
-        println(StringFormatTemplate.ADD_AFTER_FORMAT_CONSOLE, index);
     }
 }

@@ -85,6 +85,20 @@ public interface IfOrElse {
     }
 
     /**
+     * 判断是否，并执行对应的动作
+     * @Date 2021/1/8 14:53
+     * @param v 参数1
+     * @param eAction 是的执行动作
+     * @Author Qu.ZeHu
+     * @return void
+     **/
+    default void ifPresent(boolean v, Runnable eAction) {
+        if (v) {
+            eAction.run();
+        }
+    }
+
+    /**
      * 执行是否相等判断，并执行对应的动作
      * @Date 2021/1/7 17:56
      * @param v1 参数1

@@ -25,7 +25,7 @@ public class StringConstant {
 
     public static final String TODO_ERROR_CONSOLE = "Command error.";
 
-    public static final String TODO_ERROR_NOT_EXIST_CONSOLE = "Command not exist";
+    public static final String TODO_ERROR_NOT_EXIST_CONSOLE = "Command not exist.";
 
     /**
      * **************************登录命令相关****************************
@@ -79,6 +79,10 @@ public class StringConstant {
      */
     public static final String DONE_ERROR_PROMPT_CONSOLE =
             "Please input 'todo done <itemIndex>', itemIndex must be of integer type.";
+    /**
+     * 参数必须是数字提示
+     */
+    public static final String DONE_ERROR_PARAM_PROMPT_CONSOLE = "The parameters must be numbers.";
 
     /**
      * *********************添加命令相关****************************************
@@ -95,6 +99,21 @@ public class StringConstant {
      */
     public static final String LIST_COMMAND = "list";
 
+    /**
+     * 参数长度错误提示
+     */
+    public static final String LIST_ERROR_PARAM_LENGTH_PROMPT_CONSOLE
+            = "The parameters length must be one!";
+
+    /**
+     * 参数无效错误提示
+     */
+    public static final String LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE = "The Parameter is invalid.";
+
+    /**
+     * 待办事项列表是空的提示
+     */
+    public static final String LIST_ERROR_EMPETY_PROMPT_CONSOLE = "Currently todoList have not elements.";
 
     /**
      * **********************登出命令相关***************************************

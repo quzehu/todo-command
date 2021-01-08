@@ -1,6 +1,8 @@
 package com.quzehu.learn.receiver;
 
+import com.quzehu.learn.api.IfOrElse;
 import com.quzehu.learn.constant.ItemStatusEnum;
+import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.model.TodoItem;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
  */
 @Component
 @Lazy
+@Deprecated
 public class MemoryTodoReceiver extends AbstractMemoryTodoReceiver {
 
     @Override
@@ -25,27 +28,19 @@ public class MemoryTodoReceiver extends AbstractMemoryTodoReceiver {
         if (items.isEmpty()) {
             return items;
         }
-        return items.stream()
-                .filter(item -> ItemStatusEnum.NOT_DONE.getStatus().equals(item.getStatus()))
-                .collect(Collectors.toList());
+        return filterNotDoneTodoList(items);
     }
 
     @Override
-    public List<TodoItem> list(String... args) {
-        // Todo 重构
-        for (String arg : args) {
-            switch (arg) {
-                case "--all":
-                    return items;
-                case "--done":
-                    return items.stream()
-                            .filter(item -> ItemStatusEnum.DONE.getStatus().equals(item.getStatus()))
-                            .collect(Collectors.toList());
-                default:
-                    throw new IllegalArgumentException("The args is a invalid parameter.");
-            }
+    public List<TodoItem> list(String ...args) {
+        switch (args[0]) {
+            case "--all":
+                return items;
+            case "--done":
+                return filterDoneTodoList(items);
+            default:
+                throw new IllegalArgumentException(StringConstant.LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE);
         }
-        return null;
     }
 
 
@@ -53,7 +48,6 @@ public class MemoryTodoReceiver extends AbstractMemoryTodoReceiver {
     public TodoItem valueOf(int index) {
         // 校验参数
         check(index - 1);
-
         return items.get(index - 1);
     }
 

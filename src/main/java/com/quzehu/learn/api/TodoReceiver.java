@@ -26,7 +26,7 @@ public interface TodoReceiver {
      * @param args 参数
      * @return 列表
      */
-    List<TodoItem> list(String... args);
+    List<TodoItem> list(String ...args);
 
     /**
      * 得到 index 索引下的待办事项
