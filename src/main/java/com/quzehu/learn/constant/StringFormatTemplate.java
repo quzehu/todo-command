@@ -33,5 +33,12 @@ public class StringFormatTemplate {
 
     public static final String USER_FILE_NAME_FORMAT = "%s-%s";
 
+    public static final String COMMAND_OUTPUT_FORMAT =  "%s\n%s\n%s\n*******************************";
+
+    public static final String COMMAND_NAME = "名字\n\t" + StringConstant.TODO_COMMAND + " %s";
+
+    public static final String COMMAND_FORMAT = "格式\n\t%s";
+
+    public static final String COMMAND_DESCRIPTION = "描述\n\t%s";
 
 }

@@ -15,7 +15,8 @@ public class StringConstant {
      */
     public static final String PREFIX_CONSTANT_CONSOLE = "#>:";
 
-    public static final String FIRST_CONSTANT_CONSOLE = "Please input command:";
+    public static final String FIRST_CONSTANT_CONSOLE = "\n\nPlease input command, " +
+            "If you don't know how to use it, please enter 'todo help' for help.";
 
     public static final String TODO_COMMAND = "todo";
 
@@ -34,8 +35,11 @@ public class StringConstant {
     /**
      * 登录命令错误提示
      */
+    public static final String LOGIN_INPUT = "todo login -u user";
+
+
     public static final String LOGIN_ERROR_PROMPT_CONSOLE
-            = "Please input 'todo login -u user' user must be a system user!";
+            = "Please input '" + LOGIN_INPUT +"' user must be a system user!";
 
     /**
      * 登录后输入密码提示
@@ -55,7 +59,7 @@ public class StringConstant {
      * 密码错误提示
      */
     public static final String PASSWORD_ERROR_PROMPT_CONSOLE =
-            "Please input 'todo login -u user' in first, user must be a system user!";
+            "Please input '" + LOGIN_INPUT + "' in first, user must be a system user!";
     /**
      * 登录成功提示
      */
@@ -74,11 +78,13 @@ public class StringConstant {
      * *********************完成命令相关****************************************
      */
     public static final String DONE_COMMAND = "done";
+
+    public static final String DONE_INPUT = "todo done <itemIndex1 itemIndex2 ...>";
     /**
      * 完成错误提示
      */
     public static final String DONE_ERROR_PROMPT_CONSOLE =
-            "Please input 'todo done <itemIndex>', itemIndex must be of integer type.";
+            "Please input '" + DONE_INPUT + "', itemIndex must be of integer type.";
     /**
      * 参数必须是数字提示
      */
@@ -88,17 +94,20 @@ public class StringConstant {
      * *********************添加命令相关****************************************
      */
     public static final String ADD_COMMAND = "add";
+
+    public static final String ADD_INPUT = "todo add <item1 item2 ...>";
     /**
      * 添加错误提示
      */
     public static final String ADD_ERROR_PROMPT_CONSOLE =
-            "Please input 'todo add <item>' item is a nothing String!";
+            "Please input '" + ADD_INPUT + "' item is a nothing String!";
 
     /**
      * *********************列表命令相关****************************************
      */
     public static final String LIST_COMMAND = "list";
 
+    public static final String LIST_INPUT = "todo list --选项";
     /**
      * 参数长度错误提示
      */
@@ -123,11 +132,13 @@ public class StringConstant {
      * 登出成功提示
      */
     public static final String LOGOUT_SUCCESS_FORMAT_CONSOLE = "Logout success!";
+
+    public static final String LOGOUT_INPUT = "todo logout";
     /**
      * 登出错误提示
      */
     public static final String LOGOUT_ERROR_PROMPT_CONSOLE =
-            "Please input 'todo logout', no parameters required.";
+            "Please input '"+ LOGOUT_INPUT +"', no parameters required.";
 
     /**
      * 本地文件加载时机 初始化加载
@@ -146,7 +157,12 @@ public class StringConstant {
 
     public static final String EXIT_SUCCESS_CONSOLE = "exit success!";
 
+    /**
+     * *******************帮助命令相关********************************************
+     */
+    public static final String HELP_COMMAND = "help";
 
+    public static final String HELP_INPUT = "todo help --选项";
 
 
 }
