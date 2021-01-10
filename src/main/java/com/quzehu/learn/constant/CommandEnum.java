@@ -30,8 +30,11 @@ public enum CommandEnum {
             "输入密码。"),*/
 
     HELP(StringConstant.HELP_COMMAND,StringConstant.HELP_INPUT,
-            "帮助命令，查看应用命令的帮助文档。\n选项\n%s")
+            "帮助命令，查看应用命令的帮助文档。\n选项\n%s"),
+
+    EXIT(StringConstant.EXIT_COMMAND, StringConstant.EXIT_COMMAND, "退出应用命令。"),
     ;
+
 
     private String name;
 
@@ -81,7 +84,12 @@ public enum CommandEnum {
 
     @Override
     public String toString() {
-        String nameStr = String.format(StringFormatTemplate.COMMAND_NAME, name);
+        String nameStr;
+        if (StringConstant.EXIT_COMMAND.equals(name)) {
+            nameStr = String.format(StringFormatTemplate.EXIT_COMMAND_NAME, name);
+        } else {
+            nameStr = String.format(StringFormatTemplate.COMMAND_NAME, name);
+        }
         String formatStr = String.format(StringFormatTemplate.COMMAND_FORMAT, format);
         String descriptionStr = String.format(StringFormatTemplate.COMMAND_DESCRIPTION, description);
         return String.format(StringFormatTemplate.COMMAND_OUTPUT_FORMAT, nameStr, formatStr, descriptionStr);

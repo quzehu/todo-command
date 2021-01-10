@@ -34,7 +34,7 @@ public class Options implements Serializable {
 
     @Override
     public String toString() {
-        return "\t" + optionsName + "  " + description+ "\n";
+        return "\t" + optionsName + "  " + description + "\n";
     }
 
 

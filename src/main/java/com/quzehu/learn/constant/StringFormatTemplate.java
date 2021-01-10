@@ -37,6 +37,8 @@ public class StringFormatTemplate {
 
     public static final String COMMAND_NAME = "命令\n\t" + StringConstant.TODO_COMMAND + " %s";
 
+    public static final String EXIT_COMMAND_NAME = "命令\n\t%s";
+
     public static final String COMMAND_FORMAT = "格式\n\t%s";
 
     public static final String COMMAND_DESCRIPTION = "描述\n\t%s";
