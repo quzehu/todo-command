@@ -98,6 +98,12 @@ public interface IfOrElse {
         }
     }
 
+    default <P> void ifPresent(boolean v, P p, Consumer<P> consumer) {
+        if (v) {
+            consumer.accept(p);
+        }
+    }
+
     /**
      * 执行是否相等判断，并执行对应的动作
      * @Date 2021/1/7 17:56

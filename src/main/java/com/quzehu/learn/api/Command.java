@@ -10,6 +10,9 @@ package com.quzehu.learn.api;
  * @Version 1.0
  */
 public interface Command {
+
+
+
     /**
      * 执行命令
      */

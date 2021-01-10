@@ -1,14 +1,13 @@
 package com.quzehu.learn.command;
 
-import com.quzehu.learn.api.Command;
 import com.quzehu.learn.api.IfOrElse;
-import com.quzehu.learn.api.Print;
 import com.quzehu.learn.api.UserReceiver;
 import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.constant.StringFormatTemplate;
-import com.quzehu.learn.model.Parameter;
+import com.quzehu.learn.model.Options;
 import com.quzehu.learn.model.User;
 import com.quzehu.learn.utils.UserSessionUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,20 +22,21 @@ import java.util.function.Consumer;
  * @Date 2021/1/5 21:11
  * @Version 1.0
  */
-public class LoginCommand implements Command, Print, IfOrElse {
+public class LoginCommand extends AbstractCommand implements IfOrElse {
 
     private UserReceiver userReceiver;
 
-    public LoginCommand(UserReceiver userReceiver) {
-        this.userReceiver = userReceiver;
-        this.parameters = new ArrayList<>();
-        parameters.add(new Parameter(StringConstant.LOGIN_COMMAND, "-u", ""));
+    static {
+        List<Options> optionsList = new ArrayList<>();
+        optionsList.add(new Options(StringConstant.LOGIN_COMMAND, "-u", "选择登录用户，后面接用户名"));
+        optionsList.add(new Options(StringConstant.LOGIN_COMMAND, "-h", "获取该命令的帮助"));
+        getOptionsMap().put(StringConstant.LOGIN_COMMAND, optionsList);
     }
 
-    /**
-     * 所有登录命令的参数集合
-     */
-    private List<Parameter> parameters;
+    public LoginCommand(UserReceiver userReceiver) {
+        this.userReceiver = userReceiver;
+    }
+
 
 
     @Override
@@ -46,8 +46,18 @@ public class LoginCommand implements Command, Print, IfOrElse {
 
     @Override
     public void execute(String... args) throws IllegalArgumentException {
-        ifPresentOrElse(args.length, 2, args, normalAction, errorAction);
+        ifPresentOrElse(args.length, 1, args[0], this::helpAction,
+        () -> ifPresentOrElse(args.length, 2, args, normalAction, errorAction));
     }
+
+    private void helpAction(String v) {
+        ifPresentOrElse("-h", v, StringConstant.LOGIN_COMMAND, this::printAllOptionsAction, this::exceptionAction);
+    }
+
+    private void exceptionAction() {
+        throw new IllegalArgumentException(StringConstant.LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE);
+    }
+
 
     /**
      * 登录的执行动作
@@ -75,7 +85,6 @@ public class LoginCommand implements Command, Print, IfOrElse {
      * @return
      **/
     private final Runnable errorAction = () -> println(StringConstant.LOGIN_ERROR_PROMPT_CONSOLE);
-    // Todo 参数支持help帮助
     /**
      * 正常的执行动作
      * @Date 2021/1/7 21:48

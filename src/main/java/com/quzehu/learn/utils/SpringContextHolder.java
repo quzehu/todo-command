@@ -37,6 +37,11 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
        return applicationContext.getBean(requiredType);
    }
 
+   public static <T> T getBean(Class<T> requiredType, Object ...args) {
+       assertContextInjected();
+       return applicationContext.getBean(requiredType, args);
+   }
+
 
    public static void clearHolder() {
        if (log.isDebugEnabled()) {

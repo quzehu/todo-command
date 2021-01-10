@@ -10,8 +10,6 @@ import com.quzehu.learn.model.User;
 import com.quzehu.learn.model.UserSession;
 import com.quzehu.learn.utils.UserSessionUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -24,10 +22,11 @@ import java.util.Scanner;
  * @Date 2021/1/3 18:44
  * @Version 1.0
  */
-@Component
+
 @Slf4j
 public class Invoker implements Print, IfOrElse {
 
+    private CommandFactory commandFactory = CommandFactory.getInstance();
     /**
      * 调用命令
      * @Date 2021/1/8 0:14
@@ -49,7 +48,7 @@ public class Invoker implements Print, IfOrElse {
         }
 
         try {
-            Command command =CommandFactory.getInstance().createCommand(arrays[1]);
+            Command command = commandFactory.createCommand(arrays[1]);
             if (arrays.length > 2) {
                 String[] newArrays = new String[arrays.length - 2];
                 System.arraycopy(arrays, 2, newArrays, 0, newArrays.length);
@@ -73,7 +72,7 @@ public class Invoker implements Print, IfOrElse {
      **/
     public void callPassword(String password) {
         try {
-            Command command = CommandFactory.getInstance().createCommand(StringConstant.PASSWORD_COMMAND);
+            Command command = commandFactory.createCommand(StringConstant.PASSWORD_COMMAND);
             command.execute(password);
         }catch (IllegalArgumentException e) {
             println(e.getMessage());

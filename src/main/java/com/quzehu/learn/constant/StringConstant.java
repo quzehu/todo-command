@@ -117,7 +117,7 @@ public class StringConstant {
     /**
      * 参数无效错误提示
      */
-    public static final String LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE = "The Parameter is invalid.";
+    public static final String LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE = "The Options is invalid.";
 
     /**
      * 待办事项列表是空的提示

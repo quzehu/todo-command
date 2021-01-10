@@ -9,14 +9,14 @@ import java.io.Serializable;
  * 参数对象
  *
  * @ProjectName 项目名称
- * @ClassName com.quzehu.learn.model.Parameter
+ * @ClassName com.quzehu.learn.model.Options
  * @Author Qu.ZeHu
  * @Date 2021/1/6 9:57
  * @Version 1.0
  */
 @Data
 @AllArgsConstructor
-public class Parameter implements Serializable {
+public class Options implements Serializable {
 
     /**
      * 所属命令
@@ -25,12 +25,17 @@ public class Parameter implements Serializable {
     /**
      * 参数名称
      */
-    private String paramName;
+    private String optionsName;
 
     /**
      * 参数描述
      */
     private String description;
+
+    @Override
+    public String toString() {
+        return "\t" + optionsName + "  " + description+ "\n";
+    }
 
 
 }

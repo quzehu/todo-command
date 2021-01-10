@@ -40,6 +40,7 @@ public class CommandFactory {
         CommandInterceptor proxy = new CommandInterceptor();
         COMMAND_MAP.put(StringConstant.ADD_COMMAND, proxy.createProxy(new AddCommand(todoReceiver)));
         COMMAND_MAP.put(StringConstant.DONE_COMMAND, proxy.createProxy(new DoneCommand(todoReceiver)));
+
         COMMAND_MAP.put(StringConstant.LIST_COMMAND, proxy.createProxy(new ListCommand(todoReceiver)));
 
         UserReceiver userReceiver = SpringContextHolder.getBean(LocalUserReceiver.class);
@@ -78,8 +79,10 @@ public class CommandFactory {
     }
 
 
+    private static final CommandFactory intance = new CommandFactory();
+
     public static CommandFactory getInstance() {
-        return Holder.instance;
+        return intance;
     }
 
     private static class Holder {

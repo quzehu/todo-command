@@ -18,10 +18,10 @@ public enum CommandEnum {
             "完成一个待办事项，<itemIndex1 itemIndex2 ...>为待办事项的索引，多个以空格分隔。"),
 
     LIST(StringConstant.LIST_COMMAND, StringConstant.LIST_INPUT,
-            "查看待办事项列表，默认查看所有未完成的待办事项，支持带选项查看。\n选项：%s"),
+            "查看待办事项列表，默认查看所有未完成的待办事项，支持带选项查看。\n选项\n%s"),
 
     LOGIN(StringConstant.LOGIN_COMMAND, StringConstant.LOGIN_INPUT,
-            "用户登录，user为系统内置用户，目前仅支持当前内置用户登录。\n选项：%s"),
+            "用户登录，user为系统内置用户，目前仅支持当前内置用户登录。\n选项\n%s"),
 
     LOGOUT(StringConstant.LOGOUT_COMMAND, StringConstant.LOGOUT_INPUT,
             "用户退出，退出当前登录的用户。"),
@@ -30,7 +30,7 @@ public enum CommandEnum {
             "输入密码。"),*/
 
     HELP(StringConstant.HELP_COMMAND,StringConstant.HELP_INPUT,
-            "帮助命令，查看应用命令的帮助文档。\n选项：%s")
+            "帮助命令，查看应用命令的帮助文档。\n选项\n%s")
     ;
 
     private String name;
