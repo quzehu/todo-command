@@ -4,6 +4,7 @@ import com.quzehu.learn.constant.ItemStatusEnum;
 import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.model.TodoItem;
 import com.quzehu.learn.utils.UserSessionUtils;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
  * @Version 1.0
  */
 @Component
+@Lazy
 public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
 
     @Override

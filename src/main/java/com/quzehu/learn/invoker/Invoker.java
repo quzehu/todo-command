@@ -2,8 +2,8 @@ package com.quzehu.learn.invoker;
 
 import com.quzehu.learn.api.Command;
 import com.quzehu.learn.api.IfOrElse;
-import com.quzehu.learn.command.CommandFactory;
 import com.quzehu.learn.api.Print;
+import com.quzehu.learn.command.CommandFactory;
 import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.User;
@@ -49,7 +49,7 @@ public class Invoker implements Print, IfOrElse {
         }
 
         try {
-            Command command = CommandFactory.getInstance().createCommand(arrays[1]);
+            Command command =CommandFactory.getInstance().createCommand(arrays[1]);
             if (arrays.length > 2) {
                 String[] newArrays = new String[arrays.length - 2];
                 System.arraycopy(arrays, 2, newArrays, 0, newArrays.length);
@@ -73,8 +73,7 @@ public class Invoker implements Print, IfOrElse {
      **/
     public void callPassword(String password) {
         try {
-            Command command = CommandFactory.getInstance()
-                    .createCommand(StringConstant.PASSWORD_COMMAND);
+            Command command = CommandFactory.getInstance().createCommand(StringConstant.PASSWORD_COMMAND);
             command.execute(password);
         }catch (IllegalArgumentException e) {
             println(e.getMessage());

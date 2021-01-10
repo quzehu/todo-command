@@ -7,8 +7,6 @@ import com.quzehu.learn.config.UserConfig;
 import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.model.User;
 import com.quzehu.learn.utils.UserSessionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 /**
@@ -20,12 +18,13 @@ import java.util.Optional;
  * @Date 2021/1/5 22:01
  * @Version 1.0
  */
-
-@Component
 public class PasswordCommand implements Command, Print, IfOrElse {
 
-    @Autowired
     private  UserConfig config;
+
+    public PasswordCommand(UserConfig config) {
+        this.config = config;
+    }
 
     @Override
     public void execute() {

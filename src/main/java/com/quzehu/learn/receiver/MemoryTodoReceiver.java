@@ -24,19 +24,19 @@ public class MemoryTodoReceiver extends AbstractMemoryTodoReceiver {
 
     @Override
     public List<TodoItem> list() {
-        if (items.isEmpty()) {
-            return items;
+        if (getItems().isEmpty()) {
+            return getItems();
         }
-        return filterNotDoneTodoList(items);
+        return filterNotDoneTodoList(getItems());
     }
 
     @Override
     public List<TodoItem> list(String ...args) {
         switch (args[0]) {
             case "--all":
-                return items;
+                return getItems();
             case "--done":
-                return filterDoneTodoList(items);
+                return filterDoneTodoList(getItems());
             default:
                 throw new IllegalArgumentException(StringConstant.LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE);
         }
@@ -47,22 +47,22 @@ public class MemoryTodoReceiver extends AbstractMemoryTodoReceiver {
     public TodoItem valueOf(int index) {
         // 校验参数
         check(index - 1);
-        return items.get(index - 1);
+        return getItems().get(index - 1);
     }
 
     @Override
     public boolean done(int index) {
         // 校验
         check(index - 1);
-        TodoItem todoItem = items.get(index - 1);
+        TodoItem todoItem = getItems().get(index - 1);
         todoItem.setStatus(ItemStatusEnum.DONE.getStatus());
         return true;
     }
 
     @Override
     public int add(String text) {
-        int newIndex = items.size() + 1;
-        items.add(new TodoItem(newIndex, text));
+        int newIndex = getItems().size() + 1;
+        getItems().add(new TodoItem(newIndex, text));
         return newIndex;
     }
 

@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractMemoryTodoReceiver implements TodoReceiver, IfOrElse {
 
-    protected final List<TodoItem> items = new ArrayList<>();
+    private final List<TodoItem> items = new ArrayList<>();
 
-    protected final Map<Integer, List<TodoItem>> itemsMap = new HashMap<>();
+    private final Map<Integer, List<TodoItem>> itemsMap = new HashMap<>();
 
     /**
      * @param todoItems 待办事项列表

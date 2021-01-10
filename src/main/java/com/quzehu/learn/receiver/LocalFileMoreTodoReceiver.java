@@ -11,6 +11,7 @@ import com.quzehu.learn.model.User;
 import com.quzehu.learn.utils.FileUtils;
 import com.quzehu.learn.utils.UserSessionUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -28,6 +29,7 @@ import java.util.Map;
  * @Version 1.0
  */
 @Component
+@Lazy
 public class LocalFileMoreTodoReceiver  implements TodoReceiver {
 
     private final AbstractMemoryTodoReceiver todoReceiver;

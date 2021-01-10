@@ -33,7 +33,7 @@ spring:
                driver-class-name: com.mysql.cj.jdbc.Driver
 todo:
    # 持久化策略(localFile 本地文件, datasource 数据库, memory 仅内存这个不能持久化)
-   persistence: localFile
+   persistence: memory
    # 待办事项基础路径
    basePath: ./localFile/todolist
    # 待办事项基础文件名
