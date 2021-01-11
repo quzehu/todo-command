@@ -43,6 +43,8 @@ todo:
    initFile: lazy
    # 导出文件的路径
    exportPath: ./localFile/export
+   # 导出文件的类型(txt 文本文  excel 表格)
+   exportType: excel
 user:
    # 系统用户文件名
    fileName: todo-config.txt

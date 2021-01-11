@@ -29,4 +29,6 @@ public class TodoConfig {
 
     private String exportPath;
 
+    private String exportType;
+
 }

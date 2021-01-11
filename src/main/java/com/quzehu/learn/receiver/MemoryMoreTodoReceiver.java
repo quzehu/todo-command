@@ -1,5 +1,6 @@
 package com.quzehu.learn.receiver;
 
+import com.alibaba.excel.EasyExcel;
 import com.quzehu.learn.config.TodoConfig;
 import com.quzehu.learn.constant.ItemStatusEnum;
 import com.quzehu.learn.constant.StringConstant;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -111,7 +113,12 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
             default:
                 throw new IllegalArgumentException(StringConstant.LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE);
         }
-        exportTxtFile(args[1], todoItems);
+
+        if ("excel".equals(todoConfig.getExportType())) {
+            exportExcelFile(args[1], todoItems);
+        } else {
+            exportTxtFile(args[1], todoItems);
+        }
     }
 
     private void exportTxtFile(String fileName, List<TodoItem> todoItems) {
@@ -120,6 +127,21 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
         File exportFile = FileUtils.createFile(todoConfig.getExportPath(), fileName);
         FileUtils.writeFile(exportFile, exportContent, false);
     }
+
+    private void exportExcelFile(String fileName, List<TodoItem> todoItems) {
+        fileName =  fileName + ".xlsx";
+        File exportFile = FileUtils.createFile(todoConfig.getExportPath(), fileName);
+        EasyExcel.write(exportFile, TodoItem.class).sheet("待办事项").doWrite(converterList(todoItems));
+    }
+
+    private List<TodoItem> converterList(List<TodoItem> todoItems) {
+        return todoItems.stream().peek(item -> {
+            ItemStatusEnum itemStatusEnum = ItemStatusEnum.valueOfByStatus(item.getStatus());
+            item.setStatusText(itemStatusEnum != null ? itemStatusEnum.getChineseText() : "");
+            item.setUserName(UserSessionUtils.getUserNameBySession());
+        }).collect(Collectors.toList());
+    }
+
 
     private String getExportContent(List<TodoItem> todoItems) {
         StringBuilder stringBuilder = new StringBuilder();

@@ -105,7 +105,11 @@
       <artifactId>commons-lang3</artifactId>
       <version>${commons.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>easyexcel</artifactId>
+      <version>2.2.7</version>
+    </dependency>
   </dependencies>
 
 
