@@ -164,4 +164,17 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         }
         return fileName;
     }
+
+    @Override
+    public void exportFile(String... args) {
+        if (StringConstant.LOAD_LAZY.equals(config.getInitFile())) {
+            cacheSingleFile();
+        }
+        todoReceiver.exportFile(args);
+    }
+
+    @Override
+    public void importFile(String... args) {
+
+    }
 }

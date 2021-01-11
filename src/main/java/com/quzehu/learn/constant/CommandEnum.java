@@ -10,7 +10,9 @@ package com.quzehu.learn.constant;
  * @Version 1.0
  */
 public enum CommandEnum {
-
+    /**
+     *
+     */
     ADD(StringConstant.ADD_COMMAND, StringConstant.ADD_INPUT,
             "添加一个待办事项，<item1 item2 ...>为任意字符串，多个以空格分隔。"),
 
@@ -25,6 +27,9 @@ public enum CommandEnum {
 
     LOGOUT(StringConstant.LOGOUT_COMMAND, StringConstant.LOGOUT_INPUT,
             "用户退出，退出当前登录的用户。"),
+
+    EXPORT(StringConstant.EXPORT_COMMAND, StringConstant.EXPORT_INPUT,
+            "导出文件到指定的目录，选项、文件名必填。\n选项\n%s"),
 
     /*PASSWORD(StringConstant.PASSWORD_COMMAND, "",
             "输入密码。"),*/

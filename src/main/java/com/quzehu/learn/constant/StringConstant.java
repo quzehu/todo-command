@@ -164,5 +164,18 @@ public class StringConstant {
 
     public static final String HELP_INPUT = "todo help --选项";
 
+    /**
+     * ********************导出文件命令相关****************************************
+     */
+    public static final String EXPORT_COMMAND = "export";
+
+    public static final String EXPORT_ERROR_PARAM_LENGTH_PROMPT_CONSOLE =  "The parameters length error!";
+
+    public static final String EXPORT_SUCCESS_PROMPT_CONSOLE = "Export file success!";
+
+    public static final String EXPORT_HEAD = "索引 文本 状态 所属用户";
+
+    public static final String EXPORT_INPUT = "todo export -选项 文件名";
+
 
 }

@@ -46,4 +46,14 @@ public class MysqlMoreTodoReceiver implements TodoReceiver, Print {
     public int add(String text) {
         return 0;
     }
+
+    @Override
+    public void exportFile(String... args) {
+
+    }
+
+    @Override
+    public void importFile(String... args) {
+
+    }
 }

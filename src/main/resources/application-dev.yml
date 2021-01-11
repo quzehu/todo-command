@@ -41,6 +41,8 @@ todo:
    # 加载用户本地待办事项文件的时机
    # (init 在项目初始化的时候加载，会加载所有系统用户的待办事项, lazy 懒加载，只加载当前用户的待办事项)
    initFile: lazy
+   # 导出文件的路径
+   exportPath: ./localFile/export
 user:
    # 系统用户文件名
    fileName: todo-config.txt

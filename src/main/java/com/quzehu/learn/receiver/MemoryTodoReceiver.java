@@ -67,5 +67,13 @@ public class MemoryTodoReceiver extends AbstractMemoryTodoReceiver {
     }
 
 
+    @Override
+    public void exportFile(String... args) {
 
+    }
+
+    @Override
+    public void importFile(String... args) {
+
+    }
 }

@@ -49,4 +49,17 @@ public interface TodoReceiver {
      */
     int add(String text);
 
+    /**
+     * 导出文件
+     * @param args 参数
+     */
+    void exportFile(String ...args);
+
+    /**
+     * 导入文件
+     * @param args 参数
+     */
+    void importFile(String ...args);
+
+
 }

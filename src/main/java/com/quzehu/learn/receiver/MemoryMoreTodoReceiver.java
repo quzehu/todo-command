@@ -1,12 +1,17 @@
 package com.quzehu.learn.receiver;
 
+import com.quzehu.learn.config.TodoConfig;
 import com.quzehu.learn.constant.ItemStatusEnum;
 import com.quzehu.learn.constant.StringConstant;
+import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.TodoItem;
+import com.quzehu.learn.utils.FileUtils;
 import com.quzehu.learn.utils.UserSessionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -22,6 +27,10 @@ import java.util.List;
 @Component
 @Lazy
 public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
+
+    @Autowired
+    private TodoConfig todoConfig;
+
 
     @Override
     public List<TodoItem> list() {
@@ -75,6 +84,63 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
         return newIndex;
     }
 
+    @Override
+    public void exportFile(String... args) {
+        ifPresentOrElse(args.length, 2, args, this::exportFileAction, this::exceptionAction);
+    }
+
+    @Override
+    public void importFile(String... args) {
+
+    }
+
+
+    private void exportFileAction(String ...args) {
+        Integer userId = UserSessionUtils.getUserIdBySession();
+        List<TodoItem> todoItems;
+        switch (args[0]) {
+            case "-a":
+                todoItems = getTodoListByKey(userId);
+                break;
+            case "-n":
+                todoItems = filterNotDoneTodoList(getTodoListByKey(userId));
+                break;
+            case "-d":
+                todoItems = filterDoneTodoList(getTodoListByKey(userId));
+                break;
+            default:
+                throw new IllegalArgumentException(StringConstant.LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE);
+        }
+        exportTxtFile(args[1], todoItems);
+    }
+
+    private void exportTxtFile(String fileName, List<TodoItem> todoItems) {
+        String exportContent = getExportContent(todoItems);
+        fileName = fileName + ".txt";
+        File exportFile = FileUtils.createFile(todoConfig.getExportPath(), fileName);
+        FileUtils.writeFile(exportFile, exportContent, false);
+    }
+
+    private String getExportContent(List<TodoItem> todoItems) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(StringConstant.EXPORT_HEAD).append("\n");
+        for (TodoItem todoItem : todoItems) {
+            Integer index = todoItem.getIndex();
+            String text = todoItem.getText();
+            Integer status = todoItem.getStatus();
+            ItemStatusEnum itemStatusEnum = ItemStatusEnum.valueOfByStatus(status);
+            String statusChinese = itemStatusEnum == null ? "" : itemStatusEnum.getChineseText();
+            String userName = UserSessionUtils.getUserNameBySession();
+            String[] rowArray = new String[]{String.valueOf(index), text, statusChinese, userName};
+            String row = String.format(StringFormatTemplate.FORMAT_FILE, rowArray);
+            stringBuilder.append(row).append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    private void exceptionAction() {
+        throw new IllegalArgumentException(StringConstant.EXPORT_ERROR_PARAM_LENGTH_PROMPT_CONSOLE);
+    }
 
 
 }

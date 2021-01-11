@@ -58,6 +58,14 @@ public enum ItemStatusEnum {
         this.chineseText = chineseText;
     }
 
+    public static ItemStatusEnum valueOfByStatus(Integer status) {
+        for (ItemStatusEnum e : ItemStatusEnum.values()) {
+            if (e.getStatus().equals(status)) {
+                return e;
+            }
+        }
+        return null;
+    }
 
 
 }
