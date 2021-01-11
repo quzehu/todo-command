@@ -26,7 +26,7 @@ import java.util.Scanner;
 @Slf4j
 public class Invoker implements Print, IfOrElse {
 
-    private CommandFactory commandFactory = CommandFactory.getInstance();
+    private final CommandFactory commandFactory = CommandFactory.getInstance();
     /**
      * 调用命令
      * @Date 2021/1/8 0:14

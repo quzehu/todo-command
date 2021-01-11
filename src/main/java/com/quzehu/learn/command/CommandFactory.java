@@ -31,7 +31,7 @@ public class CommandFactory {
 
     private static final Map<String, Command> COMMAND_MAP = new HashMap<>();
 
-    public CommandFactory() {
+    private CommandFactory() {
 
         UserConfig userConfig = SpringContextHolder.getBean(UserConfig.class);
         TodoConfig todoConfig = SpringContextHolder.getBean(TodoConfig.class);
@@ -79,14 +79,10 @@ public class CommandFactory {
     }
 
 
-    private static final CommandFactory intance = new CommandFactory();
+    private static final CommandFactory INSTANCE = new CommandFactory();
 
     public static CommandFactory getInstance() {
-        return intance;
-    }
-
-    private static class Holder {
-        public static CommandFactory instance = new CommandFactory();
+        return INSTANCE;
     }
 
 
