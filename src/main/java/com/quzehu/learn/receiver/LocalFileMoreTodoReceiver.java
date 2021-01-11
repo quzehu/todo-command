@@ -86,7 +86,7 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         // 同步更新文件
         if (done) {
             String rowText = readRowTextFromFile(index);
-            String[] arrays = rowText.split(" ");
+            String[] arrays = rowText.split("\\s+");
             arrays[2] = String.valueOf(ItemStatusEnum.DONE.getStatus());
             String newRowText = getNewRowText(arrays);
             FileUtils.writeFileToLine(fileMap.get(UserSessionUtils.getUserIdBySession()), index, newRowText);

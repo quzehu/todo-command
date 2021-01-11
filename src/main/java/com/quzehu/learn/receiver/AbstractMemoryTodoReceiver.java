@@ -65,7 +65,7 @@ public abstract class AbstractMemoryTodoReceiver implements TodoReceiver, IfOrEl
      **/
     protected List<TodoItem> convertTodoList(List<String> sourceList) {
         return sourceList.stream().map(item -> {
-            String[] arrays = item.split(" ");
+            String[] arrays = item.split("\\s+");
             TodoItem todoItem = new TodoItem();
             if (arrays.length == 4) {
                 todoItem.setIndex(Integer.valueOf(arrays[0]));

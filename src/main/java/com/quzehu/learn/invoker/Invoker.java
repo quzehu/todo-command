@@ -41,7 +41,7 @@ public class Invoker implements Print, IfOrElse {
             return;
         }
 
-        String[] arrays = inputCommand.split(" ");
+        String[] arrays = inputCommand.split("\\s+");
         if (arrays.length == 1) {
             println(StringConstant.TODO_ERROR_NO_PARAM_PROMPT_CONSOLE);
             return;

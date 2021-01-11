@@ -44,7 +44,7 @@ public class LocalUserReceiver implements UserReceiver {
         // 查找输入的用户 在不在系统用户列表中
         return userStrings.stream().map(userStr -> {
             User user = new User();
-            String[] element = userStr.split(" ");
+            String[] element = userStr.split("\\s+");
             user.setId(Integer.valueOf(element[0]))
             .setUserName(element[1])
             .setPassword(element[2]);
