@@ -41,7 +41,7 @@ public class LoginCommand extends AbstractCommand implements IfOrElse {
 
     @Override
     public void execute() {
-        print(StringConstant.LOGIN_ERROR_PROMPT_CONSOLE);
+        println(StringConstant.LOGIN_ERROR_PROMPT_CONSOLE);
     }
 
     @Override
