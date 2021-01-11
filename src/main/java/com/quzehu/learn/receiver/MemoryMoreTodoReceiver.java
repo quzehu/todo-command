@@ -7,6 +7,7 @@ import com.quzehu.learn.utils.UserSessionUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -63,7 +64,8 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
         check(userId, index -1);
 
         TodoItem todoItem = getTodoListByKey(userId).get(index - 1);
-        todoItem.setStatus(ItemStatusEnum.DONE.getStatus());
+        todoItem.setStatus(ItemStatusEnum.DONE.getStatus())
+        .setUpdateTime(new Date());
         return true;
     }
 

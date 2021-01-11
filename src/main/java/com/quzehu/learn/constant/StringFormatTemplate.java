@@ -12,8 +12,8 @@ package com.quzehu.learn.constant;
  */
 public class StringFormatTemplate {
 
-    // "索引 文本 状态 用户";
-    public static final String FORMAT_FILE = "%s %s %s %s";
+    // "索引 文本 状态 用户 创建时间 修改时间q";
+    public static final String FORMAT_FILE = "%s %s %s %s %s %s";
 
     public static final String ADD_FORMAT_CONSOLE = "%d. <%s>";
 

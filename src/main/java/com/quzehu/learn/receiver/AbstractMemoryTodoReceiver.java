@@ -5,6 +5,7 @@ import com.quzehu.learn.api.TodoReceiver;
 import com.quzehu.learn.constant.ItemStatusEnum;
 import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.model.TodoItem;
+import com.quzehu.learn.utils.UserSessionUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -120,6 +121,19 @@ public abstract class AbstractMemoryTodoReceiver implements TodoReceiver, IfOrEl
     protected void addAllByKey(Integer key, List<TodoItem> todoItems) {
         List<TodoItem> memoryItems = getTodoListByKey(key);
         memoryItems.addAll(todoItems);
+    }
+
+    /**
+     * 根据索引获取待办事项
+     * @Date 2021/1/11 11:08
+     * @param index 参数1
+     * @Author Qu.ZeHu
+     * @return com.quzehu.learn.model.TodoItem
+     **/
+    protected TodoItem getTodoItemByIndex(Integer index) {
+        Integer userId = UserSessionUtils.getUserIdBySession();
+        List<TodoItem> todoItemList = getTodoListByKey(userId);
+        return todoItemList.get(index - 1);
     }
 
     /**

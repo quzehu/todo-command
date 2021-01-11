@@ -1,8 +1,12 @@
 package com.quzehu.learn.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.quzehu.learn.constant.ItemStatusEnum;
 import com.quzehu.learn.constant.StringFormatTemplate;
+import com.quzehu.learn.utils.DateUtils;
 import lombok.Data;
+import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +21,7 @@ import java.util.Date;
  * @Version 1.0
  */
 @Data
+@Accessors(chain = true)
 public class TodoItem implements Serializable {
 
     /**
@@ -45,11 +50,15 @@ public class TodoItem implements Serializable {
     /**
      * 创建时间
      */
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**
      * 修改时间
      */
+    @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     public TodoItem() {}
@@ -58,7 +67,7 @@ public class TodoItem implements Serializable {
         this.index = index;
         this.text = text;
         this.status = ItemStatusEnum.NOT_DONE.getStatus();
-        this.createTime = new Date();
+        this.createTime = DateUtils.getCurrentDate();
     }
     public TodoItem(Integer index, String text, Integer userId) {
         this(index, text);

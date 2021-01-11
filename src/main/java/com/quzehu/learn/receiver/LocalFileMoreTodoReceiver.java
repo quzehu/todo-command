@@ -8,6 +8,7 @@ import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.TodoItem;
 import com.quzehu.learn.model.User;
+import com.quzehu.learn.utils.DateUtils;
 import com.quzehu.learn.utils.FileUtils;
 import com.quzehu.learn.utils.UserSessionUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,10 +87,7 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         boolean done = todoReceiver.done(index);
         // 同步更新文件
         if (done) {
-            String rowText = readRowTextFromFile(index);
-            String[] arrays = rowText.split("\\s+");
-            arrays[2] = String.valueOf(ItemStatusEnum.DONE.getStatus());
-            String newRowText = getNewRowText(arrays);
+            String newRowText = getUpdateNewRowText(index);
             FileUtils.writeFileToLine(fileMap.get(UserSessionUtils.getUserIdBySession()), index, newRowText);
         }
         return done;
@@ -102,12 +101,12 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
             cacheSingleFile();
         }
         int index = todoReceiver.add(text);
+
         // 同步更新文件
         FileUtils.writeFileEndAppend(fileMap.get(UserSessionUtils.getUserIdBySession()),
-                getAddNewRowText(String.valueOf(index), text));
+                getAddNewRowText(index));
         return index;
     }
-
 
     private String readRowTextFromFile(int index) {
         String userName = UserSessionUtils.getUserNameBySession();
@@ -115,10 +114,56 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
                 String.format(StringFormatTemplate.USER_FILE_NAME_FORMAT, userName, config.getFileName()), index);
     }
 
+    private String getUpdateNewRowText(Integer index) {
+        TodoItem todoItem = todoReceiver.getTodoItemByIndex(index);
+        Date updateTime = todoItem.getUpdateTime();
+        String rowText = readRowTextFromFile(index);
+        String[] arrays = rowText.split("\\s+");
+        arrays[2] = String.valueOf(ItemStatusEnum.DONE.getStatus());
+        if (arrays.length == 6) {
+            arrays[5] = DateUtils.getDate2LongString14(updateTime);
+            return getNewRowText(arrays);
+        } else {
+            String[] newArrays = new String[6];
+            System.arraycopy(arrays, 0, newArrays, 0, arrays.length);
+            newArrays[4] = DateUtils.getDate2LongString14(DateUtils.getCurrentDate());
+            newArrays[5] = DateUtils.getDate2LongString14(updateTime);
+            return getNewRowText(newArrays);
+        }
+    }
 
+    /**
+     * 获取添加到文件的一行文本，带时间
+     * @Date 2021/1/11 10:43
+     * @param index 参数1
+     * @Author Qu.ZeHu
+     * @return java.lang.String
+     **/
+    private String getAddNewRowText(Integer index) {
+        TodoItem todoItem = todoReceiver.getTodoItemByIndex(index);
+        Date createTime = todoItem.getCreateTime();
+        Date updateTime = todoItem.getUpdateTime();
+        String[] args = new String[] { String.valueOf(index), todoItem.getText(),
+                ItemStatusEnum.NOT_DONE.getStatus().toString(),
+                String.valueOf(todoItem.getUserId()),
+                createTime != null ? DateUtils.getDate2LongString14(createTime) : "0",
+                updateTime != null ? DateUtils.getDate2LongString14(updateTime) : "0" };
+        return getNewRowText(args);
+    }
+
+    /**
+     * 获取添加到文件的一行文本
+     * @Date 2021/1/11 10:44
+     * @param index 参数1
+     * @param text 参数2
+     * @Author Qu.ZeHu
+     * @return java.lang.String
+     **/
     private String getAddNewRowText(String index, String text) {
         Integer userId = UserSessionUtils.getUserIdBySession();
-        String[] args = new String[]{index, text, ItemStatusEnum.NOT_DONE.getStatus().toString(), String.valueOf(userId)};
+        String[] args = new String[]{ index, text,
+                ItemStatusEnum.NOT_DONE.getStatus().toString(),
+                String.valueOf(userId) };
         return getNewRowText(args);
     }
 
