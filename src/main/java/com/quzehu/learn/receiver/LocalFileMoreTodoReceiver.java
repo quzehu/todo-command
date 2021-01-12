@@ -108,14 +108,27 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         return index;
     }
 
-
+    /**
+     * 从文件中读取一行数据，根据索引
+     * @Date 2021/1/12 17:28
+     * @param index 索引
+     * @Author Qu.ZeHu
+     * @return java.lang.String
+     **/
     private String readRowTextFromFile(int index) {
         String userName = UserSessionUtils.getUserNameBySession();
         return FileUtils.readFileFromLine(config.getBasePath(),
                 String.format(StringFormatTemplate.USER_FILE_NAME_FORMAT, userName, config.getFileName()), index);
     }
 
-
+    /**
+     * 得到一行添加美容
+     * @Date 2021/1/12 17:29
+     * @param index 索引
+     * @param text 文本
+     * @Author Qu.ZeHu
+     * @return java.lang.String
+     **/
     private String getAddNewRowText(String index, String text) {
         Integer userId = UserSessionUtils.getUserIdBySession();
         String[] args = new String[]{index, text, ItemStatusEnum.NOT_DONE.getStatus().toString(), String.valueOf(userId)};
@@ -126,13 +139,25 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         return String.format(StringFormatTemplate.FORMAT_FILE, args);
     }
 
+    /**
+     * 从文件中得到待办事项列表
+     * @Date 2021/1/12 17:30
+     * @param fileName 文件名
+     * @Author Qu.ZeHu
+     * @return java.util.List<com.quzehu.learn.model.TodoItem>
+     **/
     private List<TodoItem> listAllFromFile(String fileName) {
         List<String> textList = FileUtils.readFile(config.getBasePath(), fileName);
         return todoReceiver.convertTodoList(textList);
     }
 
 
-
+    /**
+     * 缓存单个文件内容
+     * @Date 2021/1/12 17:31
+     * @Author Qu.ZeHu
+     * @return void
+     **/
     private void cacheSingleFile() {
         User userByFile = userReceiver.findUserByName(UserSessionUtils.getUserNameBySession());
         String fileName = putFileToMap(userByFile);
@@ -144,6 +169,12 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
     }
 
 
+    /**
+     * 缓存所有文件内容
+     * @Date 2021/1/12 17:31
+     * @Author Qu.ZeHu
+     * @return void
+     **/
     private void cacheAllFile() {
         // 读用户配置文件
         List<User> allUsers = userReceiver.findAllUsers();
@@ -155,6 +186,13 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         });
     }
 
+    /**
+     * 根据用户，把文件缓存到map中
+     * @Date 2021/1/12 17:31
+     * @param user 用户
+     * @Author Qu.ZeHu
+     * @return void
+     **/
     private String putFileToMap(User user) {
         String fileName = String.format(StringFormatTemplate.USER_FILE_NAME_FORMAT,
                 user.getUserName(), config.getFileName());
@@ -184,7 +222,13 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         FileUtils.writeFile(fileMap.get(user.getId()), getImportContent(todoItems), false);
     }
 
-
+    /**
+     * 得到导入内容，根据待办事项
+     * @Date 2021/1/12 17:33
+     * @param todoItems 待办事项列表
+     * @Author Qu.ZeHu
+     * @return java.lang.String
+     **/
     private String getImportContent(List<TodoItem> todoItems) {
         StringBuilder stringBuilder = new StringBuilder();
         for (TodoItem todoItem : todoItems) {
