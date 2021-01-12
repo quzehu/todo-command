@@ -67,7 +67,7 @@ public abstract class AbstractMemoryTodoReceiver extends AdapterTodoReceiver imp
             String[] arrays = item.split("\\s+");
             TodoItem todoItem = new TodoItem();
             if (arrays.length == 4) {
-                todoItem.setIndex(Integer.valueOf(arrays[0]));
+                todoItem.setIndexNum(Integer.valueOf(arrays[0]));
                 todoItem.setText(arrays[1]);
                 todoItem.setStatus(Integer.valueOf(arrays[2]));
                 todoItem.setUserId(Integer.valueOf(arrays[3]));
@@ -85,7 +85,7 @@ public abstract class AbstractMemoryTodoReceiver extends AdapterTodoReceiver imp
      * @Author Qu.ZeHu
      * @return void
      **/
-    protected void addMapByKey(Integer key, TodoItem todoItem) {
+    protected void addOneToMayByKey(Integer key, TodoItem todoItem) {
         List<TodoItem> todoItems = getTodoListByKey(key);
         todoItems.add(todoItem);
     }
@@ -99,11 +99,7 @@ public abstract class AbstractMemoryTodoReceiver extends AdapterTodoReceiver imp
      * @Version 2.0
      **/
     protected List<TodoItem> getTodoListByKey(Integer key) {
-        List<TodoItem> memoryItems = itemsMap.get(key);
-        if (CollectionUtils.isEmpty(memoryItems)) {
-            memoryItems = new ArrayList<>();
-            itemsMap.put(key, memoryItems);
-        }
+        itemsMap.computeIfAbsent(key, k -> new ArrayList<>());
         return itemsMap.get(key);
     }
 
@@ -116,7 +112,7 @@ public abstract class AbstractMemoryTodoReceiver extends AdapterTodoReceiver imp
      * @return void
      * @Version 2.0
      **/
-    protected void addAllByKey(Integer key, List<TodoItem> todoItems) {
+    protected void addAllToMapByKey(Integer key, List<TodoItem> todoItems) {
         List<TodoItem> memoryItems = getTodoListByKey(key);
         memoryItems.addAll(todoItems);
     }

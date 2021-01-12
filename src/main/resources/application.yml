@@ -3,3 +3,5 @@ spring:
 #      banner-mode: 'OFF'
    profiles:
       active: dev
+logging:
+   level.com.zaxxer.* : off

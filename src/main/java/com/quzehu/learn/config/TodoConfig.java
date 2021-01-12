@@ -27,6 +27,8 @@ public class TodoConfig {
 
     private String initFile;
 
+    private String initDataSource;
+
     private String exportPath;
 
     private String exportType;

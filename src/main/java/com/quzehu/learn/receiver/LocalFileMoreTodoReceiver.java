@@ -164,7 +164,7 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         List<TodoItem> todoListByKey = todoReceiver.getTodoListByKey(userByFile.getId());
         if (todoListByKey.isEmpty()) {
             // 初始化内存
-            todoReceiver.addAllByKey(userByFile.getId(), listAllFromFile(fileName));
+            todoReceiver.addAllToMapByKey(userByFile.getId(), listAllFromFile(fileName));
         }
     }
 
@@ -181,7 +181,7 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         allUsers.forEach(user -> {
             String fileName = putFileToMap(user);
             // 初始化内存
-            todoReceiver.addAllByKey(user.getId(), listAllFromFile(fileName));
+            todoReceiver.addAllToMapByKey(user.getId(), listAllFromFile(fileName));
 
         });
     }
@@ -232,7 +232,7 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
     private String getImportContent(List<TodoItem> todoItems) {
         StringBuilder stringBuilder = new StringBuilder();
         for (TodoItem todoItem : todoItems) {
-            String[] rowArray = new String[]{String.valueOf(todoItem.getIndex()),
+            String[] rowArray = new String[]{String.valueOf(todoItem.getIndexNum()),
                     todoItem.getText(), String.valueOf(todoItem.getStatus()),
                     String.valueOf(todoItem.getUserId())};
             String row = String.format(StringFormatTemplate.FORMAT_FILE, rowArray);

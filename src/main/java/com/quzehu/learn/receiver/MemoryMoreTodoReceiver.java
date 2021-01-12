@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,7 +75,8 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
         check(userId, index -1);
 
         TodoItem todoItem = getTodoListByKey(userId).get(index - 1);
-        todoItem.setStatus(ItemStatusEnum.DONE.getStatus());
+        todoItem.setStatus(ItemStatusEnum.DONE.getStatus())
+                .setUpdateTime(new Date());
         return true;
     }
 
@@ -82,7 +84,7 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
     public int add(String text) {
         Integer userId = UserSessionUtils.getUserIdBySession();
         int newIndex = getTodoListByKey(userId).size() + 1;
-        addMapByKey(userId, new TodoItem(newIndex, text, userId));
+        addOneToMayByKey(userId, new TodoItem(newIndex, text, userId));
         return newIndex;
     }
 
@@ -145,7 +147,7 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(StringConstant.EXPORT_HEAD).append("\n");
         for (TodoItem todoItem : todoItems) {
-            Integer index = todoItem.getIndex();
+            Integer index = todoItem.getIndexNum();
             String text = todoItem.getText();
             Integer status = todoItem.getStatus();
             ItemStatusEnum itemStatusEnum = ItemStatusEnum.valueOfByStatus(status);
@@ -162,7 +164,7 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
     @Override
     public void importFile(List<TodoItem> todoItems) {
         Integer userId = UserSessionUtils.getUserIdBySession();
-        addAllByKey(userId, converterImportList(todoItems));
+        addAllToMapByKey(userId, converterImportList(todoItems));
     }
 
     private List<TodoItem> converterImportList(List<TodoItem> todoItems) {
