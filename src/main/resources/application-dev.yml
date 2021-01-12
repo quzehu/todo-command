@@ -45,6 +45,8 @@ todo:
    exportPath: ./localFile/export
    # 导出文件的类型(txt 文本文  excel 表格)
    exportType: excel
+   # 导入文件的路径
+   importPath: ./localFile/import
 user:
    # 系统用户文件名
    fileName: todo-config.txt

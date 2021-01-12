@@ -67,5 +67,14 @@ public enum ItemStatusEnum {
         return null;
     }
 
+    public static ItemStatusEnum valueOfByText(String chineseText) {
+        for (ItemStatusEnum e : ItemStatusEnum.values()) {
+            if (e.getChineseText().equals(chineseText)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
 
 }

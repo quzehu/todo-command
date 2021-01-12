@@ -35,18 +35,37 @@ public class FileUtils {
         File file = new File(getFilePath(filePath, fileName));
         if (!file.exists()) {
             if ("".equals(fileName)) {
-                file.mkdirs();
+               file.mkdirs();
             }else {
                 file.getParentFile().mkdirs();
             }
             try {
-                file.createNewFile();
+               file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         return file;
     }
+    /**
+     * 创建文件
+     * @Date 2021/1/12 15:08
+     * @param filePath 文件路径
+     * @param fileName 文件名称
+     * @Author Qu.ZeHu
+     * @return java.io.File
+     **/
+    public static File createExistsFile(String filePath, String fileName) throws IOException {
+        // 创建文件
+        File file = new File(getFilePath(filePath, fileName));
+        if (file.exists()) {
+            file.mkdirs();
+        } else {
+            throw new FileNotFoundException("File not found: " + getFilePath(filePath, fileName));
+        }
+        return file;
+    }
+
     /**
      * 获取文件全路径
      * @Date 2021/1/5 16:45

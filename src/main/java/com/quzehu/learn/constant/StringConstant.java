@@ -177,5 +177,15 @@ public class StringConstant {
 
     public static final String EXPORT_INPUT = "todo export -选项 文件名";
 
+    public static final String EXPORT_TYPE_EXCEL = "excel";
+
+    /**
+     * ******************导入文件命令相关********************************************
+     */
+    public static final String IMPORT_COMMAND = "import";
+
+    public static final String IMPORT_SUCCESS_PROMPT_CONSOLE = "Import file success!";
+
+
 
 }

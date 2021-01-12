@@ -25,7 +25,7 @@ import java.util.List;
 @Component
 @Lazy
 @Deprecated
-public class LocalFileTodoReceiver implements TodoReceiver {
+public class LocalFileTodoReceiver extends AdapterTodoReceiver implements TodoReceiver {
 
 
     private final AbstractMemoryTodoReceiver todoReceiver;
@@ -113,15 +113,5 @@ public class LocalFileTodoReceiver implements TodoReceiver {
             // 放入内存中
             todoReceiver.addAll(todoItems);
         }
-    }
-
-    @Override
-    public void exportFile(String... args) {
-
-    }
-
-    @Override
-    public void importFile(String... args) {
-
     }
 }

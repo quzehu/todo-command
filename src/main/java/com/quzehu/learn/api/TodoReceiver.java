@@ -57,9 +57,14 @@ public interface TodoReceiver {
 
     /**
      * 导入文件
-     * @param args 参数
+     * @param todoItems 列表数据
      */
-    void importFile(String ...args);
+    void importFile(List<TodoItem> todoItems);
+
+    /**
+     * 清除列表
+     */
+    void clearList();
 
 
 }

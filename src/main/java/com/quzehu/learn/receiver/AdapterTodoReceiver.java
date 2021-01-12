@@ -1,27 +1,20 @@
 package com.quzehu.learn.receiver;
 
-import com.quzehu.learn.api.Print;
 import com.quzehu.learn.api.TodoReceiver;
 import com.quzehu.learn.model.TodoItem;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-
 /**
- * Mysql数据库接收者
+ * 适配器
  *
  * @ProjectName 项目名称
- * @ClassName com.quzehu.learn.receiver.MysqlMoreTodoReceiver
+ * @ClassName com.quzehu.learn.receiver.AdapterTodoReceiver
  * @Author Qu.ZeHu
- * @Date 2021/1/10 11:41
+ * @Date 2021/1/12 14:26
  * @Version 1.0
  */
-@Component
-@Lazy
-public class MysqlMoreTodoReceiver implements TodoReceiver, Print {
-
+public class AdapterTodoReceiver implements TodoReceiver {
     @Override
     public List<TodoItem> list() {
         return null;

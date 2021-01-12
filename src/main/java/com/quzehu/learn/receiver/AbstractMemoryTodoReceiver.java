@@ -1,7 +1,6 @@
 package com.quzehu.learn.receiver;
 
 import com.quzehu.learn.api.IfOrElse;
-import com.quzehu.learn.api.TodoReceiver;
 import com.quzehu.learn.constant.ItemStatusEnum;
 import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.model.TodoItem;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
  * @Version 1.0
  */
 
-public abstract class AbstractMemoryTodoReceiver implements TodoReceiver, IfOrElse {
+public abstract class AbstractMemoryTodoReceiver extends AdapterTodoReceiver implements IfOrElse {
 
     private final List<TodoItem> items = new ArrayList<>();
 
@@ -169,6 +168,19 @@ public abstract class AbstractMemoryTodoReceiver implements TodoReceiver, IfOrEl
         return todoItems.stream()
                 .filter(item -> ItemStatusEnum.NOT_DONE.getStatus().equals(item.getStatus()))
                 .collect(Collectors.toList());
+    }
+    /**
+     * 清空待办事项根据key
+     * @Date 2021/1/12 11:41
+     * @param key 参数1
+     * @Author Qu.ZeHu
+     * @return void
+     **/
+    protected void clearListByKey(Integer key) {
+        List<TodoItem> todoItems = itemsMap.get(key);
+        if (!CollectionUtils.isEmpty(todoItems)) {
+            todoItems.clear();
+        }
     }
 
 }

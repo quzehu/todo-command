@@ -88,19 +88,20 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
 
     @Override
     public void exportFile(String... args) {
-        ifPresentOrElse(args.length, 2, args, this::exportFileAction, this::exceptionAction);
+        // 选项选择
+        List<TodoItem> todoItems = switchExportOptions(args[0]);
+
+        if (StringConstant.EXPORT_TYPE_EXCEL.equals(todoConfig.getExportType())) {
+            exportExcelFile(args[1], todoItems);
+        } else {
+            exportTxtFile(args[1], todoItems);
+        }
     }
 
-    @Override
-    public void importFile(String... args) {
-
-    }
-
-
-    private void exportFileAction(String ...args) {
+    private List<TodoItem> switchExportOptions(String arg) {
         Integer userId = UserSessionUtils.getUserIdBySession();
         List<TodoItem> todoItems;
-        switch (args[0]) {
+        switch (arg) {
             case "-a":
                 todoItems = getTodoListByKey(userId);
                 break;
@@ -113,13 +114,9 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
             default:
                 throw new IllegalArgumentException(StringConstant.LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE);
         }
-
-        if ("excel".equals(todoConfig.getExportType())) {
-            exportExcelFile(args[1], todoItems);
-        } else {
-            exportTxtFile(args[1], todoItems);
-        }
+        return todoItems;
     }
+
 
     private void exportTxtFile(String fileName, List<TodoItem> todoItems) {
         String exportContent = getExportContent(todoItems);
@@ -131,10 +128,11 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
     private void exportExcelFile(String fileName, List<TodoItem> todoItems) {
         fileName =  fileName + ".xlsx";
         File exportFile = FileUtils.createFile(todoConfig.getExportPath(), fileName);
-        EasyExcel.write(exportFile, TodoItem.class).sheet("待办事项").doWrite(converterList(todoItems));
+        EasyExcel.write(exportFile, TodoItem.class).sheet("待办事项")
+                .doWrite(converterExportList(todoItems));
     }
 
-    private List<TodoItem> converterList(List<TodoItem> todoItems) {
+    private List<TodoItem> converterExportList(List<TodoItem> todoItems) {
         return todoItems.stream().peek(item -> {
             ItemStatusEnum itemStatusEnum = ItemStatusEnum.valueOfByStatus(item.getStatus());
             item.setStatusText(itemStatusEnum != null ? itemStatusEnum.getChineseText() : "");
@@ -160,9 +158,24 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
         return stringBuilder.toString();
     }
 
-    private void exceptionAction() {
-        throw new IllegalArgumentException(StringConstant.EXPORT_ERROR_PARAM_LENGTH_PROMPT_CONSOLE);
+
+    @Override
+    public void importFile(List<TodoItem> todoItems) {
+        Integer userId = UserSessionUtils.getUserIdBySession();
+        addAllByKey(userId, converterImportList(todoItems));
     }
 
+    private List<TodoItem> converterImportList(List<TodoItem> todoItems) {
+        return todoItems.stream().peek(item -> {
+            ItemStatusEnum itemStatusEnum = ItemStatusEnum.valueOfByText(item.getStatusText());
+            item.setStatus(itemStatusEnum != null ? itemStatusEnum.getStatus(): 0);
+            item.setUserId(UserSessionUtils.getUserIdBySession());
+        }).collect(Collectors.toList());
+    }
 
+    @Override
+    public void clearList() {
+        Integer userId = UserSessionUtils.getUserIdBySession();
+        clearListByKey(userId);
+    }
 }

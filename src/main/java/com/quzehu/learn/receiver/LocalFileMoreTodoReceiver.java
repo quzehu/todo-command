@@ -173,8 +173,38 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         todoReceiver.exportFile(args);
     }
 
-    @Override
-    public void importFile(String... args) {
 
+    @Override
+    public void importFile(List<TodoItem> todoItems) {
+        // 导入到内存中
+        todoReceiver.importFile(todoItems);
+        // 导入到文件中
+        User user = UserSessionUtils.getUserBySession();
+        putFileToMap(user);
+        FileUtils.writeFile(fileMap.get(user.getId()), getImportContent(todoItems), false);
+    }
+
+
+    private String getImportContent(List<TodoItem> todoItems) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (TodoItem todoItem : todoItems) {
+            String[] rowArray = new String[]{String.valueOf(todoItem.getIndex()),
+                    todoItem.getText(), String.valueOf(todoItem.getStatus()),
+                    String.valueOf(todoItem.getUserId())};
+            String row = String.format(StringFormatTemplate.FORMAT_FILE, rowArray);
+            stringBuilder.append(row).append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
+
+    @Override
+    public void clearList() {
+        // 清空内存
+        todoReceiver.clearList();
+        // 清空文件
+        User user = UserSessionUtils.getUserBySession();
+        putFileToMap(user);
+        FileUtils.writeFile(fileMap.get(user.getId()), "", false);
     }
 }

@@ -49,6 +49,7 @@ public class CommandFactory {
         COMMAND_MAP.put(StringConstant.LOGOUT_COMMAND, proxy.createProxy(new LogoutCommand()));
         COMMAND_MAP.put(StringConstant.HELP_COMMAND, new HelpCommand());
         COMMAND_MAP.put(StringConstant.EXPORT_COMMAND, proxy.createProxy(new ExportCommand(todoReceiver)));
+        COMMAND_MAP.put(StringConstant.IMPORT_COMMAND, proxy.createProxy(new ImportCommand(todoReceiver, todoConfig)));
     }
 
     private static TodoReceiver chooseReceiver(String strategy) {

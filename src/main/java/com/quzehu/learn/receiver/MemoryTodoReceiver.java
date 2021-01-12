@@ -65,15 +65,4 @@ public class MemoryTodoReceiver extends AbstractMemoryTodoReceiver {
         getItems().add(new TodoItem(newIndex, text));
         return newIndex;
     }
-
-
-    @Override
-    public void exportFile(String... args) {
-
-    }
-
-    @Override
-    public void importFile(String... args) {
-
-    }
 }

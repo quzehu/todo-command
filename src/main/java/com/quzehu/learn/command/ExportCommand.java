@@ -1,6 +1,7 @@
 package com.quzehu.learn.command;
 
 import com.quzehu.learn.api.Command;
+import com.quzehu.learn.api.IfOrElse;
 import com.quzehu.learn.api.Print;
 import com.quzehu.learn.api.TodoReceiver;
 import com.quzehu.learn.constant.StringConstant;
@@ -18,7 +19,7 @@ import java.util.List;
  * @Date 2021/1/11 14:22
  * @Version 1.0
  */
-public class ExportCommand extends AbstractCommand implements Command, Print {
+public class ExportCommand extends AbstractCommand implements Command, Print, IfOrElse {
 
     private final TodoReceiver todoReceiver;
 
@@ -44,7 +45,12 @@ public class ExportCommand extends AbstractCommand implements Command, Print {
 
     @Override
     public void execute(String... args) throws IllegalArgumentException {
-        todoReceiver.exportFile(args);
+
+        ifPresentOrElse(args.length, 2, args, todoReceiver::exportFile, this::exceptionAction);
         println(StringConstant.EXPORT_SUCCESS_PROMPT_CONSOLE);
+    }
+
+    private void exceptionAction() {
+        throw new IllegalArgumentException(StringConstant.EXPORT_ERROR_PARAM_LENGTH_PROMPT_CONSOLE);
     }
 }

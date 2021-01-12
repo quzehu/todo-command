@@ -31,4 +31,7 @@ public class TodoConfig {
 
     private String exportType;
 
+    private String importPath;
+
+
 }
