@@ -29,7 +29,12 @@ public enum CommandEnum {
             "用户退出，退出当前登录的用户。"),
 
     EXPORT(StringConstant.EXPORT_COMMAND, StringConstant.EXPORT_INPUT,
-            "导出文件到指定的目录，选项、文件名必填。\n选项\n%s"),
+            "导出文件到指定的目录，选项、文件名必填，文件名不需要加扩展名，" +
+                    "默认导出.xlsx文件，默认的导出文件在./localFile/export目录下。\n选项\n%s"),
+
+    IMPORT(StringConstant.IMPORT_COMMAND, StringConstant.IMPORT_INPUT,
+            "导入文件中的内容，选项、文件名必填，文件名不需要加扩展名，" +
+                    "仅支持导入.xlsx文件，需确保导入的文件在./localFile/import目录下。\n选项\n%s"),
 
     /*PASSWORD(StringConstant.PASSWORD_COMMAND, "",
             "输入密码。"),*/

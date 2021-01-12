@@ -27,6 +27,7 @@ public class HelpCommand extends AbstractCommand {
         optionsList.add(new Options(StringConstant.HELP_COMMAND, "--login", "获取该登录命令的帮助"));
         optionsList.add(new Options(StringConstant.HELP_COMMAND, "--logout", "获取登出命令的帮助"));
         optionsList.add(new Options(StringConstant.HELP_COMMAND, "--export", "获取导出命令的帮助"));
+        optionsList.add(new Options(StringConstant.HELP_COMMAND, "--import", "获取导入命令的帮助"));
         optionsList.add(new Options(StringConstant.HELP_COMMAND, "--help", "获取帮助命令的帮助"));
         getOptionsMap().put(StringConstant.HELP_COMMAND, optionsList);
     }

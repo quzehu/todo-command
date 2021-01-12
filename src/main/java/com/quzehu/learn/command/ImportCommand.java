@@ -7,12 +7,15 @@ import com.quzehu.learn.api.Print;
 import com.quzehu.learn.api.TodoReceiver;
 import com.quzehu.learn.config.TodoConfig;
 import com.quzehu.learn.constant.StringConstant;
+import com.quzehu.learn.model.Options;
 import com.quzehu.learn.model.TodoItem;
 import com.quzehu.learn.utils.FileUtils;
 import com.quzehu.learn.listener.ExcelReadListener;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 导入文件命令
@@ -28,6 +31,13 @@ public class ImportCommand extends AbstractCommand implements Command, Print, If
     private final TodoReceiver todoReceiver;
 
     private final TodoConfig todoConfig;
+
+    static {
+        List<Options> optionsList = new ArrayList<>();
+        optionsList.add(new Options(StringConstant.IMPORT_COMMAND, "-f",
+                "从文件中导入待办事项"));
+        getOptionsMap().put(StringConstant.IMPORT_COMMAND, optionsList);
+    }
 
     public ImportCommand(TodoReceiver todoReceiver, TodoConfig todoConfig) {
         this.todoReceiver = todoReceiver;

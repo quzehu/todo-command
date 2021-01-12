@@ -186,6 +186,6 @@ public class StringConstant {
 
     public static final String IMPORT_SUCCESS_PROMPT_CONSOLE = "Import file success!";
 
-
+    public static final String IMPORT_INPUT = "todo import -选项 文件名";
 
 }
