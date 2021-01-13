@@ -146,7 +146,7 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
      * @Author Qu.ZeHu
      * @return java.util.List<com.quzehu.learn.model.TodoItem>
      **/
-    private List<TodoItem> listAllFromFile(String fileName) {
+    public List<TodoItem> readListFromFile(String fileName) {
         List<String> textList = FileUtils.readFile(config.getBasePath(), fileName);
         return todoReceiver.convertTodoList(textList);
     }
@@ -159,12 +159,12 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
      * @return void
      **/
     private void cacheSingleFile() {
-        User userByFile = userReceiver.findUserByName(UserSessionUtils.getUserNameBySession());
-        String fileName = putFileToMap(userByFile);
-        List<TodoItem> todoListByKey = todoReceiver.getTodoListByKey(userByFile.getId());
+        User user = userReceiver.findUserByName(UserSessionUtils.getUserNameBySession());
+        String fileName = putFileToMapByUser(user);
+        List<TodoItem> todoListByKey = todoReceiver.getTodoListByKey(user.getId());
         if (todoListByKey.isEmpty()) {
             // 初始化内存
-            todoReceiver.addAllToMapByKey(userByFile.getId(), listAllFromFile(fileName));
+            todoReceiver.addAllToMapByKey(user.getId(), readListFromFile(fileName));
         }
     }
 
@@ -179,9 +179,9 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         // 读用户配置文件
         List<User> allUsers = userReceiver.findAllUsers();
         allUsers.forEach(user -> {
-            String fileName = putFileToMap(user);
+            String fileName = putFileToMapByUser(user);
             // 初始化内存
-            todoReceiver.addAllToMapByKey(user.getId(), listAllFromFile(fileName));
+            todoReceiver.addAllToMapByKey(user.getId(), readListFromFile(fileName));
 
         });
     }
@@ -193,7 +193,7 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
      * @Author Qu.ZeHu
      * @return void
      **/
-    private String putFileToMap(User user) {
+    private String putFileToMapByUser(User user) {
         String fileName = String.format(StringFormatTemplate.USER_FILE_NAME_FORMAT,
                 user.getUserName(), config.getFileName());
         // 创建文件 并且向 map中put
@@ -218,7 +218,7 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         todoReceiver.importFile(todoItems);
         // 导入到文件中
         User user = UserSessionUtils.getUserBySession();
-        putFileToMap(user);
+        putFileToMapByUser(user);
         FileUtils.writeFile(fileMap.get(user.getId()), getImportContent(todoItems), false);
     }
 
@@ -248,7 +248,7 @@ public class LocalFileMoreTodoReceiver  implements TodoReceiver {
         todoReceiver.clearList();
         // 清空文件
         User user = UserSessionUtils.getUserBySession();
-        putFileToMap(user);
+        putFileToMapByUser(user);
         FileUtils.writeFile(fileMap.get(user.getId()), "", false);
     }
 }

@@ -50,6 +50,11 @@ public class CommandFactory {
         COMMAND_MAP.put(StringConstant.HELP_COMMAND, new HelpCommand());
         COMMAND_MAP.put(StringConstant.EXPORT_COMMAND, proxy.createProxy(new ExportCommand(todoReceiver)));
         COMMAND_MAP.put(StringConstant.IMPORT_COMMAND, proxy.createProxy(new ImportCommand(todoReceiver, todoConfig)));
+
+        LocalFileMoreTodoReceiver fileReceiver = SpringContextHolder.getBean(LocalFileMoreTodoReceiver.class);
+        MysqlMoreTodoReceiver mysqlReceiver = SpringContextHolder.getBean(MysqlMoreTodoReceiver.class);
+        COMMAND_MAP.put(StringConstant.INIT_DB_COMMAND,
+                proxy.createProxy(new InitDBCommand(todoConfig, fileReceiver, mysqlReceiver)));
     }
 
     private static TodoReceiver chooseReceiver(String strategy) {

@@ -183,7 +183,7 @@ public abstract class AbstractMemoryTodoReceiver extends AdapterTodoReceiver imp
     protected List<TodoItem> converterImportList(List<TodoItem> todoItems) {
         return todoItems.stream().peek(item -> {
             ItemStatusEnum itemStatusEnum = ItemStatusEnum.valueOfByText(item.getStatusText());
-            item.setStatus(itemStatusEnum != null ? itemStatusEnum.getStatus(): 0);
+            item.setStatus(itemStatusEnum != null ? itemStatusEnum.getStatus(): item.getStatus());
             item.setUserId(UserSessionUtils.getUserIdBySession());
             if (item.getCreateTime() == null) {
                 item.setCreateTime(new Date());

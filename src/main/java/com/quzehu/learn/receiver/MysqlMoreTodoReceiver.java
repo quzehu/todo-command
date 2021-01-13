@@ -147,7 +147,7 @@ public class MysqlMoreTodoReceiver extends ServiceImpl<TodoItemMapper, TodoItem>
         // 导入到内存中
         todoReceiver.importFile(todoItems);
 
-        todoReceiver.converterImportList(todoItems);
+        //todoReceiver.converterImportList(todoItems);
         // 导入到数据库中
         saveBatch(todoItems);
     }

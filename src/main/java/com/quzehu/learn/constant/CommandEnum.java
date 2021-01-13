@@ -39,6 +39,10 @@ public enum CommandEnum {
     /*PASSWORD(StringConstant.PASSWORD_COMMAND, "",
             "输入密码。"),*/
 
+    INIT(StringConstant.INIT_DB_COMMAND, StringConstant.INIT_DB_INPUT,
+            "初始化数据库。如果在'./localFile/todolist/用户名-todoList.txt'目录下存在该用户的待办事项文件" +
+                    "则初始化文件内容到数据库中。"),
+
     HELP(StringConstant.HELP_COMMAND,StringConstant.HELP_INPUT,
             "帮助命令，查看应用命令的帮助文档。\n选项\n%s"),
 

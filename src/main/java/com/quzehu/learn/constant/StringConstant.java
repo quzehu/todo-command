@@ -188,4 +188,15 @@ public class StringConstant {
 
     public static final String IMPORT_INPUT = "todo import -选项 文件名";
 
+    public static final String INIT_DB_COMMAND = "init";
+
+    public static final String INIT_DB_INPUT = "todo init";
+
+    public static final String INIT_DB_SUCCESS_PROMPT_CONSOLE = "Init DataBase success!";
+
+    public static final String INIT_DB_ERROR_PARAM_LENGTH_PROMPT_CONSOLE =
+            "Initialization with options is temporarily not supported!";
+
+    public static final String INIT_DB_ERROR_FILE_NOT_EXISTS_PROMPT_CONSOLE =
+            "No todo file exists for current user.";
 }
