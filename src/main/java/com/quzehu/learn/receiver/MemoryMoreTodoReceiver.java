@@ -75,8 +75,8 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
         check(userId, index -1);
 
         TodoItem todoItem = getTodoListByKey(userId).get(index - 1);
-        todoItem.setStatus(ItemStatusEnum.DONE.getStatus())
-                .setUpdateTime(new Date());
+        todoItem.setStatus(ItemStatusEnum.DONE.getStatus());
+        todoItem.setUpdateTime(new Date());
         return true;
     }
 
@@ -167,13 +167,6 @@ public class MemoryMoreTodoReceiver extends AbstractMemoryTodoReceiver {
         addAllToMapByKey(userId, converterImportList(todoItems));
     }
 
-    private List<TodoItem> converterImportList(List<TodoItem> todoItems) {
-        return todoItems.stream().peek(item -> {
-            ItemStatusEnum itemStatusEnum = ItemStatusEnum.valueOfByText(item.getStatusText());
-            item.setStatus(itemStatusEnum != null ? itemStatusEnum.getStatus(): 0);
-            item.setUserId(UserSessionUtils.getUserIdBySession());
-        }).collect(Collectors.toList());
-    }
 
     @Override
     public void clearList() {

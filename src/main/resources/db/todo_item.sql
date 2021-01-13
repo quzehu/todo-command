@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `todo_item`;
 CREATE TABLE `todo_item`  (
   `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
   `index_num` int(10) DEFAULT NULL COMMENT '索引',
-  `text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '文本',
+  `text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '文本',
   `status` tinyint(2) DEFAULT NULL COMMENT '状态',
   `user_id` int(10) DEFAULT NULL COMMENT '创建人',
   `create_time` datetime(0) DEFAULT NULL COMMENT '创建时间',

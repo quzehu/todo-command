@@ -4,6 +4,7 @@ import com.quzehu.learn.api.IfOrElse;
 import com.quzehu.learn.constant.ItemStatusEnum;
 import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.model.TodoItem;
+import com.quzehu.learn.utils.UserSessionUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -178,5 +179,17 @@ public abstract class AbstractMemoryTodoReceiver extends AdapterTodoReceiver imp
             todoItems.clear();
         }
     }
+
+    protected List<TodoItem> converterImportList(List<TodoItem> todoItems) {
+        return todoItems.stream().peek(item -> {
+            ItemStatusEnum itemStatusEnum = ItemStatusEnum.valueOfByText(item.getStatusText());
+            item.setStatus(itemStatusEnum != null ? itemStatusEnum.getStatus(): 0);
+            item.setUserId(UserSessionUtils.getUserIdBySession());
+            if (item.getCreateTime() == null) {
+                item.setCreateTime(new Date());
+            }
+        }).collect(Collectors.toList());
+    }
+
 
 }

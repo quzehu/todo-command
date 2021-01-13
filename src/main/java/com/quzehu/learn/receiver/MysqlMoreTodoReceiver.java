@@ -1,6 +1,8 @@
 package com.quzehu.learn.receiver;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.quzehu.learn.api.Print;
 import com.quzehu.learn.api.TodoReceiver;
 import com.quzehu.learn.config.TodoConfig;
@@ -29,7 +31,8 @@ import java.util.stream.Collectors;
  */
 @Component
 @Lazy
-public class MysqlMoreTodoReceiver implements TodoReceiver, Print {
+public class MysqlMoreTodoReceiver extends ServiceImpl<TodoItemMapper, TodoItem>
+        implements TodoReceiver, Print, IService<TodoItem> {
 
     @Resource
     private TodoItemMapper todoItemMapper;
@@ -132,16 +135,31 @@ public class MysqlMoreTodoReceiver implements TodoReceiver, Print {
 
     @Override
     public void exportFile(String... args) {
-
+        if (StringConstant.LOAD_LAZY.equals(todoConfig.getInitDataSource())) {
+            cacheSingleToMemory();
+        }
+        // Todo 数据量大策略
+        todoReceiver.exportFile(args);
     }
 
     @Override
     public void importFile(List<TodoItem> todoItems) {
+        // 导入到内存中
+        todoReceiver.importFile(todoItems);
 
+        todoReceiver.converterImportList(todoItems);
+        // 导入到数据库中
+        saveBatch(todoItems);
     }
+
 
     @Override
     public void clearList() {
+        // 清除内存
+        todoReceiver.clearList();
+        // 清除数据库
+        Integer userId = UserSessionUtils.getUserIdBySession();
+        todoItemMapper.delete(Wrappers.<TodoItem>lambdaQuery().eq(TodoItem::getUserId, userId));
 
     }
 }

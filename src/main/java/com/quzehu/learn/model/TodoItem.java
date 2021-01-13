@@ -26,7 +26,7 @@ import java.util.Date;
 
 @Data
 @TableName(value = "todo_item")
-@Accessors(chain = true)
+//@Accessors(chain = true)
 public class TodoItem implements Serializable {
 
     /**
@@ -38,15 +38,17 @@ public class TodoItem implements Serializable {
     /**
      * 索引
      */
-    @ExcelProperty(value = "索引", index = 0)
+
     @TableField
+    @ExcelProperty(value = "索引")
     private Integer indexNum;
 
     /**
      * 文本
      */
-    @ExcelProperty(value = "文本", index = 1)
+
     @TableField
+    @ExcelProperty(value = "文本")
     private String text;
 
     /**
@@ -56,8 +58,8 @@ public class TodoItem implements Serializable {
     @TableField
     private Integer status;
 
-    @ExcelProperty(value = "状态", index = 2)
     @TableField(exist = false)
+    @ExcelProperty(value = "状态")
     private String statusText;
 
     /**
@@ -67,8 +69,8 @@ public class TodoItem implements Serializable {
     @TableField
     private Integer userId;
 
-    @ExcelProperty(value = "用户", index = 3)
     @TableField(exist = false)
+    @ExcelProperty(value = "用户")
     private String userName;
 
     /**
