@@ -26,4 +26,13 @@ public interface UserReceiver {
      * @return 用户列表
      */
     List<User> findAllUsers();
+
+    /**
+     * 添加用户
+     * @param userName 用户名
+     * @param password 密码
+     * @return User
+     */
+    User addUser(String userName, String password);
+
 }

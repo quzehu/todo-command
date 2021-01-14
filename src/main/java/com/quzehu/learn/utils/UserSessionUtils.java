@@ -81,7 +81,34 @@ public class UserSessionUtils {
     public static void cacheLoginUserToSession(User user) {
         UserSession userSession = getUserSession();
         userSession.setCacheUser(user)
-        .setInPasswordStatus(true);
+                .setInPasswordStatus(true)
+                .setRegisteredStatus(false);
+    }
+    /**
+     * 注册用户
+     * @Date 2021/1/14 11:49
+     * @param userName 用户名
+     * @Author Qu.ZeHu
+     * @return void
+     **/
+    public static void registeredUserOfSession(String userName) {
+        UserSession userSession = getUserSession();
+        userSession.setInPasswordStatus(true);
+        userSession.setRegisteredStatus(true);
+        userSession.setCacheUser(new User().setUserName(userName));
+    }
+    /**
+     * 缓存密码
+     * @Date 2021/1/14 11:49
+     * @param password 参数1
+     * @Author Qu.ZeHu
+     * @return void
+     **/
+    public static void cachePasswordOfSession(String password) {
+        UserSession userSession = getUserSession();
+        User registeredUser = userSession.getCacheUser();
+        registeredUser.setPassword(password);
+        passwordCountAddOne();
     }
 
     /**
@@ -94,10 +121,10 @@ public class UserSessionUtils {
         UserSession userSession = getUserSession();
         // 清空数据
         userSession.setCacheUser(null)
-        .setInPasswordCount(0)
-        .setLoginStatus(false)
-        .setInPasswordStatus(false)
-        .setNormalStatus(true);
+                .setInPasswordCount(0)
+                .setLoginStatus(false)
+                .setInPasswordStatus(false)
+                .setRegisteredStatus(false);
     }
 
     /**
@@ -110,8 +137,9 @@ public class UserSessionUtils {
         UserSession userSession = getUserSession();
         // 设置为已经登录状态
         userSession.setLoginStatus(true)
-        // 清空是密码登录的状态
-        .setInPasswordStatus(false);
+                // 清空是密码登录的状态
+                .setInPasswordStatus(false)
+                .setInPasswordCount(0);
     }
 
     /**
@@ -124,8 +152,9 @@ public class UserSessionUtils {
         UserSession userSession = getUserSession();
         // 清空缓存数据
         userSession.setCacheUser(null)
-        .setInPasswordCount(0)
-        .setNormalStatus(false);
+                .setRegisteredStatus(false)
+                .setInPasswordCount(0);
+
     }
 
     /**

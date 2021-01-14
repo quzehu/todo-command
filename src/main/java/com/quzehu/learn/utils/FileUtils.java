@@ -144,6 +144,16 @@ public class FileUtils {
         return results;
     }
 
+    public static File getClassPathFile(String relativePath) {
+        ClassPathResource classPathResource = new ClassPathResource(relativePath);
+        try {
+            return classPathResource.getFile();
+        }catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 
     /**

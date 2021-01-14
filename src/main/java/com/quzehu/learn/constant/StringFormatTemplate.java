@@ -43,4 +43,7 @@ public class StringFormatTemplate {
 
     public static final String COMMAND_DESCRIPTION = "描述\n\t%s";
 
+    //索引 用户名 密码
+    public static final String USER_FORMAT = "%s %s %s";
+
 }

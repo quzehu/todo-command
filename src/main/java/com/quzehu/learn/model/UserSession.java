@@ -28,11 +28,6 @@ public class UserSession implements Serializable {
      */
     private Boolean loginStatus = false;
     /**
-     * 是否是正常的状态（true 正常 false 退出）
-     */
-    private Boolean normalStatus = true;
-
-    /**
      * 输入的密码次数
      */
     private Integer inPasswordCount = 0;
@@ -41,6 +36,12 @@ public class UserSession implements Serializable {
      * 是否是输入密码命令
      */
     private Boolean inPasswordStatus = false;
+
+    /**
+     * 是注册状态
+     */
+    private Boolean registeredStatus = false;
+
 
     private static UserSession instance = new UserSession();
 

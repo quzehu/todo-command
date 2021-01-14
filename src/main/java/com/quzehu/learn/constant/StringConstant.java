@@ -39,13 +39,13 @@ public class StringConstant {
 
 
     public static final String LOGIN_ERROR_PROMPT_CONSOLE
-            = "Please input '" + LOGIN_INPUT +"' user must be a system user!";
+            = "Please input '" + LOGIN_INPUT +"' user must be a system user, if no user," +
+            " please register with 'todo login -r user'!";
 
     /**
      * 登录后输入密码提示
      */
     public static final String LOGIN_PASSWORD_PROMPT_CONSOLE = "Password";
-
 
     /**
      * ************************密码命令相关*******************************
@@ -72,8 +72,26 @@ public class StringConstant {
      * 密码错误，再次输入提示
      */
     public static final String PASSWORD_ERROR_AGAIN_CONSOLE = "Password error, Please input again!";
+    /**
+     * 注册成功提示
+     */
+    public static final String REGISTER_SUCCESS_PROMPT_CONSOLE = "Register successfully!";
 
+    /**
+     * 密码不一致提示
+     */
+    public static final String REGISTER_ERROR_PASSWORD_MATCH_PROMPT_CONSOLE =
+            "The two passwords don't match,exiting current user!";
+    /**
+     * 再次输入密码提示
+     */
+    public static final String PASSWORD_AGAIN_PROMPT_CONSOLE = "Password again";
 
+    /**
+     * 注册相同用户提示
+     */
+    public static final String REGISTER_ERROR_SAME_USER_PROMPT_CONSOLE =
+            "The same user is not allowed to register!";
     /**
      * *********************完成命令相关****************************************
      */

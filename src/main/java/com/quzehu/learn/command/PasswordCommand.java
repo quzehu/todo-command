@@ -3,6 +3,7 @@ package com.quzehu.learn.command;
 import com.quzehu.learn.api.Command;
 import com.quzehu.learn.api.IfOrElse;
 import com.quzehu.learn.api.Print;
+import com.quzehu.learn.api.UserReceiver;
 import com.quzehu.learn.config.UserConfig;
 import com.quzehu.learn.constant.StringConstant;
 import com.quzehu.learn.model.User;
@@ -22,8 +23,11 @@ public class PasswordCommand implements Command, Print, IfOrElse {
 
     private  UserConfig config;
 
-    public PasswordCommand(UserConfig config) {
+    private UserReceiver userReceiver;
+
+    public PasswordCommand(UserConfig config, UserReceiver userReceiver) {
         this.config = config;
+        this.userReceiver = userReceiver;
     }
 
     @Override
@@ -33,16 +37,36 @@ public class PasswordCommand implements Command, Print, IfOrElse {
 
     @Override
     public void execute(String ...args) throws IllegalArgumentException {
-        // 得到缓存用户
-        Optional<User> userOptional = Optional.ofNullable(UserSessionUtils.getUserBySession());
-        userOptional.ifPresent(user -> {
-            String v2 = UserSessionUtils.getPasswordBySession();
-            ifPresentOrElse(args[0], v2, loginAction, errorAction);
-        });
-        if (!userOptional.isPresent()) {
-            println(StringConstant.PASSWORD_ERROR_PROMPT_CONSOLE);
+        Boolean registeredStatus = UserSessionUtils.getUserSession().getRegisteredStatus();
+        if (registeredStatus) {
+            if (UserSessionUtils.getPasswordCountBySession() != 0) {
+                String password = UserSessionUtils.getPasswordBySession();
+                if (password.equals(args[0])) {
+                    // 注册成功 添加用户 并登录
+                    User user = userReceiver.addUser(UserSessionUtils.getUserNameBySession(), password);
+                    UserSessionUtils.cacheLoginUserToSession(user);
+                    UserSessionUtils.login();
+                    println(StringConstant.REGISTER_SUCCESS_PROMPT_CONSOLE);
+                } else {
+                    // 注册失败 清空
+                    println(StringConstant.REGISTER_ERROR_PASSWORD_MATCH_PROMPT_CONSOLE);
+                    UserSessionUtils.clearLoginUserOfSession();
+                }
+            } else {
+                UserSessionUtils.cachePasswordOfSession(args[0]);
+                print(StringConstant.PASSWORD_AGAIN_PROMPT_CONSOLE);
+            }
+        } else {
+            // 得到缓存用户
+            Optional<User> userOptional = Optional.ofNullable(UserSessionUtils.getUserBySession());
+            userOptional.ifPresent(user -> {
+                String v2 = UserSessionUtils.getPasswordBySession();
+                ifPresentOrElse(args[0], v2, loginAction, errorAction);
+            });
+            if (!userOptional.isPresent()) {
+                println(StringConstant.PASSWORD_ERROR_PROMPT_CONSOLE);
+            }
         }
-
     }
     /**
      * 退出执行的动作
@@ -56,6 +80,7 @@ public class PasswordCommand implements Command, Print, IfOrElse {
         UserSessionUtils.exit();
         // 密码计数器加一
         UserSessionUtils.passwordCountAddOne();
+        System.exit(0);
     };
     /**
      * 再来一次的执行动作

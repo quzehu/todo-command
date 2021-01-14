@@ -2,6 +2,7 @@ package com.quzehu.learn.receiver;
 
 import com.quzehu.learn.api.UserReceiver;
 import com.quzehu.learn.config.UserConfig;
+import com.quzehu.learn.constant.StringFormatTemplate;
 import com.quzehu.learn.model.User;
 import com.quzehu.learn.utils.FileUtils;
 import org.springframework.stereotype.Component;
@@ -50,5 +51,18 @@ public class LocalUserReceiver implements UserReceiver {
             .setPassword(element[2]);
             return user;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public User addUser(String userName, String password) {
+        Integer id = FileUtils.readClassPathFile(config.getFileName()).size() + 1;
+        FileUtils.writeFileEndAppend(FileUtils.getClassPathFile(config.getFileName()),
+                addNewRowContent(id, userName, password));
+        return new User(id, userName, password);
+    }
+
+    private String addNewRowContent(Integer id, String userName, String password) {
+        String[] args = new String[]{String.valueOf(id), userName, password};
+        return String.format(StringFormatTemplate.USER_FORMAT, args);
     }
 }

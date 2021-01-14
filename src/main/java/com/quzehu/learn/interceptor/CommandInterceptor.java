@@ -40,7 +40,7 @@ public class CommandInterceptor {
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             if (UserSessionUtils.getUserBySession() == null) {
-                println(StringConstant.PASSWORD_ERROR_PROMPT_CONSOLE);
+                println(StringConstant.LOGIN_ERROR_PROMPT_CONSOLE);
                 return null;
             }
             try {

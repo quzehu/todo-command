@@ -11,7 +11,6 @@ import com.quzehu.learn.utils.UserSessionUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 /**
  * 登录命令
@@ -24,12 +23,12 @@ import java.util.function.Consumer;
  */
 public class LoginCommand extends AbstractCommand implements IfOrElse {
 
-    private UserReceiver userReceiver;
+    private final UserReceiver userReceiver;
 
     static {
         List<Options> optionsList = new ArrayList<>();
         optionsList.add(new Options(StringConstant.LOGIN_COMMAND, "-u", "选择登录用户，后面接用户名"));
-        optionsList.add(new Options(StringConstant.LOGIN_COMMAND, "-h", "获取该命令的帮助"));
+        optionsList.add(new Options(StringConstant.LOGIN_COMMAND, "-r", "注册用户，后面接新的用户名"));
         getOptionsMap().put(StringConstant.LOGIN_COMMAND, optionsList);
     }
 
@@ -46,26 +45,45 @@ public class LoginCommand extends AbstractCommand implements IfOrElse {
 
     @Override
     public void execute(String... args) throws IllegalArgumentException {
-        ifPresentOrElse(args.length, 1, args[0], this::helpAction,
-        () -> ifPresentOrElse(args.length, 2, args, normalAction, errorAction));
-    }
+        ifPresentOrElse(args.length == 2, args, this::normalAction, this::errorAction);
 
-    private void helpAction(String v) {
-        ifPresentOrElse("-h", v, StringConstant.LOGIN_COMMAND, this::printAllOptionsAction, this::exceptionAction);
-    }
-
-    private void exceptionAction() {
-        throw new IllegalArgumentException(StringConstant.LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE);
     }
 
 
     /**
-     * 登录的执行动作
+     * 正常的执行动作
      * @Date 2021/1/7 21:48
      * @Author Qu.ZeHu
      * @return
      **/
-    private final Consumer<String> loginAction = (v) -> {
+    private void normalAction(String ...v) {
+        // 登录
+        boolean loginFlag = ifPresent("-u".equals(v[0]), v[1], this::loginAction);
+        //注册
+        boolean registerFlag = ifPresent("-r".equals(v[0]), v[1], this::registeredAction);
+
+        orElse(loginFlag || registerFlag, this::exceptionAction);
+    }
+
+
+    private void registeredAction(String v) {
+        User userByName = userReceiver.findUserByName(v);
+        if (userByName != null) {
+            // 不允许注册，存在相同的用户
+            println(StringConstant.REGISTER_ERROR_SAME_USER_PROMPT_CONSOLE);
+            return;
+        }
+        UserSessionUtils.registeredUserOfSession(v);
+        print(StringConstant.LOGIN_PASSWORD_PROMPT_CONSOLE);
+    }
+
+    /**
+     * 登录的执行动作
+     * @return void
+     * @Date 2021/1/7 21:48
+     * @Author Qu.ZeHu
+     **/
+    private void loginAction(String v) {
         User userByName = userReceiver.findUserByName(v);
         Optional<User> optional = Optional.ofNullable(userByName);
         optional.ifPresent((user) -> {
@@ -77,21 +95,18 @@ public class LoginCommand extends AbstractCommand implements IfOrElse {
             // 用户不是系统用户
             println(StringFormatTemplate.USER_NO_EXIST_FORMAT_CONSOLE, v);
         }
-    };
-    /**
-     * 错误的执行动作
-     * @Date 2021/1/7 21:48
-     * @Author Qu.ZeHu
-     * @return
-     **/
-    private final Runnable errorAction = () -> println(StringConstant.LOGIN_ERROR_PROMPT_CONSOLE);
-    /**
-     * 正常的执行动作
-     * @Date 2021/1/7 21:48
-     * @Author Qu.ZeHu
-     * @return
-     **/
-    private final Consumer<String[]> normalAction
-            = (String... v) -> ifPresentOrElse("-u", v[0], v[1], loginAction, errorAction);
+    }
+
+
+
+    private void exceptionAction() {
+        throw new IllegalArgumentException(StringConstant.LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE);
+    }
+
+    private void errorAction() {
+        throw new IllegalArgumentException(StringConstant.LOGIN_ERROR_PROMPT_CONSOLE);
+    }
+
+
 
 }

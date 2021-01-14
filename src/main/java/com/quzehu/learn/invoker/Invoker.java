@@ -91,9 +91,8 @@ public class Invoker implements Print, IfOrElse {
 
         Scanner scanner = new Scanner(System.in);
         print(StringConstant.PREFIX_CONSTANT_CONSOLE);
-        UserSession userSession = UserSessionUtils.getUserSession();
 
-        while (userSession.getNormalStatus() && scanner.hasNext()) {
+        while (scanner.hasNext()) {
             String nextLine = scanner.nextLine().trim().toLowerCase();
             // 退出命令
             ifPresent(StringConstant.EXIT_COMMAND.equals(nextLine),

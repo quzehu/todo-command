@@ -45,7 +45,7 @@ public class CommandFactory {
 
         UserReceiver userReceiver = SpringContextHolder.getBean(LocalUserReceiver.class);
         COMMAND_MAP.put(StringConstant.LOGIN_COMMAND, new LoginCommand(userReceiver));
-        COMMAND_MAP.put(StringConstant.PASSWORD_COMMAND, new PasswordCommand(userConfig));
+        COMMAND_MAP.put(StringConstant.PASSWORD_COMMAND, new PasswordCommand(userConfig, userReceiver));
         COMMAND_MAP.put(StringConstant.LOGOUT_COMMAND, proxy.createProxy(new LogoutCommand()));
         COMMAND_MAP.put(StringConstant.HELP_COMMAND, new HelpCommand());
         COMMAND_MAP.put(StringConstant.EXPORT_COMMAND, proxy.createProxy(new ExportCommand(todoReceiver)));

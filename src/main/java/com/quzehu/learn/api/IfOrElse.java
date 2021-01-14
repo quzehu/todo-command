@@ -68,6 +68,14 @@ public interface IfOrElse {
         }
     }
 
+    default <P> void ifPresentOrElse(boolean v, P p, Consumer<P> eAction, Runnable neAction) {
+        if (v) {
+            eAction.accept(p);
+        } else {
+            neAction.run();
+        }
+    }
+
     /**
      * 执行是否相等判断，并执行对应的动作
      * @Date 2021/1/7 17:55
@@ -98,10 +106,11 @@ public interface IfOrElse {
         }
     }
 
-    default <P> void ifPresent(boolean v, P p, Consumer<P> consumer) {
+    default <P> boolean ifPresent(boolean v, P p, Consumer<P> consumer) {
         if (v) {
             consumer.accept(p);
         }
+        return v;
     }
 
     /**
@@ -116,6 +125,12 @@ public interface IfOrElse {
     default <T> void orElse(T v1, T v2, Runnable neAction) {
         Objects.requireNonNull(v1);
         if (!v1.equals(v2)) {
+            neAction.run();
+        }
+    }
+
+    default void orElse(boolean f, Runnable neAction) {
+        if (!f) {
             neAction.run();
         }
     }

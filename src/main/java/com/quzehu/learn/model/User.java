@@ -1,5 +1,6 @@
 package com.quzehu.learn.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -16,12 +17,14 @@ import java.io.Serializable;
  */
 @Data
 @Accessors(chain = true)
+@AllArgsConstructor
 public class User implements Serializable {
+
+    public User() {}
 
     private Integer id;
 
     private String userName;
 
     private String password;
-
 }
