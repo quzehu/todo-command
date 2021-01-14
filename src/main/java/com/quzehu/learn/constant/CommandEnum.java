@@ -23,7 +23,7 @@ public enum CommandEnum {
             "查看待办事项列表，默认查看所有未完成的待办事项，支持带选项查看。\n选项\n%s"),
 
     LOGIN(StringConstant.LOGIN_COMMAND, StringConstant.LOGIN_INPUT,
-            "用户登录，user为系统内置用户，目前仅支持当前内置用户登录。\n选项\n%s"),
+            "用户登录，user为系统内置用户。\n选项\n%s"),
 
     LOGOUT(StringConstant.LOGOUT_COMMAND, StringConstant.LOGOUT_INPUT,
             "用户退出，退出当前登录的用户。"),
