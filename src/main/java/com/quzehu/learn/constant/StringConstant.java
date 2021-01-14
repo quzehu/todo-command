@@ -35,7 +35,7 @@ public class StringConstant {
     /**
      * 登录命令错误提示
      */
-    public static final String LOGIN_INPUT = "todo login -u user";
+    public static final String LOGIN_INPUT = "todo login -选项 [用户名]";
 
 
     public static final String LOGIN_ERROR_PROMPT_CONSOLE

@@ -29,13 +29,13 @@ public class LoginCommand extends AbstractCommand implements IfOrElse {
         List<Options> optionsList = new ArrayList<>();
         optionsList.add(new Options(StringConstant.LOGIN_COMMAND, "-u", "选择登录用户，后面接用户名"));
         optionsList.add(new Options(StringConstant.LOGIN_COMMAND, "-r", "注册用户，后面接新的用户名"));
+        optionsList.add(new Options(StringConstant.LOGIN_COMMAND, "-l", "查看所有用户列表"));
         getOptionsMap().put(StringConstant.LOGIN_COMMAND, optionsList);
     }
 
     public LoginCommand(UserReceiver userReceiver) {
         this.userReceiver = userReceiver;
     }
-
 
 
     @Override
@@ -45,46 +45,33 @@ public class LoginCommand extends AbstractCommand implements IfOrElse {
 
     @Override
     public void execute(String... args) throws IllegalArgumentException {
-        ifPresentOrElse(args.length == 2, args, this::normalAction, this::errorAction);
-
+        ifPresentOrElse(args.length == 2, args, this::moreArgsAction, this::oneArgsAction);
     }
 
+    private void oneArgsAction(String[] args) {
+        ifPresentOrElse("-l".equals(args[0]), this::listAction, this::errorActionTwo);
+    }
 
-    /**
-     * 正常的执行动作
-     * @Date 2021/1/7 21:48
-     * @Author Qu.ZeHu
-     * @return
-     **/
-    private void normalAction(String ...v) {
+    private void listAction() {
+        List<User> users = userReceiver.findAllUsers();
+        users.forEach(item -> println(item.toString()));
+    }
+
+    private void errorActionTwo() {
+        println(StringConstant.LOGIN_ERROR_PROMPT_CONSOLE);
+    }
+
+    private void moreArgsAction(String[] args) {
         // 登录
-        boolean loginFlag = ifPresent("-u".equals(v[0]), v[1], this::loginAction);
+        boolean loginFlag = ifPresent("-u".equals(args[0]), args[1], this::loginAction);
         //注册
-        boolean registerFlag = ifPresent("-r".equals(v[0]), v[1], this::registeredAction);
+        boolean registerFlag = ifPresent("-r".equals(args[0]), args[1], this::registeredAction);
 
-        orElse(loginFlag || registerFlag, this::exceptionAction);
+        orElse(loginFlag || registerFlag, this::errorActionOne);
     }
 
-
-    private void registeredAction(String v) {
-        User userByName = userReceiver.findUserByName(v);
-        if (userByName != null) {
-            // 不允许注册，存在相同的用户
-            println(StringConstant.REGISTER_ERROR_SAME_USER_PROMPT_CONSOLE);
-            return;
-        }
-        UserSessionUtils.registeredUserOfSession(v);
-        print(StringConstant.LOGIN_PASSWORD_PROMPT_CONSOLE);
-    }
-
-    /**
-     * 登录的执行动作
-     * @return void
-     * @Date 2021/1/7 21:48
-     * @Author Qu.ZeHu
-     **/
-    private void loginAction(String v) {
-        User userByName = userReceiver.findUserByName(v);
+    private void loginAction(String arg) {
+        User userByName = userReceiver.findUserByName(arg);
         Optional<User> optional = Optional.ofNullable(userByName);
         optional.ifPresent((user) -> {
             // 缓存登录用户
@@ -93,19 +80,26 @@ public class LoginCommand extends AbstractCommand implements IfOrElse {
         });
         if (!optional.isPresent()) {
             // 用户不是系统用户
-            println(StringFormatTemplate.USER_NO_EXIST_FORMAT_CONSOLE, v);
+            println(StringFormatTemplate.USER_NO_EXIST_FORMAT_CONSOLE, arg);
         }
     }
 
-
-
-    private void exceptionAction() {
-        throw new IllegalArgumentException(StringConstant.LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE);
+    private void registeredAction(String arg) {
+        User userByName = userReceiver.findUserByName(arg);
+        if (userByName != null) {
+            // 不允许注册，存在相同的用户
+            println(StringConstant.REGISTER_ERROR_SAME_USER_PROMPT_CONSOLE);
+            return;
+        }
+        UserSessionUtils.registeredUserOfSession(arg);
+        print(StringConstant.LOGIN_PASSWORD_PROMPT_CONSOLE);
     }
 
-    private void errorAction() {
-        throw new IllegalArgumentException(StringConstant.LOGIN_ERROR_PROMPT_CONSOLE);
+    private void errorActionOne() {
+        println(StringConstant.LIST_ERROR_PARAM_INVALID_PROMPT_CONSOLE);
     }
+
+
 
 
 

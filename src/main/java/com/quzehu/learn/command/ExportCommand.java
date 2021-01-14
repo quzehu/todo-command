@@ -45,12 +45,11 @@ public class ExportCommand extends AbstractCommand implements Command, Print, If
 
     @Override
     public void execute(String... args) throws IllegalArgumentException {
-
-        ifPresentOrElse(args.length, 2, args, todoReceiver::exportFile, this::exceptionAction);
+        ifPresentOrElse(args.length == 2, args, todoReceiver::exportFile, this::errorAction);
         println(StringConstant.EXPORT_SUCCESS_PROMPT_CONSOLE);
     }
 
-    private void exceptionAction() {
+    private void errorAction() {
         throw new IllegalArgumentException(StringConstant.EXPORT_ERROR_PARAM_LENGTH_PROMPT_CONSOLE);
     }
 }

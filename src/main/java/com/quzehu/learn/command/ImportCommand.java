@@ -34,8 +34,7 @@ public class ImportCommand extends AbstractCommand implements Command, Print, If
 
     static {
         List<Options> optionsList = new ArrayList<>();
-        optionsList.add(new Options(StringConstant.IMPORT_COMMAND, "-f",
-                "从文件中导入待办事项"));
+        optionsList.add(new Options(StringConstant.IMPORT_COMMAND, "-f", "从文件中导入待办事项"));
         getOptionsMap().put(StringConstant.IMPORT_COMMAND, optionsList);
     }
 
@@ -51,29 +50,29 @@ public class ImportCommand extends AbstractCommand implements Command, Print, If
 
     @Override
     public void execute(String... args) throws IllegalArgumentException {
-        if (args.length == 2) {
-            if ("-f".equals(args[0])) {
-                String fileName = args[1] + ".xlsx";
-                // 先清空
-                todoReceiver.clearList();
-                try {
-                    File importFile = FileUtils.createExistsFile(todoConfig.getImportPath(), fileName);
-                    EasyExcel.read(importFile, TodoItem.class,
-                            new ExcelReadListener(todoReceiver)).sheet(0).doRead();
-                    println(StringConstant.IMPORT_SUCCESS_PROMPT_CONSOLE);
-                }catch (IOException e) {
-                    println(e.getMessage());
-                }
-            } else {
-                exceptionAction();
-            }
-        } else {
-            exceptionAction();
-        }
+        ifPresentOrElse(args.length == 2, args, this::checkArgs, this::errorAction);
 
     }
 
-    private void exceptionAction() {
+    private void checkArgs(String ...args) {
+        ifPresentOrElse("-f".equals(args[0]), args[1], this::importAction, this::errorAction);
+    }
+
+    private void importAction(String arg) {
+        String fileName = arg + ".xlsx";
+        // 先清空
+        todoReceiver.clearList();
+        try {
+            File importFile = FileUtils.createExistsFile(todoConfig.getImportPath(), fileName);
+            EasyExcel.read(importFile, TodoItem.class, new ExcelReadListener(todoReceiver))
+                    .sheet(0).doRead();
+            println(StringConstant.IMPORT_SUCCESS_PROMPT_CONSOLE);
+        }catch (IOException e) {
+            println(e.getMessage());
+        }
+    }
+
+    private void errorAction() {
         throw new IllegalArgumentException(StringConstant.EXPORT_ERROR_PARAM_LENGTH_PROMPT_CONSOLE);
     }
 }

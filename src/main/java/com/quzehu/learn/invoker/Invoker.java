@@ -28,13 +28,35 @@ import java.util.Scanner;
 public class Invoker implements Print, IfOrElse {
 
     private final CommandFactory commandFactory = CommandFactory.getInstance();
+
     /**
-     * 调用命令
-     * @Date 2021/1/8 0:14
-     * @param inputCommand 用户输入的命令
+     * 循环调用命令
+     * @Date 2021/1/8 0:13
      * @Author Qu.ZeHu
      * @return void
      **/
+    public void callLoop() {
+        println(StringConstant.FIRST_CONSTANT_CONSOLE);
+
+        Scanner scanner = new Scanner(System.in);
+        print(StringConstant.PREFIX_CONSTANT_CONSOLE);
+
+        while (scanner.hasNext()) {
+            String nextLine = scanner.nextLine().trim().toLowerCase();
+            // 判断退出命令
+            ifPresent(StringConstant.EXIT_COMMAND.equals(nextLine), this::exitAction);
+
+            // 判断是否是密码输入，调用不同的命令
+            Boolean psStatus = UserSessionUtils.getUserSession().getInPasswordStatus();
+            ifPresentOrElse(psStatus, nextLine, this::callPassword, this::callTodo);
+
+            // 得到登录用户
+            User cacheUser = UserSessionUtils.getUserBySession();
+            // 区分是否登录的状态
+            ifPresentOrElse(cacheUser != null, this::loginPrint, this::noLoginPrint);
+        }
+    }
+
     public void callTodo(String inputCommand) {
         // 如果不是todo开头
         if (!inputCommand.startsWith(StringConstant.TODO_COMMAND)) {
@@ -64,13 +86,6 @@ public class Invoker implements Print, IfOrElse {
 
     }
 
-    /**
-     * 调用密码命令
-     * @Date 2021/1/8 0:14
-     * @param password 密码
-     * @Author Qu.ZeHu
-     * @return void
-     **/
     public void callPassword(String password) {
         try {
             Command command = commandFactory.createCommand(StringConstant.PASSWORD_COMMAND);
@@ -80,61 +95,26 @@ public class Invoker implements Print, IfOrElse {
         }
     }
 
-    /**
-     * 循环调用命令
-     * @Date 2021/1/8 0:13
-     * @Author Qu.ZeHu
-     * @return void
-     **/
-    public void callLoop() {
-        println(StringConstant.FIRST_CONSTANT_CONSOLE);
-
-        Scanner scanner = new Scanner(System.in);
-        print(StringConstant.PREFIX_CONSTANT_CONSOLE);
-
-        while (scanner.hasNext()) {
-            String nextLine = scanner.nextLine().trim().toLowerCase();
-            // 退出命令
-            ifPresent(StringConstant.EXIT_COMMAND.equals(nextLine),
-                    () -> { println(StringConstant.EXIT_SUCCESS_CONSOLE); System.exit(0);});
-
-            // 判断是否是密码输入，调用不同的命令
-            ifPresentOrElse(UserSessionUtils.getUserSession()
-                            .getInPasswordStatus(), () -> callPassword(nextLine), () -> callTodo(nextLine));
-            // 得到登录用户
-            User cacheUser = UserSessionUtils.getUserBySession();
-            Optional<User> optional = Optional.ofNullable(cacheUser);
-
-            // 区分是否登录的状态
-            // 登录
-            optional.ifPresent(user -> ifPresentOrElse(UserSessionUtils.getUserSession().getInPasswordStatus(),
-                    printPrefixAction, printPrefixWithUserAction));
-
-            // 没登录
-            if (!optional.isPresent()) {
-                print(StringConstant.PREFIX_CONSTANT_CONSOLE);
-            }
-
-        }
-
+    private void loginPrint() {
+        Boolean psStatus = UserSessionUtils.getUserSession().getInPasswordStatus();
+        ifPresentOrElse(psStatus, this::printPrefixAction, this::printPrefixWithUserAction);
     }
 
-    /**
-     * 前缀打印动作
-     * @Date 2021/1/8 0:11
-     * @Author Qu.ZeHu
-     * @return
-     **/
-    private final Runnable printPrefixAction = () -> print(StringConstant.PREFIX_CONSTANT_CONSOLE);
+    private void noLoginPrint() {
+        print(StringConstant.PREFIX_CONSTANT_CONSOLE);
+    }
 
-    /**
-     * 带用户前缀的打印动作
-     * @Date 2021/1/8 0:11
-     * @Author Qu.ZeHu
-     * @return
-     **/
-    private final Runnable printPrefixWithUserAction =
-            () -> print(StringFormatTemplate.PREFIX_FORMAT_CONSOLE,
-                        UserSessionUtils.getUserBySession().getUserName());
+    private void exitAction() {
+        println(StringConstant.EXIT_SUCCESS_CONSOLE);
+        System.exit(0);
+    }
+
+    private void printPrefixAction(){
+        print(StringConstant.PREFIX_CONSTANT_CONSOLE);
+    }
+
+    private void printPrefixWithUserAction(){
+        print(StringFormatTemplate.PREFIX_FORMAT_CONSOLE, UserSessionUtils.getUserBySession().getUserName());
+    }
 
 }

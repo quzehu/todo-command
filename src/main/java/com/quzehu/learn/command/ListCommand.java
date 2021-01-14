@@ -28,7 +28,6 @@ public class ListCommand extends AbstractCommand implements Command, IfOrElse {
         List<Options> optionsList = new ArrayList<>();
         optionsList.add(new Options(StringConstant.LIST_COMMAND, "--all", "选择所有的待办事项"));
         optionsList.add(new Options(StringConstant.LIST_COMMAND, "--done", "选择已经完成的待办事项"));
-        optionsList.add(new Options(StringConstant.LIST_COMMAND, "-h", "获取该命令的帮助"));
         getOptionsMap().put(StringConstant.LIST_COMMAND, optionsList);
     }
 
@@ -47,14 +46,7 @@ public class ListCommand extends AbstractCommand implements Command, IfOrElse {
     @Override
     public void execute(String... args) {
         // 参数错误
-        orElse(args.length, 1,
-        () -> {throw new IllegalArgumentException(StringConstant.LIST_ERROR_PARAM_LENGTH_PROMPT_CONSOLE);});
-
-        // 获取帮助
-        if ("-h".equals(args[0])) {
-            printAllOptionsAction(StringConstant.LIST_COMMAND);
-            return;
-        }
+        orElse(args.length == 1, this::errorAction);
 
         // 获取待办事项
         List<TodoItem> todoItems = todoReceiver.list(args);
@@ -65,5 +57,10 @@ public class ListCommand extends AbstractCommand implements Command, IfOrElse {
                         .equals(item.getStatus())).count();
 
         println(StringFormatTemplate.LIST_ALL_AFTER_FORMAT_CONSOLE, todoItems.size(), doneSize);
+    }
+
+
+    private void errorAction() {
+        throw new IllegalArgumentException(StringConstant.LIST_ERROR_PARAM_LENGTH_PROMPT_CONSOLE);
     }
 }

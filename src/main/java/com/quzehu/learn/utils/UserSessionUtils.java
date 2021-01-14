@@ -82,7 +82,7 @@ public class UserSessionUtils {
         UserSession userSession = getUserSession();
         userSession.setCacheUser(user)
                 .setInPasswordStatus(true)
-                .setRegisteredStatus(false);
+                .setRegisterStatus(false);
     }
     /**
      * 注册用户
@@ -94,7 +94,7 @@ public class UserSessionUtils {
     public static void registeredUserOfSession(String userName) {
         UserSession userSession = getUserSession();
         userSession.setInPasswordStatus(true);
-        userSession.setRegisteredStatus(true);
+        userSession.setRegisterStatus(true);
         userSession.setCacheUser(new User().setUserName(userName));
     }
     /**
@@ -124,7 +124,7 @@ public class UserSessionUtils {
                 .setInPasswordCount(0)
                 .setLoginStatus(false)
                 .setInPasswordStatus(false)
-                .setRegisteredStatus(false);
+                .setRegisterStatus(false);
     }
 
     /**
@@ -152,7 +152,7 @@ public class UserSessionUtils {
         UserSession userSession = getUserSession();
         // 清空缓存数据
         userSession.setCacheUser(null)
-                .setRegisteredStatus(false)
+                .setRegisterStatus(false)
                 .setInPasswordCount(0);
 
     }

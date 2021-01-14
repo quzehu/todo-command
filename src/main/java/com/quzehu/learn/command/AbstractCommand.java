@@ -22,18 +22,19 @@ public abstract class AbstractCommand implements Command, Print {
     /**
      * 命令的参数集合
      */
-    private static final Map<String, List<Options>> optionsMap = new HashMap<>();
+    private static final Map<String, List<Options>> OPTIONS_MAP = new HashMap<>();
 
     public static Map<String, List<Options>> getOptionsMap() {
-        return optionsMap;
+        return OPTIONS_MAP;
     }
 
     public static List<Options> getOptionsByKey(String key) {
-        return optionsMap.get(key);
+        return OPTIONS_MAP.get(key);
     }
 
-    protected void printAllOptionsAction(String commandName) {
-        List<Options> optionsList = getOptionsMap().get(commandName);
+
+    protected void printAllOptionsAction(String name) {
+        List<Options> optionsList = getOptionsMap().get(name);
         for (Options options : optionsList) {
             print(options.toString());
         }

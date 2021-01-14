@@ -40,7 +40,7 @@ public class UserSession implements Serializable {
     /**
      * 是注册状态
      */
-    private Boolean registeredStatus = false;
+    private Boolean registerStatus = false;
 
 
     private static UserSession instance = new UserSession();

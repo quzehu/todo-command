@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @Component
 @Lazy
 public class MysqlMoreTodoReceiver extends ServiceImpl<TodoItemMapper, TodoItem>
-        implements TodoReceiver, Print, IService<TodoItem> {
+        implements TodoReceiver, IService<TodoItem> {
 
     @Resource
     private TodoItemMapper todoItemMapper;

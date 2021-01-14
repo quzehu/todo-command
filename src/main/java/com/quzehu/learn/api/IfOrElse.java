@@ -1,5 +1,5 @@
 package com.quzehu.learn.api;
-import java.util.Objects;
+
 import java.util.function.Consumer;
 
 /**
@@ -9,131 +9,116 @@ import java.util.function.Consumer;
  * @Date 2021/1/7 17:16
  * @Version 1.0
  */
-public interface IfOrElse {
-
-    /**
-     * 执行是否相等判断，并执行对应的动作
-     * @Date 2021/1/7 17:35
-     * @param v1 参数1
-     * @param v2 参数2
-     * @param eAction 相等的动作
-     * @param neAction 不相等的动作
-     * @Author Qu.ZeHu
-     * @return void
-     **/
-    default <T> void ifPresentOrElse(T v1, T v2, Runnable eAction, Runnable neAction) {
-        Objects.requireNonNull(v1);
-        if (v1.equals(v2)) {
-            eAction.run();
-        } else {
-            neAction.run();
-        }
-    }
-
-    /**
-     * 执行是否相等判断，并执行对应的动作
-     * @Date 2021/1/7 21:24
-     * @param v1 参数1
-     * @param v2 参数2
-     * @param param 参数3
-     * @param eAction 相等的动作
-     * @param neAction 不相等的动作
-     * @Author Qu.ZeHu
-     * @return void
-     **/
-    default <T, P> void ifPresentOrElse(T v1, T v2, P param, Consumer<P> eAction, Runnable neAction) {
-        Objects.requireNonNull(v1);
-        if (v1.equals(v2)) {
-            eAction.accept(param);
-        } else {
-            neAction.run();
-        }
-    }
-
+public interface IfOrElse  {
 
     /**
      * 判断是否，并执行对应的动作
      * @Date 2021/1/7 22:30
-     * @param v 参数1
+     * @param f 参数1
      * @param eAction 参数2
      * @param neAction 参数3
      * @Author Qu.ZeHu
-     * @return void
      **/
-    default void ifPresentOrElse(boolean v, Runnable eAction, Runnable neAction) {
-        if (v) {
+    default void ifPresentOrElse(boolean f, Runnable eAction, Runnable neAction) {
+        if (f) {
             eAction.run();
         } else {
             neAction.run();
         }
     }
 
-    default <P> void ifPresentOrElse(boolean v, P p, Consumer<P> eAction, Runnable neAction) {
-        if (v) {
+    /**
+     * 判断是否，并执行对应的动作
+     * @Date 2021/1/14 12:58
+     * @param f 参数1
+     * @param p 参数2
+     * @param eAction 参数3
+     * @param neAction 参数4
+     * @Author Qu.ZeHu
+     * @return void
+     **/
+    default <P> void ifPresentOrElse(boolean f, P p, Consumer<P> eAction, Runnable neAction) {
+        if (f) {
             eAction.accept(p);
         } else {
             neAction.run();
         }
     }
-
     /**
-     * 执行是否相等判断，并执行对应的动作
-     * @Date 2021/1/7 17:55
-     * @param v1 参数1
-     * @param v2 参数2
-     * @param eAction 相等的动作
+     *  判断是否，并执行对应的动作
+     * @Date 2021/1/14 12:59
+     * @param f 参数1
+     * @param p 参数2
+     * @param eAction 参数3
+     * @param neAction 参数4
      * @Author Qu.ZeHu
      * @return void
      **/
-    default <T> void ifPresent(T v1, T v2, Runnable eAction) {
-        Objects.requireNonNull(v1);
-        if (v1.equals(v2)) {
-            eAction.run();
+    default <P> void ifPresentOrElse(boolean f, P p, Consumer<P> eAction, Consumer<P> neAction) {
+        if (f) {
+            eAction.accept(p);
+        } else {
+            neAction.accept(p);
         }
     }
 
     /**
      * 判断是否，并执行对应的动作
      * @Date 2021/1/8 14:53
-     * @param v 参数1
+     * @param f 参数1
      * @param eAction 是的执行动作
      * @Author Qu.ZeHu
-     * @return void
      **/
-    default void ifPresent(boolean v, Runnable eAction) {
-        if (v) {
+    default void ifPresent(boolean f, Runnable eAction) {
+        if (f) {
             eAction.run();
         }
     }
 
-    default <P> boolean ifPresent(boolean v, P p, Consumer<P> consumer) {
-        if (v) {
+
+    /**
+     * 判断是否，并执行对应的动作
+     * @Date 2021/1/14 12:59
+     * @param f 参数1
+     * @param p 参数2
+     * @param consumer 参数3
+     * @Author Qu.ZeHu
+     * @return boolean
+     **/
+    default <P> boolean ifPresent(boolean f, P p, Consumer<P> consumer) {
+        if (f) {
             consumer.accept(p);
         }
-        return v;
+        return f;
     }
 
     /**
-     * 执行是否相等判断，并执行对应的动作
-     * @Date 2021/1/7 17:56
-     * @param v1 参数1
-     * @param v2 参数2
-     * @param neAction 不相等的动作
+     * 判断是否，并执行对应的动作
+     * @Date 2021/1/14 12:59
+     * @param f 参数1
+     * @param neAction 参数2
      * @Author Qu.ZeHu
-     * @return void
      **/
-    default <T> void orElse(T v1, T v2, Runnable neAction) {
-        Objects.requireNonNull(v1);
-        if (!v1.equals(v2)) {
-            neAction.run();
-        }
-    }
-
     default void orElse(boolean f, Runnable neAction) {
         if (!f) {
             neAction.run();
         }
     }
 
+    /**
+     * 判断是否，并执行对应的动作
+     * @Date 2021/1/14 13:00
+     * @param f 参数1
+     * @param p 参数2
+     * @param neAction 参数3
+     * @Author Qu.ZeHu
+     * @return boolean
+     **/
+    default <P> boolean orElse(boolean f,  P p, Consumer<P> neAction) {
+        if (!f) {
+            neAction.accept(p);
+        }
+        return f;
+    }
 
 }

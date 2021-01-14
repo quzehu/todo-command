@@ -1,5 +1,6 @@
 package com.quzehu.learn.model;
 
+import com.quzehu.learn.constant.StringFormatTemplate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -27,4 +28,9 @@ public class User implements Serializable {
     private String userName;
 
     private String password;
+
+    @Override
+    public String toString() {
+        return String.format(StringFormatTemplate.USER_FORMAT, id, userName, password);
+    }
 }

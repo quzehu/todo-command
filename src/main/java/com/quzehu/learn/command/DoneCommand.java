@@ -35,15 +35,21 @@ public class DoneCommand implements Command, Print, IfOrElse {
         // 支持多参数
         for (String arg : args) {
             boolean isNumber = PatternUtils.isNumeric(arg);
-            ifPresentOrElse(isNumber, () -> {
-                int index = Integer.parseInt(arg);
-                if (todoReceiver.done(index)) {
-                    println(StringFormatTemplate.DONE_AFTER_FORMAT_CONSOLE, index);
-                }
-            }, () -> println(StringConstant.DONE_ERROR_PARAM_PROMPT_CONSOLE));
+            ifPresentOrElse(isNumber, arg, this::doneAction, this::errorAction);
         }
     }
 
+
+    private void errorAction() {
+        println(StringConstant.DONE_ERROR_PARAM_PROMPT_CONSOLE);
+    }
+
+    private void doneAction(String arg) {
+        int index = Integer.parseInt(arg);
+        if (todoReceiver.done(index)) {
+            println(StringFormatTemplate.DONE_AFTER_FORMAT_CONSOLE, index);
+        }
+    }
 
 
 }
